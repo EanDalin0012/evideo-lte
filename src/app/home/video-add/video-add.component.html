@@ -7,175 +7,55 @@
           <div class="page-header">
               <div class="row">
                   <div class="col-sm-12">
-                      <h3 class="page-title">Company Settings</h3>
+                      <h3 class="page-title">New Movies</h3>
                   </div>
               </div>
           </div>
           <!-- /Page Header -->
 
-          <form (ngSubmit)="submitCompany()" [formGroup]="companySettings">
+          <form (ngSubmit)="submitCompany()" [formGroup]="form">
               <div class="row">
-                  <div class="col-sm-6">
-                      <div class="form-group">
-                          <label>Company Name <span class="text-danger">*</span></label>
-                          <input class="form-control" type="text" value="Dreamguy's Technologies"
-                              [class.invalid]="companySettings.get('companyName').invalid && companySettings.get('companyName').touched"
-                              formControlName="companyName">
-                          <div
-                              *ngIf="companySettings.get('companyName').invalid && companySettings.get('companyName').touched">
-                              <small
-                                  *ngIf="companySettings.get('companyName').invalid && companySettings.get('companyName').touched"
-                                  class="text-danger"> *Company name is required</small>
-                          </div>
+                <div class="col-sm-12">
+                  <div class="form-group">
+                      <label>Title<span class="text-danger">*</span></label>
+                      <input class="form-control" type="text" value="Dreamguy's Technologies"
+                          [class.invalid]="form.get('title').invalid && form.get('title').touched"
+                          formControlName="title">
+                      <div *ngIf="submitted && f.title.errors">
+                          <small class="text-danger"> *Company name is required</small>
                       </div>
                   </div>
-                  <div class="col-sm-6">
-                      <div class="form-group">
-                          <label>Contact Person</label>
-                          <input class="form-control " value="Daniel Porter" type="text"
-                              [class.invalid]="companySettings.get('contactPerson').invalid && companySettings.get('contactPerson').touched"
-                              formControlName="contactPerson">
-                          <div
-                              *ngIf="companySettings.get('contactPerson').invalid && companySettings.get('contactPerson').touched">
-                              <small
-                                  *ngIf="companySettings.get('contactPerson').invalid && companySettings.get('contactPerson').touched"
-                                  class="text-danger"> *Contact person is required</small>
-                          </div>
-                      </div>
-                  </div>
+                </div>
               </div>
+
               <div class="row">
-                  <div class="col-sm-12">
+                  <div class="col-sm-6">
                       <div class="form-group">
-                          <label>Address</label>
-                          <input class="form-control " value="3864 Quiet Valley Lane, Sherman Oaks, CA, 91403"
-                              type="text"
-                              [class.invalid]="companySettings.get('address').invalid && companySettings.get('address').touched"
-                              formControlName="address">
-                          <div
-                              *ngIf="companySettings.get('address').invalid && companySettings.get('address').touched">
-                              <small
-                                  *ngIf="companySettings.get('address').invalid && companySettings.get('address').touched"
-                                  class="text-danger"> *Address is required</small>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="col-sm-6 col-md-6 col-lg-3">
-                      <div class="form-group">
-                          <label>Country</label>
+                          <label>Movie<span class="text-danger">*</span></label>
                           <select class="form-control select"
-                              [class.invalid]="companySettings.get('country').invalid && companySettings.get('country').touched"
-                              formControlName="country">
-                              <option value="USA">USA</option>
-                              <option value="United Kingdom">United Kingdom</option>
+                              formControlName="stateMovie">
+                              <option *ngFor="let state of movies" [ngValue]="state">
+                                {{ state.value }}
+                              </option>
                           </select>
-                          <div
-                              *ngIf="companySettings.get('country').invalid && companySettings.get('country').touched">
-                              <small
-                                  *ngIf="companySettings.get('country').invalid && companySettings.get('country').touched"
-                                  class="text-danger"> *Country is required</small>
+                          <div *ngIf="submitted && f.stateMovie.errors">
+                              <small class="text-danger"> *Company name is required</small>
                           </div>
                       </div>
                   </div>
-                  <div class="col-sm-6 col-md-6 col-lg-3">
+                  <div class="col-sm-6">
                       <div class="form-group">
-                          <label>City</label>
-                          <input class="form-control" value="Sherman Oaks" type="text"
-                              [class.invalid]="companySettings.get('city').invalid && companySettings.get('city').touched"
-                              formControlName="city">
-                          <div *ngIf="companySettings.get('city').invalid && companySettings.get('city').touched">
-                              <small
-                                  *ngIf="companySettings.get('city').invalid && companySettings.get('city').touched"
-                                  class="text-danger"> *City is required</small>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="col-sm-6 col-md-6 col-lg-3">
-                      <div class="form-group">
-                          <label>State/Province</label>
+                          <label>Type<span class="text-danger">*</span></label>
                           <select class="form-control select"
-                              [class.invalid]="companySettings.get('state').invalid && companySettings.get('state').touched"
                               formControlName="state">
-                              <option value="California">California</option>
-                              <option value="Alaska">Alaska</option>
-                              <option value="Alabama">Alabama</option>
-                          </select>
-                          <div *ngIf="companySettings.get('state').invalid && companySettings.get('state').touched">
-                              <small
-                                  *ngIf="companySettings.get('state').invalid && companySettings.get('state').touched"
-                                  class="text-danger"> *State is required</small>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="col-sm-6 col-md-6 col-lg-3">
-                      <div class="form-group">
-                          <label>Postal Code</label>
-                          <input class="form-control" value="91403" type="text"
-                              [class.invalid]="companySettings.get('postalCode').invalid && companySettings.get('postalCode').touched"
-                              formControlName="postalCode">
-                          <div
-                              *ngIf="companySettings.get('postalCode').invalid && companySettings.get('postalCode').touched">
-                              <small
-                                  *ngIf="companySettings.get('postalCode').invalid && companySettings.get('postalCode').touched"
-                                  class="text-danger"> *Postal code is required</small>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="row">
-                  <div class="col-sm-6">
-                      <div class="form-group">
-                          <label>Email</label>
-                          <input class="form-control" value="danielporter@example.com" type="email"
-                              [class.invalid]="companySettings.get('email').invalid && companySettings.get('email').touched"
-                              formControlName="email">
-                          <div *ngIf="companySettings.get('email').invalid && companySettings.get('email').touched">
-                              <small
-                                  *ngIf="companySettings.get('email').invalid && companySettings.get('email').touched"
-                                  class="text-danger"> *Email is required</small>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="col-sm-6">
-                      <div class="form-group">
-                          <label>Phone Number</label>
-                          <input class="form-control" value="818-978-7102" type="text"
-                              [class.invalid]="companySettings.get('phoneNumber').invalid && companySettings.get('phoneNumber').touched"
-                              formControlName="phoneNumber">
-                          <div
-                              *ngIf="companySettings.get('phoneNumber').invalid && companySettings.get('phoneNumber').touched">
-                              <small
-                                  *ngIf="companySettings.get('phoneNumber').invalid && companySettings.get('phoneNumber').touched"
-                                  class="text-danger"> *Phone number is required</small>
-                          </div>
-                      </div>
-                  </div>
-              </div>
 
-              <div class="row">
-                  <div class="col-sm-6">
-                      <div class="form-group">
-                          <label>Mobile Number</label>
-                          <input class="form-control" value="818-635-5579" type="text"
-                              [class.invalid]="companySettings.get('mobileNumber').invalid && companySettings.get('mobileNumber').touched"
-                              formControlName="mobileNumber">
-                          <div
-                              *ngIf="companySettings.get('mobileNumber').invalid && companySettings.get('mobileNumber').touched">
-                              <small
-                                  *ngIf="companySettings.get('mobileNumber').invalid && companySettings.get('mobileNumber').touched"
-                                  class="text-danger"> *Mobile number is required</small>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="col-sm-6">
-                      <div class="form-group">
-                          <label>Fax</label>
-                          <input class="form-control" value="818-978-7102" type="text"
-                              [class.invalid]="companySettings.get('fax').invalid && companySettings.get('fax').touched"
-                              formControlName="fax">
-                          <div *ngIf="companySettings.get('fax').invalid && companySettings.get('fax').touched">
-                              <small *ngIf="companySettings.get('fax').invalid && companySettings.get('fax').touched"
-                                  class="text-danger"> *Fax is required</small>
+                              <option *ngFor="let state of movies" [ngValue]="state">
+                                {{ state.value }}
+                              </option>
+
+                          </select>
+                          <div *ngIf="submitted && f.state.errors">
+                              <small class="text-danger"> *Contact person is required</small>
                           </div>
                       </div>
                   </div>
@@ -184,18 +64,15 @@
               <div class="row">
                   <div class="col-sm-12">
                       <div class="form-group">
-                          <label>Website Url</label>
-                          <input class="form-control" value="https://www.example.com" type="text"
-                              [class.invalid]="companySettings.get('website').invalid && companySettings.get('website').touched"
-                              formControlName="website">
-                          <div
-                              *ngIf="companySettings.get('website').invalid && companySettings.get('website').touched">
-                              <small
-                                  *ngIf="companySettings.get('website').invalid && companySettings.get('website').touched"
-                                  class="text-danger"> *Website URL is required</small>
+                          <label>Remark</label>
+                          <input class="form-control " value="3864 Quiet Valley Lane, Sherman Oaks, CA, 91403"
+                              type="text" formControlName="remark">
+                          <div *ngIf="submitted && f.remark.errors">
+                              <small class="text-danger"> *Address is required</small>
                           </div>
                       </div>
                   </div>
+
               </div>
 
               <div class="row">
@@ -203,12 +80,14 @@
                     <div class="form-group">
                         <label>Image</label>
 
-                        <input type="file" (change)="selectFile($event)" />
-                        <div class="col-4">
-                          <button class="btn btn-success btn-sm" [disabled]="!selectedFiles" (click)="upload()">
+                        <input type="file" accept="image/png, image/jpeg" (change)="selectFile($event)" class="form-control"/>
+                        <!-- <div class="col-12" style="margin-top: 15px;">
+                          <button class="btn btn-success btn-sm float-right" [disabled]="!selectedFiles" (click)="upload()" style="float: right;">
                             Upload
                           </button>
-                        </div>
+                        </div> -->
+
+                        <img [src]="imageSrc" *ngIf="imageSrc" style="height: 300px; width:500px">
 
                         <div *ngIf="currentFile" class="progress my-3">
                           <div
@@ -223,11 +102,8 @@
                           </div>
                         </div>
 
-                        <div
-                        *ngIf="companySettings.get('lightLogo').invalid && companySettings.get('lightLogo').touched">
-                        <small
-                            *ngIf="companySettings.get('lightLogo').invalid && companySettings.get('lightLogo').touched"
-                            class="text-danger"> *Light logo is required</small>
+                        <div *ngIf="submitted && f.fileSource.errors">
+                        <small class="text-danger"> *Light logo is required</small>
                     </div>
 
                     </div>

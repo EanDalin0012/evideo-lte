@@ -1,0 +1,123 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="page-title">Welcome Admin!</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item active">Dashboard</li>
+            </ul>
+        </div>
+    </div>
+  </div>
+  <!-- /Page Header -->
+
+
+  <div class="row">
+
+    <div class="col-md-6 d-flex">
+      <div class="card flex-fill dash-statistics">
+          <div class="card-body">
+              <h5 class="card-title">Setting Client Video Menu</h5>
+              <div class="stats-list">
+                <div class="task-wrapper">
+                  <div class="task-list-container">
+                      <div class="task-list-body">
+                          <ul id="task-list">
+                            <ng-container *ngFor="let item of lstMovies">
+                              <li class="task" [ngClass] = "{'completed': item.check === 'Y'}">
+                                <a href="javascript:">
+                                  <div class="task-container">
+                                    <span class="task-action-btn task-check">
+                                        <span class="action-circle large complete-btn"
+                                            title="Mark Complete">
+                                            <i class="material-icons">check</i>
+                                        </span>
+                                    </span>
+                                    <span class="task-label">{{item.name}}</span>
+                                  </div>
+                                </a>
+                              </li>
+                            </ng-container>
+
+                          </ul>
+                      </div>
+                      <div class="task-list-footer">
+                          <div class="new-task-wrapper">
+                              <textarea id="new-task"
+                                  placeholder="Enter new task here. . ."></textarea>
+                              <span class="error-message hidden">You need to enter a task
+                                  first</span>
+                              <span class="add-new-task-btn btn" id="add-task">Add Task</span>
+                              <span class="btn" id="close-task-panel">Close</span>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+
+
+  <div class="col-md-6 d-flex">
+        <div class="card card-table flex-fill">
+            <div class="card-header">
+                <h3 class="card-title mb-0">Setting Client Video Sub Menu</h3>
+            </div>
+            <div class="card-body">
+
+                <div class="col-md-3" style="float: left;     margin-right: 24px;">
+                  <div class="table-responsive">
+                      <div class="form-group">
+
+                        <div class="file-pro-list">
+                          <div class="file-scroll">
+                            <div class="roles-menu">
+                              <ul>
+                                <ng-container *ngFor="let item of lstMovies">
+                                  <li [ngClass] = "{'active': item.id === moviesIdCheked}">
+                                    <a href="javascript:void(0);">{{item.name}}</a>
+                                  </li>
+                                </ng-container>
+                              </ul>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6" style="float: left;margin-top: 20px;">
+                  <table class="table table-striped custom-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th class="text-center">Show</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of lstMovieTypes">
+                            <td>{{item.name}}</td>
+                            <td class="text-center">
+                                <input [checked]="item.check === 'Y'"
+                                (change)="onChecke(item)" type="checkbox" value="item" >
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                </div>
+
+            </div>
+            <!-- <div class="card-footer">
+                <a href="payments.html">View all payments</a>
+            </div> -->
+        </div>
+    </div>
+  </div>
+
+
+</div>

@@ -8249,3 +8249,16 @@ body::-webkit-scrollbar-track-piece:horizontal:end{border-radius:0 4px 4px 0}
 body::-webkit-scrollbar-thumb:horizontal,
 body::-webkit-scrollbar-thumb:vertical{background:rgba(0,0,0,.4);;border-radius:4px;display:block;height:48px} */
 
+select {
+  appearance: auto !important;
+}
+
+
+.task-completed-btn {
+  background: #35BA67;
+  border: 1px solid #2fa65c;
+}
+
+.task-completed-btn {
+  color: azure !important;
+}

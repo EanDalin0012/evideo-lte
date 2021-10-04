@@ -1,0 +1,7 @@
+.task-wrapper #task-list li.completed .task-container .task-label {
+  color: #333;
+}
+a {
+  color: #0d6efd;
+  text-decoration: none;
+}

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { FileUploadService } from '../../v-share/service/file-upload.service';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
+import { MyLogUtil } from '../../v-share/util/my-log-util';
 
 @Component({
   selector: 'app-video-add',
@@ -12,48 +13,106 @@ import { HttpEventType, HttpResponse } from '@angular/common/http';
 })
 export class VideoAddComponent implements OnInit {
 
+  submitted = false;
   selectedFiles?: FileList;
   currentFile?: File;
   progress = 0;
   message = '';
-
+  imageSrc: string = '';
   fileInfos?: Observable<any>;
 
-  public companySettings: any;
+  movies: any[] = [];
+
+  public form: any;
   constructor(
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private uploadService: FileUploadService
   ) {
-    this.companySettings as FormGroup;
+    this.form as FormGroup;
   }
 
   ngOnInit() {
-    this.companySettings = this.formBuilder.group({
-      companyName: ["Delta Technoligies", [Validators.required]],
-      contactPerson: ["Mclaren", [Validators.required]],
-      address: ["Penning street", [Validators.required]],
-      country: ["USA", [Validators.required]],
-      city: ["Nyanose", [Validators.required]],
-      state: ["Alabama", [Validators.required]],
-      postalCode: ["845321", [Validators.required]],
-      email: ["mclaren@deltatechnoligies.com", [Validators.required]],
-      phoneNumber: ["071-654124", [Validators.required]],
-      mobileNumber: ["8547522541", [Validators.required]],
-      fax: ["012-456213", [Validators.required]],
-      website: ["www.deltatechnoligies.com", [Validators.required]],
-      lightLogo: [""],
+    this.form = this.formBuilder.group({
+      title: ['', [Validators.required]],
+      stateMovie: ['', [Validators.required]],
+      state: ['', [Validators.required]],
+      remark: ['', [Validators.required]],
+      fileSource: new FormControl('', [Validators.required]),
+    });
+    this.movies = [
+      {
+        id: 1,
+        value: 'Khmer',
+        code: 'kh'
+      },
+      {
+        id: 2,
+        value: 'Thai',
+        code: 'thai'
+      },
+      {
+        id: 3,
+        value: 'Koran',
+        code: 'koran'
+      },
+      {
+        id: 4,
+        value: 'Chiness',
+        code: 'ch'
+      }
+    ];
+
+    this.form.patchValue({
+      state: this.movies[0]
+    });
+    this.form.patchValue({
+      stateMovie: this.movies[0]
     });
   }
 
+  get f(): { [key: string]: AbstractControl } {
+    return this.form.controls;
+  }
+
   submitCompany() {
-    if (this.companySettings.valid) {
+    const data = this.form.getRawValue();
+    MyLogUtil.log('data', data);
+    // this.toastr.success("Company Settings is added", "Success",{
+    //   timeOut: 9000,
+    // });
+    // this.toastr.error("Company Settings is added", "Success",{
+    //   timeOut: 3000,
+    // });
+
+    this.toastr.info("Company Settings is added", "Success",{
+      timeOut: 3000,
+    });
+
+    if (this.form.valid) {
       this.toastr.success("Company Settings is added", "Success");
     }
   }
 
   selectFile(event: any): void {
     this.selectedFiles = event.target.files;
+    const reader = new FileReader();
+
+    if(event.target.files && event.target.files.length) {
+      const [file] = event.target.files;
+      reader.readAsDataURL(file);
+
+      reader.onload = () => {
+
+        this.imageSrc = reader.result as string;
+
+        this.form.patchValue({
+          fileSource: reader.result
+        });
+
+      };
+
+    }
   }
 
   upload(): void {
@@ -91,6 +150,11 @@ export class VideoAddComponent implements OnInit {
 
       this.selectedFiles = undefined;
     }
+  }
+
+  save() {
+    const data = this.form.getRawValue();
+    MyLogUtil.log('data', data);
   }
 
 

@@ -58,6 +58,28 @@
                   </li>
 
                   <li class="submenu">
+                    <a href="javascript:">
+                      <i class="la la-cog"></i>
+                      <span>Setting</span>
+                      <span class="menu-arrow"></span>
+                    </a>
+                    <ul style="display: none;">
+                      <li>
+                        <a href="javascript:"> <span>Movie</span></a>
+                      </li>
+
+                      <li>
+                        <a href="javascript:"> <span>Movie-Type</span></a>
+                      </li>
+
+                      <li>
+                        <a href="javascript:"> <span>Client-Setting</span></a>
+                      </li>
+
+                    </ul>
+                </li>
+
+                  <li class="submenu">
                       <a href="javascript:"><i class="la la-share-alt"></i> <span>Multi Level</span> <span
                               class="menu-arrow"></span></a>
                       <ul style="display: none;">
@@ -81,6 +103,7 @@
                           </li>
                       </ul>
                   </li>
+
               </ul>
               <ul *ngIf="sidebarMenus.chat">
                   <li routerLink="/dashboard/admin">

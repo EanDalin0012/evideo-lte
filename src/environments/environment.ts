@@ -3,7 +3,13 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  autoLogoutTime: 10 * 60 * 1000,
+  bizServer : {
+    server : 'http://localhost:8080',
+    port : '8080',
+    context : 'bizmob.corp.server'
+  },
 };
 
 /*

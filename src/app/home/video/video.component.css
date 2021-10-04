@@ -1,0 +1,23 @@
+body {
+  overflow: hidden !important;
+}
+
+.part {
+  position: absolute;
+  float: right;
+  right: 0;
+  margin-right: 50px;
+  margin-top: 10px;
+}
+
+.task-information {
+  color: #a3a3a3;
+  font-size: 11px;
+  line-height: 17px;
+  min-width: 1px;
+  margin-left: 50px;
+}
+
+.chats {
+  padding: 15px 15px;
+}

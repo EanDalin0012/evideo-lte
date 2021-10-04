@@ -1,0 +1,62 @@
+<div class="account-content">
+
+  <div class="container">
+
+      <!-- Account Logo -->
+      <div class="account-logo">
+          <a href="javascript:"><img src="assets/img/logo2.png" alt="Dreamguy's Technologies"></a>
+      </div>
+      <!-- /Account Logo -->
+
+      <div class="account-box">
+          <div class="account-wrapper">
+              <h3 class="account-title">Login</h3>
+              <p class="account-subtitle">Access to our dashboard</p>
+
+              <!-- Account Form -->
+              <form [formGroup]="formLogin">
+
+
+                <div class="form-row row">
+                  <div class="form-group col-md-12">
+                    <label class="font-khmer-cursive">{{'Account.Label.UserName' | translate}}</label>
+                  <span class="text-danger">*</span>
+                  <input #userName formControlName="userName" type="text" [ngClass]="formLogin.getRawValue().userName? 'active-input' : ''" class=" form-control font-khmer-cursive" placeholder="{{'Account.Holder.EnterUserName' | translate}}">
+
+                  <div class="in_box">
+                      <button (click)="isEmpty('u')" type="button" [ngClass]="formLogin.getRawValue().userName? 'btn_del' : ''"  class="btn"></button>
+                  </div>
+
+                  <ng-container *ngIf="submitted && f.userName.errors">
+                    <small class="text-danger"> *Account Name is required</small>
+                  </ng-container>
+                  </div>
+                </div>
+
+                <div class="form-row row">
+                  <div class="form-group col-md-12">
+                    <label class="font-khmer-cursive">{{'Account.Label.Password' | translate}}</label>
+                  <span class="text-danger">*</span>
+                  <input #password formControlName="password" type="password" [ngClass]="formLogin.getRawValue().password? 'active-input' : ''" class=" form-control font-khmer-cursive" placeholder="{{'Account.Holder.EnterPassword' | translate}}">
+
+                  <div class="in_box">
+                      <button (click)="isEmpty('p')" type="button" [ngClass]="formLogin.getRawValue().password? 'btn_del' : ''"  class="btn"></button>
+                  </div>
+
+                  <ng-container *ngIf="submitted && f.password.errors">
+                    <small class="text-danger"> *Account Name is required</small>
+                  </ng-container>
+                  </div>
+                </div>
+
+                <div class="form-group text-center">
+                  <button class="btn btn-primary account-btn" type="button" (click)="onLogin()">Login</button>
+                </div>
+
+              </form>
+              <!-- /Account Form -->
+
+          </div>
+      </div>
+  </div>
+</div>

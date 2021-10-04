@@ -1,0 +1,117 @@
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-inner slimscroll">
+      <perfect-scrollbar [scrollIndicators]="false">
+          <div id="sidebar-menu" class="sidebar-menu">
+              <ul *ngIf="sidebarMenus.default">
+                  <li class="menu-title">
+                      <span>Main</span>
+                  </li>
+
+                  <li [ngClass]="{ 'active' : urlComplete.subUrl === 'my-account' && urlComplete.mainUrl === 'my-account' }">
+                    <a href="/acc" (click)="onNavigateRoutor('/acc/my-account/')">
+                      <i class="la la-files-o"></i>
+                      <span>My Account</span>
+                    </a>
+                </li>
+
+                  <!-- <li class="submenu" [ngClass]="{ 'active' : urlComplete.mainUrl === 'acc'}">
+                    <a href="javascript:" [ngClass]="{ 'subdrop' : urlComplete.mainUrl === 'acc' }">
+                        <i class="la la-dashboard"></i>
+                        <span>Account</span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <ul style="display: none;"
+                        [ngStyle]="{ 'display' : urlComplete.mainUrl === 'acc' ? 'block' : 'none' }">
+
+                        <li (click)="routerAccount()">
+                          <a [ngClass]="{ 'active' : urlComplete.subUrl ===  accountInfo.accountType }" href="javascript:">{{accountInfo.accountType | accountTypeCode}}</a>
+                        </li>
+                    </ul>
+                  </li> -->
+
+                  <li [ngClass]="{ 'active' : urlComplete.subUrl === 'clientspage' || urlComplete.subUrl === 'clientslist' }">
+                      <a routerLink="/clients/clientspage" ><i
+                              class="la la-users"></i> <span>Clients</span></a>
+                  </li>
+
+                  <li [ngClass]="{'active' : urlComplete.subUrl === 'leadscontent'}">
+                      <a routerLink="/leads/leadscontent"  ><i
+                              class="la la-user-secret"></i> <span>Leads</span></a>
+                  </li>
+
+
+                  <li class="submenu" [ngClass]="{ 'active' : urlComplete.mainUrl === 'reports' }">
+                      <a href="javascript:" [ngClass]="{ 'subdrop' : urlComplete.mainUrl === 'reports' }"><i class="la la-pie-chart"></i> <span> Reports </span> <span
+                              class="menu-arrow"></span></a>
+                      <ul style="display: none;"
+                      [ngStyle]="{ 'display' : urlComplete.mainUrl === 'reports' ? 'block' : 'none' }">
+                          <li routerLink="/reports/expense-report">
+                              <a href="javascript:" [ngClass]="{'active' : urlComplete.subUrl === 'expense-report'}">
+                                  Expense Report </a>
+                          </li>
+                          <li routerLink="/reports/invoice-report">
+                              <a href="javascript:" [ngClass]="{'active' : urlComplete.subUrl === 'invoice-report'}">
+                                  Invoice Report </a>
+                          </li>
+                      </ul>
+                  </li>
+
+                  <li class="submenu">
+                      <a href="javascript:"><i class="la la-share-alt"></i> <span>Multi Level</span> <span
+                              class="menu-arrow"></span></a>
+                      <ul style="display: none;">
+                          <li class="submenu">
+                              <a href="javascript:"> <span>Level 1</span> <span class="menu-arrow"></span></a>
+                              <ul style="display: none;">
+                                  <li><a href="javascript:"><span>Level 2</span></a></li>
+                                  <li class="submenu">
+                                      <a href="javascript:"> <span> Level 2</span> <span
+                                              class="menu-arrow"></span></a>
+                                      <ul style="display: none;">
+                                          <li><a href="javascript:">Level 3</a></li>
+                                          <li><a href="javascript:">Level 3</a></li>
+                                      </ul>
+                                  </li>
+                                  <li><a href="javascript:"> <span>Level 2</span></a></li>
+                              </ul>
+                          </li>
+                          <li>
+                              <a href="javascript:"> <span>Level 1</span></a>
+                          </li>
+                      </ul>
+                  </li>
+              </ul>
+              <ul *ngIf="sidebarMenus.chat">
+                  <li routerLink="/dashboard/admin">
+                      <a href="javascript:"><i class="la la-home"></i> <span>Back to Home</span></a>
+                  </li>
+                  <li class="menu-title"><span>Chat Groups</span> <a href="javascript:" data-toggle="modal"
+                          data-target="#add_group"><i class="la la-plus"></i></a></li>
+                  <li>
+                      <a href="javascript:" *ngFor="let item of groups.total">
+                          <span class="chat-avatar-sm user-img">
+                              <img class="rounded-circle" alt="" src="assets/img/profiles/avatar-05.jpg">
+                          </span>
+                          <span class="chat-user">#{{ item | titlecase }}</span>
+                      </a>
+                  </li>
+                  <li class="menu-title">Direct Chats <a  data-toggle="modal" data-target="#add_chat_user"><i
+                              class="la la-plus"></i></a></li>
+                  <li [ngClass]="{ 'active' : members.active === item.name }" (click)="setActive(item.name)"
+                      *ngFor="let item of members.total">
+                      <a href="javascript:">
+                          <span class="chat-avatar-sm user-img">
+                              <img class="rounded-circle" alt="" src="assets/img/profiles/avatar-05.jpg"><span
+                                  class="status online"></span>
+                          </span>
+                          <span class="chat-user">{{item.name}}</span> <span class="badge badge-pill bg-danger"
+                              [hidden]="item.count < 1">{{item.count}}</span>
+                      </a>
+                  </li>
+              </ul>
+          </div>
+      </perfect-scrollbar>
+  </div>
+</div>
+<!-- /Sidebar -->

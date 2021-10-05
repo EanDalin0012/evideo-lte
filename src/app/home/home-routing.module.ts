@@ -6,6 +6,10 @@ import { VideoAddComponent } from './video-add/video-add.component';
 import { MovieComponent } from './movie/movie.component';
 import { MovieTypeComponent } from './movie-type/movie-type.component';
 import { ClientVdSettingComponent } from './client-vd-setting/client-vd-setting.component';
+import { VideoEditComponent } from './video-edit/video-edit.component';
+import { VideoSourceComponent } from './video-source/video-source.component';
+import { VideoSourceAddComponent } from './video-source-add/video-source-add.component';
+import { VideoSourceEditComponent } from './video-source-edit/video-source-edit.component';
 
 const routes: Routes = [
   {
@@ -14,6 +18,10 @@ const routes: Routes = [
     children: [
       {path: '', component: VideoComponent},
       {path: 'vd-add', component: VideoAddComponent},
+      {path: 'vd-edit', component: VideoEditComponent},
+      {path: 'vd-source', component: VideoSourceComponent},
+      {path: 'vd-source-add', component: VideoSourceAddComponent},
+      {path: 'vd-source-edit', component: VideoSourceEditComponent},
       {path: 'seting-movie', component: MovieComponent},
       {path: 'seting-movie-type', component: MovieTypeComponent},
       {path: 'seting-client-vd', component: ClientVdSettingComponent}

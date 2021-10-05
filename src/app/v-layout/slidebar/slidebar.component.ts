@@ -93,18 +93,6 @@ export class SlidebarComponent implements OnInit {
     this.urlComplete.mainUrl = 'acc';
     this.urlComplete.subUrl = AccountTypeCode.Admin;
 
-    this.dataService.visitSourceParamRoutorChangeData.subscribe(message => {
-      let account_type = Utils.getSecureStorage(LOCAL_STORAGE.AccountTypeCode);
-      let msg = '';
-      if (message !== '') {
-        msg = message;
-      } else {
-        this.accountType = account_type;
-        msg = account_type;
-      }
-      this.activeSidebar(msg);
-    });
-
     // Slide up and down of menus
     $(document).on("click", "#sidebar-menu a", function (e) {
       e.stopImmediatePropagation();
@@ -130,6 +118,18 @@ export class SlidebarComponent implements OnInit {
     //     });
     //   }
     // });
+
+    this.dataService.visitSourceParamRoutorChangeData.subscribe(message => {
+      let account_type = Utils.getSecureStorage(LOCAL_STORAGE.AccountTypeCode);
+      let msg = '';
+      if (message !== '') {
+        msg = message;
+      } else {
+        this.accountType = account_type;
+        msg = account_type;
+      }
+      this.activeSidebar(msg);
+    });
 
     this.accountInfo = Utils.getSecureStorage(LOCAL_STORAGE.Account_Info);
 
@@ -162,9 +162,9 @@ export class SlidebarComponent implements OnInit {
       //   this.urlComplete.mainUrl = 'acc';
       //   this.urlComplete.subUrl = account_type;
       //   break;
-      case 'acc':
-        this.urlComplete.mainUrl = 'my-account';
-        this.urlComplete.subUrl = 'my-account';
+      case 'home':
+        this.urlComplete.mainUrl = 'home';
+        this.urlComplete.subUrl = 'home';
         break;
       default:
         this.urlComplete.mainUrl = '';

@@ -6,6 +6,7 @@ export enum MODAL_STORE_KEY {
 
 export enum LOCAL_STORAGE {
   DEVICE_INFO     = 'deviceInfo',
+  MOVEI_Edit     = 'Movei-edit',
   Account_Info     = 'AccountInfo',
   SubAccountSenair = "Sub-Account-Senair",
   SubAccountMaster = "Sub-Account-Master",

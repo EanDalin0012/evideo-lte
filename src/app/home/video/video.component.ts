@@ -5,6 +5,11 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { DatePipe } from "@angular/common";
 import { Subject } from "rxjs";
 import { DataTableDirective } from "angular-datatables";
+import { DataService } from '../../v-share/service/data.service';
+import { Router } from '@angular/router';
+import { EncryptionUtil } from 'src/app/v-share/util/encryption-util';
+import { Utils } from '../../v-share/util/utils.static';
+import { LOCAL_STORAGE } from '../../v-share/constants/common.const';
 declare const $: any;
 
 @Component({
@@ -13,6 +18,8 @@ declare const $: any;
   styleUrls: ['./video.component.css']
 })
 export class VideoComponent implements OnInit {
+
+  // Utils.setSecureStorage(LOCAL_STORAGE.USER_INFO, result.userInfo);
 
   @ViewChild(DataTableDirective, { static: false })
   public dtElement: any;
@@ -33,7 +40,9 @@ export class VideoComponent implements OnInit {
   public editHolidayDate: any;
   constructor(
     private formBuilder: FormBuilder,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private dataService: DataService,
+    private router: Router
   ) {
     this.dtElement as DataTableDirective;
     this.dtOptions = {
@@ -41,6 +50,11 @@ export class VideoComponent implements OnInit {
       pageLength: 10,
       processing: true
     };
+
+    const url = (window.location.href).split('/');
+    console.log(url);
+    this.dataService.visitParamRouterChange(url[3]);
+
   }
 
   ngOnInit() {
@@ -57,6 +71,9 @@ export class VideoComponent implements OnInit {
     // });
   }
 
+  newMovie() {
+    this.router.navigate(['/home/vd-add']);
+  }
   // Add holidays Modal Api Call
 
   addholidays() {
@@ -123,16 +140,14 @@ export class VideoComponent implements OnInit {
   // To Get The holidays Edit Id And Set Values To Edit Modal Form
 
   edit(value:any) {
-    this.editId = value;
-    const index = this.lstHolidays.findIndex((item) => {
-      return item.id === value;
-    });
-    let toSetValues = this.lstHolidays[index];
-    this.editHolidayForm.setValue({
-      editHolidayName: toSetValues.title,
-      editHolidayDate: toSetValues.holidaydate,
-      editDaysName: toSetValues.day,
-    });
+    console.log('value', value, JSON.stringify(value));
+    const jsonString = JSON.stringify(value);
+    const item = EncryptionUtil.encrypt(jsonString.toString()).toString();
+    console.log('item', item);
+
+    Utils.setSecureStorage(LOCAL_STORAGE.MOVEI_Edit, item);
+    this.router.navigate(['/home/vd-edit']);
+
   }
   ngOnDestroy(): void {
     // Do not forget to unsubscribe the event
@@ -146,67 +161,89 @@ export const holidays = [
     id: 1,
     title: "New Year",
     holidaydate: "01-01-2020",
-    day: "sun day",
+    remark: "sun day",
+    movie: 'Khmer',
+    movieType: 'Drama'
   },
   {
     id: 2,
     title: "Diwali",
     holidaydate: "28-02-2020",
-    day: "Thursday ",
+    remark: "Thursday ",
+    movie: 'Khmer',
+    movieType: 'Drama'
   },
   {
     id: 3,
     title: "Christmas",
     holidaydate: "28-02-2020",
-    day: "Friday",
+    remark: "Friday",
+    movie: 'Khmer',
+    movieType: 'Drama'
   },
   {
     id: 4,
     title: "Ramzon",
     holidaydate: "17-02-2020",
-    day: "sun day",
+    remark: "sun day",
+    movie: 'Khmer',
+    movieType: 'Drama'
   },
   {
     id: 5,
     title: "Bakrid",
     holidaydate: "15-09-2020",
-    day: "Saturday",
+    remark: "Saturday",
+    movie: 'Khmer',
+    movieType: 'Drama'
   },
   {
     id: 6,
     title: "Bakrid",
     holidaydate: "15-09-2020",
-    day: "Saturday",
+    remark: "Saturday",
+    movie: 'Khmer',
+    movieType: 'Drama'
   },
   {
     id: 7,
     title: "Bakrid",
     holidaydate: "15-09-2020",
-    day: "Saturday",
+    remark: "Saturday",
+    movie: 'Khmer',
+    movieType: 'Drama'
   },
   {
     id: 8,
     title: "Bakrid",
     holidaydate: "15-09-2020",
-    day: "Saturday",
+    remark: "Saturday",
+    movie: 'Khmer',
+    movieType: 'Drama'
   },
   {
     id: 9,
     title: "Bakrid",
     holidaydate: "15-09-2020",
-    day: "Saturday",
+    remark: "Saturday",
+    movie: 'Khmer',
+    movieType: 'Drama'
   },
   {
     id: 10,
     title: "Bakrid",
     holidaydate: "15-09-2020",
-    day: "Saturday",
+    remark: "Saturday",
+    movie: 'Khmer',
+    movieType: 'Drama'
   },
   {
     id: 11,
     title: "Bakrid",
     holidaydate: "15-09-2020",
-    day: "Saturday",
+    remark: "Saturday",
+    movie: 'Khmer',
+    movieType: 'Drama'
   },
 ];
 

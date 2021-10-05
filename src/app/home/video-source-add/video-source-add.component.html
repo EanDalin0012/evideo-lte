@@ -1,1 +1,96 @@
-<p>video-source-add works!</p>
+<!-- Page Content -->
+<div class="content container-fluid">
+  <div class="row">
+      <div class="col-md-8 offset-md-2">
+
+          <!-- Page Header -->
+          <div class="page-header">
+              <div class="row">
+                  <div class="col-sm-12">
+                      <h3 class="page-title">New Movie</h3>
+                  </div>
+              </div>
+          </div>
+          <!-- /Page Header -->
+
+          <form (ngSubmit)="submitCompany()" [formGroup]="form">
+
+            <div class="row">
+              <div class="col-sm-6">
+                  <div class="form-group">
+                      <label>Title<span class="text-danger">*</span></label>
+                      <input class="form-control" type="text" value="Dreamguy's Technologies"
+                          [class.invalid]="form.get('title').invalid && form.get('title').touched"
+                          formControlName="title">
+                      <div *ngIf="submitted && f.stateMovie.errors">
+                          <small class="text-danger"> *Company name is required</small>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-sm-6">
+                  <div class="form-group">
+                      <label>Part<span class="text-danger">*</span></label>
+                      <input class="form-control" type="text" value="Dreamguy's Technologies"
+                          [class.invalid]="form.get('title').invalid && form.get('title').touched"
+                          formControlName="part">
+                      <div *ngIf="submitted && f.state.errors">
+                          <small class="text-danger"> *Contact person is required</small>
+                      </div>
+                  </div>
+              </div>
+            </div>
+
+              <div class="row">
+                  <div class="col-sm-12">
+                      <div class="form-group">
+                          <label>Remark</label>
+                          <input class="form-control " value="3864 Quiet Valley Lane, Sherman Oaks, CA, 91403"
+                              type="text" formControlName="remark">
+                          <div *ngIf="submitted && f.remark.errors">
+                              <small class="text-danger"> *Address is required</small>
+                          </div>
+                      </div>
+                  </div>
+
+              </div>
+
+              <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label>Video</label>
+
+                        <input type="file" accept="video/mp4,video/x-m4v,video/*" (change)="selectFile($event)" class="form-control"/>
+
+<!--
+                        <img [src]="imageSrc"  style="height: 300px; width:500px"> -->
+                        <video [src]="url" *ngIf="format==='video' && url" height="200" controls></video> <br/>
+
+                        <div *ngIf="currentFile" class="progress my-3">
+                          <div
+                            class="progress-bar progress-bar-info progress-bar-striped"
+                            role="progressbar"
+                            attr.aria-valuenow="{{ progress }}"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                            [ngStyle]="{ width: progress + '%' }"
+                          >
+                            {{ progress }}%
+                          </div>
+                        </div>
+
+                        <div *ngIf="submitted && f.fileSource.errors">
+                        <small class="text-danger"> *Light logo is required</small>
+                    </div>
+
+                    </div>
+                </div>
+            </div>
+
+              <div class="submit-section">
+                  <button class="btn btn-primary submit-btn">Save</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
+<!-- /Page Content -->

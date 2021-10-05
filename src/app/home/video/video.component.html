@@ -5,15 +5,17 @@
   <div class="page-header">
     <div class="row align-items-center">
         <div class="col">
-            <h3 class="page-title">Holidays 2019</h3>
+            <h3 class="page-title">Lst Movie</h3>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                <li class="breadcrumb-item active">Holidays</li>
+                <li class="breadcrumb-item"><a href="javascript:">Movies</a></li>
+                <li class="breadcrumb-item active">Movies</li>
             </ul>
         </div>
         <div class="col-auto float-right ml-auto">
-            <a  class="btn add-btn" data-toggle="modal" data-target="#add_holiday"><i
-                    class="fa fa-plus"></i> Add Holiday</a>
+            <a href="javascript:" (click)="newMovie()" class="btn add-btn" data-toggle="modal" data-target="#add_holiday">
+              <i class="fa fa-plus"></i>
+              Add Movie
+            </a>
         </div>
     </div>
   </div>
@@ -27,29 +29,46 @@
               <thead>
                   <tr>
                       <th>#</th>
-                      <th>Title </th>
+                      <th>Source Image</th>
+                      <th>Movie</th>
+                      <th>Type</th>
+                      <th>Remark</th>
                       <th>Holiday Date</th>
-                      <th>Day</th>
-                      <th class="text-right">Action</th>
+                      <th class="text-center">Action</th>
                   </tr>
               </thead>
               <tbody>
                   <tr class="holiday-completed" *ngFor="let row of lstHolidays">
                       <td>{{row.id}}</td>
-                      <td>{{row.title}}</td>
+                      <td>
+                        <div class="welcome-img">
+                          <img alt="" src="https://1.bp.blogspot.com/-A67LP-W_yO4/YVpFQ3xr8dI/AAAAAAAACys/eA3sh3CH89QyS9NoMb3HSAcT-QHNrV9mwCLcBGAsYHQ/w222-h230-p-k-no-nu/Besdoung-Reusya.png">
+                          <span style="margin-left: 25px;">{{row.title}}</span>
+                        </div>
+                      </td>
+                      <th>{{row.movie}}</th>
+                      <th>{{row.movieType}}</th>
+                      <td>{{row.remark}}</td>
                       <td>{{row.holidaydate }}</td>
-                      <td>{{row.day}}</td>
-                      <td class="text-right" [width] = "50">
+                      <td class="text-center" [width] = "50">
                           <div class="dropdown dropdown-action">
-                              <a  class="action-icon dropdown-toggle" data-toggle="dropdown"
-                                  aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                              <a href="javascript:" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <i class="material-icons">more_vert</i>
+                              </a>
+
                               <div class="dropdown-menu dropdown-menu-right">
-                                  <a class="dropdown-item"  data-toggle="modal"
-                                      data-target="#edit_holiday" (click)="edit(row.id)"><i
-                                          class="fa fa-pencil m-r-5"></i> Edit</a>
-                                  <a class="dropdown-item"  data-toggle="modal"
-                                      data-target="#delete_holiday" (click)="tempId = row.id"><i
-                                          class="fa fa-trash-o m-r-5"></i> Delete</a>
+
+                                  <a href="javascript:" class="dropdown-item"  data-toggle="modal" data-target="#edit_holiday" (click)="edit(row)">
+                                    <i class="fa fa-align-left" aria-hidden="true"></i>
+                                      Lst Movie Source
+                                  </a>
+
+                                  <a href="javascript:" class="dropdown-item"  data-toggle="modal" data-target="#edit_holiday" (click)="edit(row)">
+                                    <i class="fa fa-pencil m-r-5"></i>
+                                    Edit
+                                  </a>
+                                  <a href="javascript:" class="dropdown-item"  data-toggle="modal" data-target="#delete_holiday" (click)="tempId = row.id">
+                                    <i class="fa fa-trash-o m-r-5"></i> Delete</a>
                               </div>
                           </div>
                       </td>

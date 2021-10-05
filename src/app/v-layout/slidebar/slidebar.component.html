@@ -9,11 +9,18 @@
                   </li>
 
                   <li [ngClass]="{ 'active' : urlComplete.subUrl === 'my-account' && urlComplete.mainUrl === 'my-account' }">
-                    <a href="/acc" (click)="onNavigateRoutor('/acc/my-account/')">
+                    <a href="javascript:" (click)="onNavigateRoutor('/acc/my-account/')">
                       <i class="la la-files-o"></i>
                       <span>My Account</span>
                     </a>
-                </li>
+                  </li>
+
+                  <li [ngClass]="{ 'active' : urlComplete.subUrl === 'home' && urlComplete.mainUrl === 'home' }">
+                    <a href="javascript:" (click)="onNavigateRoutor('/home')">
+                      <i class="la la-files-o"></i>
+                      <span>Lst Movie</span>
+                    </a>
+                  </li>
 
                   <!-- <li class="submenu" [ngClass]="{ 'active' : urlComplete.mainUrl === 'acc'}">
                     <a href="javascript:" [ngClass]="{ 'subdrop' : urlComplete.mainUrl === 'acc' }">

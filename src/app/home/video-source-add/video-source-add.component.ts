@@ -1,17 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { FormBuilder, FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { FileUploadService } from '../../v-share/service/file-upload.service';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { MyLogUtil } from '../../v-share/util/my-log-util';
+import { Utils } from '../../v-share/util/utils.static';
+import { LOCAL_STORAGE } from '../../v-share/constants/common.const';
+import { EncryptionUtil } from '../../v-share/util/encryption-util';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-video-source-add',
   templateUrl: './video-source-add.component.html',
   styleUrls: ['./video-source-add.component.css']
 })
-export class VideoSourceAddComponent implements OnInit {
+export class VideoSourceAddComponent implements OnInit, OnDestroy {
 
   submitted = false;
   selectedFiles?: FileList;
@@ -22,16 +26,20 @@ export class VideoSourceAddComponent implements OnInit {
   fileInfos?: Observable<any>;
 
   movies: any[] = [];
-
+  jsonData: any;
   public form: any;
   url: any;
   format: string = '';
   constructor(
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
-    private uploadService: FileUploadService
+    private uploadService: FileUploadService,
+    private router: Router
   ) {
     this.form as FormGroup;
+  }
+  ngOnDestroy(): void {
+    Utils.removeSecureStorage(LOCAL_STORAGE.ToAddMovieSource);
   }
 
   ngOnInit() {
@@ -63,6 +71,11 @@ export class VideoSourceAddComponent implements OnInit {
         code: 'ch'
       }
     ];
+
+    const data = Utils.getSecureStorage(LOCAL_STORAGE.ToAddMovieSource);
+    const decryptString = EncryptionUtil.decrypt(data);
+    this.jsonData = JSON.parse(decryptString);
+    console.log('decyptionString', decryptString);
 
     this.form.patchValue({
       state: this.movies[0]

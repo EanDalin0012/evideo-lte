@@ -49,7 +49,7 @@
                       <th>{{row.movie}}</th>
                       <th>{{row.movieType}}</th>
                       <td>{{row.remark}}</td>
-                      <td>{{row.holidaydate }}</td>
+                      <td>{{row.createAt }}</td>
                       <td class="text-center" [width] = "50">
                           <div class="dropdown dropdown-action">
                               <a href="javascript:" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -58,7 +58,7 @@
 
                               <div class="dropdown-menu dropdown-menu-right">
 
-                                  <a href="javascript:" class="dropdown-item"  data-toggle="modal" data-target="#edit_holiday" (click)="edit(row)">
+                                  <a href="javascript:" class="dropdown-item"  data-toggle="modal" data-target="#edit_holiday" (click)="toMovieSource(row)">
                                     <i class="fa fa-align-left" aria-hidden="true"></i>
                                       Lst Movie Source
                                   </a>

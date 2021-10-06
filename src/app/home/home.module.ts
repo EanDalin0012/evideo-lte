@@ -9,7 +9,6 @@ import { VideoSourceAddComponent } from './video-source-add/video-source-add.com
 import { VideoSourceEditComponent } from './video-source-edit/video-source-edit.component';
 import { HomeRoutingModule } from './home-routing.module';
 import { VShareModule } from '../v-share/v-share.module';
-import { DataTablesModule } from 'angular-datatables';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { MovieComponent } from './movie/movie.component';
 import { MovieAddComponent } from './movie-add/movie-add.component';
@@ -18,7 +17,8 @@ import { MovieTypeComponent } from './movie-type/movie-type.component';
 import { MovieTypeAddComponent } from './movie-type-add/movie-type-add.component';
 import { MovieTypeEditComponent } from './movie-type-edit/movie-type-edit.component';
 import { MovieTypeSettingComponent } from './movie-type-setting/movie-type-setting.component';
-import { ClientVdSettingComponent } from './client-vd-setting/client-vd-setting.component' ;
+import { ClientVdSettingComponent } from './client-vd-setting/client-vd-setting.component';
+import { VideoSourcePlayComponent } from './video-source-play/video-source-play.component' ;
 
 
 @NgModule({
@@ -37,7 +37,8 @@ import { ClientVdSettingComponent } from './client-vd-setting/client-vd-setting.
     MovieTypeAddComponent,
     MovieTypeEditComponent,
     MovieTypeSettingComponent,
-    ClientVdSettingComponent
+    ClientVdSettingComponent,
+    VideoSourcePlayComponent
   ],
   imports: [
     CommonModule,

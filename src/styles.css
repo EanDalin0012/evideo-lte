@@ -8262,3 +8262,7 @@ select {
 .task-completed-btn {
   color: azure !important;
 }
+
+.float-right{
+  float: right;
+}

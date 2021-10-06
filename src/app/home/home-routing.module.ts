@@ -10,6 +10,7 @@ import { VideoEditComponent } from './video-edit/video-edit.component';
 import { VideoSourceComponent } from './video-source/video-source.component';
 import { VideoSourceAddComponent } from './video-source-add/video-source-add.component';
 import { VideoSourceEditComponent } from './video-source-edit/video-source-edit.component';
+import { VideoSourcePlayComponent } from './video-source-play/video-source-play.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,7 @@ const routes: Routes = [
       {path: 'vd-add', component: VideoAddComponent},
       {path: 'vd-edit', component: VideoEditComponent},
       {path: 'vd-source', component: VideoSourceComponent},
+      {path: 'vd-source-play', component: VideoSourcePlayComponent},
       {path: 'vd-source-add', component: VideoSourceAddComponent},
       {path: 'vd-source-edit', component: VideoSourceEditComponent},
       {path: 'seting-movie', component: MovieComponent},

@@ -3,15 +3,24 @@
   <div class="row">
       <div class="col-md-8 offset-md-2">
 
-          <!-- Page Header -->
-          <div class="page-header">
-              <div class="row">
-                  <div class="col-sm-12">
-                      <h3 class="page-title">New Movie</h3>
-                  </div>
+        <!-- Page Header -->
+        <div class="page-header">
+          <div class="row align-items-center">
+              <div class="col">
+                  <h3 class="page-title">Add New Movie Source</h3>
+                  <ul class="breadcrumb">
+                      <li class="breadcrumb-item"><a routerLink = '/home/vd-source'>Movie Source</a></li>
+                      <li class="breadcrumb-item active">Add Movie Source</li>
+                  </ul>
               </div>
+              <!-- <div class="col-auto float-right ml-auto">
+                  <a  class="btn add-btn" data-toggle="modal" data-target="#add_holiday"><i
+                          class="fa fa-plus"></i> Add Movie</a>
+              </div> -->
           </div>
-          <!-- /Page Header -->
+        </div>
+        <!-- /Page Header -->
+
 
           <form (ngSubmit)="submitCompany()" [formGroup]="form">
 

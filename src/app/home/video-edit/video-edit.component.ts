@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { FormBuilder, FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -14,7 +14,7 @@ import { EncryptionUtil } from '../../v-share/util/encryption-util';
   templateUrl: './video-edit.component.html',
   styleUrls: ['./video-edit.component.css']
 })
-export class VideoEditComponent implements OnInit {
+export class VideoEditComponent implements OnInit, OnDestroy {
 
   submitted = false;
   selectedFiles?: FileList;
@@ -77,6 +77,10 @@ export class VideoEditComponent implements OnInit {
     this.form.patchValue({
       stateMovie: this.movies[0]
     });
+  }
+
+  ngOnDestroy(): void {
+    Utils.removeSecureStorage(LOCAL_STORAGE.MOVEI_Edit);
   }
 
   get f(): { [key: string]: AbstractControl } {

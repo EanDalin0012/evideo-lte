@@ -154,13 +154,23 @@ export class VideoComponent implements OnInit {
     this.dtTrigger.unsubscribe();
   }
 
+  toMovieSource(item:any) {
+    console.log('value', item, JSON.stringify(item));
+    const jsonString = JSON.stringify(item);
+    const encryptString = EncryptionUtil.encrypt(jsonString.toString()).toString();
+    console.log('item', encryptString);
+
+    Utils.setSecureStorage(LOCAL_STORAGE.ToLstMovieSource, encryptString);
+    this.router.navigate(['/home/vd-source']);
+  }
+
 }
 
 export const holidays = [
   {
     id: 1,
     title: "New Year",
-    holidaydate: "01-01-2020",
+    createAt: "01-01-2020",
     remark: "sun day",
     movie: 'Khmer',
     movieType: 'Drama'
@@ -168,7 +178,7 @@ export const holidays = [
   {
     id: 2,
     title: "Diwali",
-    holidaydate: "28-02-2020",
+    createAt: "28-02-2020",
     remark: "Thursday ",
     movie: 'Khmer',
     movieType: 'Drama'
@@ -176,7 +186,7 @@ export const holidays = [
   {
     id: 3,
     title: "Christmas",
-    holidaydate: "28-02-2020",
+    createAt: "28-02-2020",
     remark: "Friday",
     movie: 'Khmer',
     movieType: 'Drama'
@@ -184,7 +194,7 @@ export const holidays = [
   {
     id: 4,
     title: "Ramzon",
-    holidaydate: "17-02-2020",
+    createAt: "17-02-2020",
     remark: "sun day",
     movie: 'Khmer',
     movieType: 'Drama'
@@ -192,7 +202,7 @@ export const holidays = [
   {
     id: 5,
     title: "Bakrid",
-    holidaydate: "15-09-2020",
+    createAt: "15-09-2020",
     remark: "Saturday",
     movie: 'Khmer',
     movieType: 'Drama'
@@ -200,7 +210,7 @@ export const holidays = [
   {
     id: 6,
     title: "Bakrid",
-    holidaydate: "15-09-2020",
+    createAt: "15-09-2020",
     remark: "Saturday",
     movie: 'Khmer',
     movieType: 'Drama'
@@ -208,7 +218,7 @@ export const holidays = [
   {
     id: 7,
     title: "Bakrid",
-    holidaydate: "15-09-2020",
+    createAt: "15-09-2020",
     remark: "Saturday",
     movie: 'Khmer',
     movieType: 'Drama'
@@ -216,7 +226,7 @@ export const holidays = [
   {
     id: 8,
     title: "Bakrid",
-    holidaydate: "15-09-2020",
+    createAt: "15-09-2020",
     remark: "Saturday",
     movie: 'Khmer',
     movieType: 'Drama'
@@ -224,7 +234,7 @@ export const holidays = [
   {
     id: 9,
     title: "Bakrid",
-    holidaydate: "15-09-2020",
+    createAt: "15-09-2020",
     remark: "Saturday",
     movie: 'Khmer',
     movieType: 'Drama'
@@ -232,7 +242,7 @@ export const holidays = [
   {
     id: 10,
     title: "Bakrid",
-    holidaydate: "15-09-2020",
+    createAt: "15-09-2020",
     remark: "Saturday",
     movie: 'Khmer',
     movieType: 'Drama'
@@ -240,7 +250,7 @@ export const holidays = [
   {
     id: 11,
     title: "Bakrid",
-    holidaydate: "15-09-2020",
+    createAt: "15-09-2020",
     remark: "Saturday",
     movie: 'Khmer',
     movieType: 'Drama'

@@ -29,7 +29,6 @@ export class MovieAddComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
-    private uploadService: FileUploadService,
     private dataService: DataService,
   ) {
     const url = (window.location.href).split('/');

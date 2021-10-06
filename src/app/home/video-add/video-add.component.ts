@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FileUploadService } from '../../v-share/service/file-upload.service';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { MyLogUtil } from '../../v-share/util/my-log-util';
+import { DataService } from '../../v-share/service/data.service';
 
 @Component({
   selector: 'app-video-add',
@@ -28,9 +29,13 @@ export class VideoAddComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
-    private uploadService: FileUploadService
+    private uploadService: FileUploadService,
+    private dataService: DataService,
   ) {
     this.form as FormGroup;
+
+    const url = (window.location.href).split('/');
+    this.dataService.visitParamRouterChange(url[4]);
   }
   ngOnDestroy(): void {
   }

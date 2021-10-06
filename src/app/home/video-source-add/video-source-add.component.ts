@@ -9,6 +9,7 @@ import { Utils } from '../../v-share/util/utils.static';
 import { LOCAL_STORAGE } from '../../v-share/constants/common.const';
 import { EncryptionUtil } from '../../v-share/util/encryption-util';
 import { Router } from '@angular/router';
+import { DataService } from '../../v-share/service/data.service';
 
 @Component({
   selector: 'app-video-source-add',
@@ -30,13 +31,17 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
   public form: any;
   url: any;
   format: string = '';
+
   constructor(
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private uploadService: FileUploadService,
-    private router: Router
+    private router: Router,
+    private dataService: DataService,
   ) {
     this.form as FormGroup;
+    const url = (window.location.href).split('/');
+    this.dataService.visitParamRouterChange(url[3]);
   }
   ngOnDestroy(): void {
     Utils.removeSecureStorage(LOCAL_STORAGE.ToAddMovieSource);
@@ -44,7 +49,7 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      title: ['', [Validators.required]],
+      title: [{value: '', disabled: true}, Validators.required],
       part: ['', [Validators.required]],
       remark: ['', [Validators.required]],
       fileSource: new FormControl('', [Validators.required]),
@@ -78,10 +83,8 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
     console.log('decyptionString', decryptString);
 
     this.form.patchValue({
-      state: this.movies[0]
-    });
-    this.form.patchValue({
-      stateMovie: this.movies[0]
+      state: this.movies[0],
+      title: this.jsonData.title
     });
   }
 
@@ -124,8 +127,6 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
       }
       reader.onload = (event) => {
         this.url = (<FileReader>event.target).result;
-        console.log('url', this.url);
-
       }
     }
   }

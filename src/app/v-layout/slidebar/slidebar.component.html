@@ -15,8 +15,8 @@
                     </a>
                   </li> -->
 
-                  <li [ngClass]="{ 'active' : urlComplete.subUrl === 'home' && urlComplete.mainUrl === 'home' }">
-                    <a href="javascript:" (click)="onNavigateRoutor('/home')" [ngClass]="{ 'active' : urlComplete.subUrl === 'home' && urlComplete.mainUrl === 'home' }">
+                  <li [ngClass]="{ 'active' : urlComplete.mainUrl === 'home' }">
+                    <a href="javascript:" (click)="onNavigateRoutor('/home')" [ngClass]="{ 'active' : urlComplete.subUrl === 'home' ||  urlComplete.subUrl === 'vd-add' || urlComplete.subUrl === 'vd-edit'}">
                       <i class="la la-files-o"></i>
                       <span>Lst Movie</span>
                     </a>

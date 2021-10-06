@@ -190,6 +190,14 @@ export class SlidebarComponent implements OnInit {
         this.urlComplete.mainUrl = 'home';
         this.urlComplete.subUrl = 'home';
         break;
+      case 'vd-add':
+          this.urlComplete.mainUrl = 'home';
+          this.urlComplete.subUrl = 'vd-add';
+          break;
+      case 'vd-edit':
+        this.urlComplete.mainUrl = 'home';
+        this.urlComplete.subUrl = 'vd-edit';
+        break;
       default:
         this.urlComplete.mainUrl = '';
         this.urlComplete.subUrl = msg;

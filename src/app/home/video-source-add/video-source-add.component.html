@@ -13,10 +13,6 @@
                       <li class="breadcrumb-item active">Add Movie Source</li>
                   </ul>
               </div>
-              <!-- <div class="col-auto float-right ml-auto">
-                  <a  class="btn add-btn" data-toggle="modal" data-target="#add_holiday"><i
-                          class="fa fa-plus"></i> Add Movie</a>
-              </div> -->
           </div>
         </div>
         <!-- /Page Header -->
@@ -39,8 +35,7 @@
               <div class="col-sm-6">
                   <div class="form-group">
                       <label>Part<span class="text-danger">*</span></label>
-                      <input class="form-control" type="text" value="Dreamguy's Technologies"
-                          [class.invalid]="form.get('title').invalid && form.get('title').touched"
+                      <input class="form-control" type="text" placeholder="Enter part"
                           formControlName="part">
                       <div *ngIf="submitted && f.state.errors">
                           <small class="text-danger"> *Contact person is required</small>
@@ -53,7 +48,7 @@
                   <div class="col-sm-12">
                       <div class="form-group">
                           <label>Remark</label>
-                          <input class="form-control " value="3864 Quiet Valley Lane, Sherman Oaks, CA, 91403"
+                          <input class="form-control " placeholder="Enter remark"
                               type="text" formControlName="remark">
                           <div *ngIf="submitted && f.remark.errors">
                               <small class="text-danger"> *Address is required</small>

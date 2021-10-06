@@ -59,6 +59,7 @@ export class VideoComponent implements OnInit {
 
   ngOnInit() {
     this.loadholidays();
+    Utils.removeSecureStorage(LOCAL_STORAGE.ToLstMovieSource);
   }
 
   // Get Employee  Api Call

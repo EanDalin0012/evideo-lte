@@ -26,14 +26,21 @@
                       <div class="task-list-body">
                           <ul id="task-list">
                             <ng-container *ngFor="let item of lstMovies">
-                              <li class="task" [ngClass] = "{'completed': item.check === 'Y'}">
+                              <li class="task">
                                 <a href="javascript:">
                                   <div class="task-container">
                                     <span class="task-action-btn task-check">
-                                        <span class="action-circle large complete-btn"
-                                            title="Mark Complete">
-                                            <i class="material-icons">check</i>
-                                        </span>
+                                      <ng-container *ngIf="item.check === 'Y'">
+                                        <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                                      </ng-container>
+
+                                      <ng-container *ngIf="item.check !== 'Y'">
+                                        <i class="fa fa-square-o" aria-hidden="true"></i>
+                                      </ng-container>
+
+
+
+
                                     </span>
                                     <span class="task-label">{{item.name}}</span>
                                   </div>

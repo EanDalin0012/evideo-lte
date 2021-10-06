@@ -4,14 +4,22 @@
       <div class="col-md-8 offset-md-2">
 
           <!-- Page Header -->
-          <div class="page-header">
-              <div class="row">
-                  <div class="col-sm-12">
-                      <h3 class="page-title">Edit Movie</h3>
-                  </div>
+        <div class="page-header">
+          <div class="row align-items-center">
+              <div class="col">
+                  <h3 class="page-title">Edit Movie</h3>
+                  <ul class="breadcrumb">
+                      <li class="breadcrumb-item"><a routerLink = '/home'>Edit Movie</a></li>
+                      <li class="breadcrumb-item active">Edit Movie</li>
+                  </ul>
               </div>
+              <!-- <div class="col-auto float-right ml-auto">
+                  <a  class="btn add-btn" data-toggle="modal" data-target="#add_holiday"><i
+                          class="fa fa-plus"></i> Add Movie</a>
+              </div> -->
           </div>
-          <!-- /Page Header -->
+        </div>
+        <!-- /Page Header -->
 
           <form (ngSubmit)="submitCompany()" [formGroup]="form">
               <div class="row">
@@ -111,7 +119,11 @@
             </div>
 
               <div class="submit-section">
-                  <button class="btn btn-primary submit-btn">Save</button>
+                <button class="btn btn-sm btn-primary float-right" type="button" data-toggle="modal" data-target="#add_custom_policy">
+                  <i class="fa fa-floppy-o"></i>
+                  Update
+                </button>
+                  <!-- <button class="btn btn-primary submit-btn">Save</button> -->
               </div>
           </form>
       </div>

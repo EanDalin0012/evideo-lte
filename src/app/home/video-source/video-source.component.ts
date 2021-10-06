@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ViewChild } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { FormBuilder, FormGroup } from "@angular/forms";
@@ -17,7 +17,7 @@ declare const $: any;
   templateUrl: './video-source.component.html',
   styleUrls: ['./video-source.component.css']
 })
-export class VideoSourceComponent implements OnInit {
+export class VideoSourceComponent implements OnInit, OnDestroy {
 
   @ViewChild(DataTableDirective, { static: false })
   public dtElement: any;
@@ -61,6 +61,12 @@ export class VideoSourceComponent implements OnInit {
     const decryptString = EncryptionUtil.decrypt(data);
     this.jsonData = JSON.parse(decryptString);
     console.log('decyptionString', decryptString);
+  }
+
+  ngOnDestroy(): void {
+    // Do not forget to unsubscribe the event
+    this.dtTrigger.unsubscribe();
+    // Utils.removeSecureStorage(LOCAL_STORAGE.ToLstMovieSource);
   }
 
   // Get Employee  Api Call
@@ -149,10 +155,6 @@ export class VideoSourceComponent implements OnInit {
       editHolidayDate: toSetValues.holidaydate,
       editDaysName: toSetValues.day,
     });
-  }
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
   }
 
   addMovieSource() {

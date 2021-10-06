@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { FormBuilder, FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -11,7 +11,7 @@ import { MyLogUtil } from '../../v-share/util/my-log-util';
   templateUrl: './video-add.component.html',
   styleUrls: ['./video-add.component.css']
 })
-export class VideoAddComponent implements OnInit {
+export class VideoAddComponent implements OnInit, OnDestroy {
 
   submitted = false;
   selectedFiles?: FileList;
@@ -30,6 +30,8 @@ export class VideoAddComponent implements OnInit {
     private uploadService: FileUploadService
   ) {
     this.form as FormGroup;
+  }
+  ngOnDestroy(): void {
   }
 
   ngOnInit() {

@@ -110,6 +110,10 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
 
   selectFile(event: any): void {
     const file = event.target.files && event.target.files[0];
+    this.currentFile = event.target.files[0];
+    console.log(this.currentFile);
+    console.log(this.currentFile?.name.split('.'));
+
     if (file) {
       var reader = new FileReader();
       reader.readAsDataURL(file);
@@ -164,6 +168,7 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
   }
 
   save() {
+    console.log('url', this.url);
     const data = this.form.getRawValue();
     MyLogUtil.log('data', data);
   }

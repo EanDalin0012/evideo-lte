@@ -22,7 +22,7 @@
         <!-- /Page Header -->
 
 
-          <form (ngSubmit)="submitCompany()" [formGroup]="form">
+          <form [formGroup]="form">
 
             <div class="row">
               <div class="col-sm-6">
@@ -96,7 +96,10 @@
             </div>
 
               <div class="submit-section">
-                  <button class="btn btn-primary submit-btn">Save</button>
+                <button (click)="save()" class="btn btn-sm btn-primary float-right" type="button" data-toggle="modal" data-target="#add_custom_policy">
+                  <i class="fa fa-floppy-o"></i>
+                  Save
+                </button>
               </div>
           </form>
       </div>

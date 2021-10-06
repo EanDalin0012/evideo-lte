@@ -22,6 +22,7 @@ export class VideoAddComponent implements OnInit, OnDestroy {
   fileInfos?: Observable<any>;
 
   movies: any[] = [];
+  subMovies: any[] = [];
 
   public form: any;
   constructor(
@@ -65,6 +66,21 @@ export class VideoAddComponent implements OnInit, OnDestroy {
       }
     ];
 
+    this.subMovies = [
+      {
+        id: 1,
+        value: 'Drama'
+      },
+      {
+        id: 2,
+        value: 'Movie'
+      },
+      {
+        id: 2,
+        value: 'Histories'
+      }
+    ];
+
     this.form.patchValue({
       state: this.movies[0]
     });
@@ -97,26 +113,19 @@ export class VideoAddComponent implements OnInit, OnDestroy {
   }
 
   selectFile(event: any): void {
-    this.selectedFiles = event.target.files;
     this.currentFile = event.target.files[0];
-    console.log('file name', this.currentFile?.name, this.currentFile?.lastModified);
+    console.log('file name', this.currentFile, this.currentFile?.name, this.currentFile?.lastModified);
+    console.log(this.currentFile?.name.split('.'));
+
 
     const reader = new FileReader();
 
     if(event.target.files && event.target.files.length) {
       const [file] = event.target.files;
       reader.readAsDataURL(file);
-
       reader.onload = () => {
-
         this.imageSrc = reader.result as string;
-
-        // this.form.patchValue({
-        //   fileSource: reader.result
-        // });
-
-      };
-
+      }
     }
   }
 

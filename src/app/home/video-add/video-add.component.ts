@@ -98,6 +98,9 @@ export class VideoAddComponent implements OnInit, OnDestroy {
 
   selectFile(event: any): void {
     this.selectedFiles = event.target.files;
+    this.currentFile = event.target.files[0];
+    console.log('file name', this.currentFile?.name, this.currentFile?.lastModified);
+
     const reader = new FileReader();
 
     if(event.target.files && event.target.files.length) {
@@ -108,9 +111,9 @@ export class VideoAddComponent implements OnInit, OnDestroy {
 
         this.imageSrc = reader.result as string;
 
-        this.form.patchValue({
-          fileSource: reader.result
-        });
+        // this.form.patchValue({
+        //   fileSource: reader.result
+        // });
 
       };
 
@@ -157,6 +160,8 @@ export class VideoAddComponent implements OnInit, OnDestroy {
   save() {
     const data = this.form.getRawValue();
     MyLogUtil.log('data', data);
+    console.log(this.imageSrc);
+
   }
 
 

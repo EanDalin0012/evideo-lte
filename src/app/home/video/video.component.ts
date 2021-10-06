@@ -52,7 +52,6 @@ export class VideoComponent implements OnInit {
     };
 
     const url = (window.location.href).split('/');
-    console.log(url);
     this.dataService.visitParamRouterChange(url[3]);
 
   }

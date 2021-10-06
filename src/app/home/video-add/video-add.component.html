@@ -88,7 +88,7 @@
                     <div class="form-group">
                         <label>Image</label>
 
-                        <input type="file" accept="image/png, image/jpeg" (change)="selectFile($event)" class="form-control"/>
+                        <input type="file" formControlName="fileSource"  accept="image/png, image/jpeg" (change)="selectFile($event)" class="form-control"/>
                         <!-- <div class="col-12" style="margin-top: 15px;">
                           <button class="btn btn-success btn-sm float-right" [disabled]="!selectedFiles" (click)="upload()" style="float: right;">
                             Upload
@@ -119,7 +119,7 @@
             </div>
 
               <div class="submit-section">
-                <button class="btn btn-sm btn-primary float-right" type="button" data-toggle="modal" data-target="#add_custom_policy">
+                <button (click)="save()" class="btn btn-sm btn-primary float-right" type="button" data-toggle="modal" data-target="#add_custom_policy">
                   <i class="fa fa-floppy-o"></i>
                   Save
                 </button>

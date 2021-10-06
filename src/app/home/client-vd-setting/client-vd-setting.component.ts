@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DataService } from '../../v-share/service/data.service';
 
 @Component({
   selector: 'app-client-vd-setting',
@@ -15,7 +16,14 @@ export class ClientVdSettingComponent implements OnInit {
   vdParts: any[] = [];
   vdPartId = 0;
 
-  constructor() { }
+  constructor(
+    private dataService: DataService,
+  ) {
+    const url = (window.location.href).split('/');
+    console.log(url);
+
+    this.dataService.visitParamRouterChange(url[4]);
+  }
 
   ngOnInit(): void {
     this.lstMovies = movies;

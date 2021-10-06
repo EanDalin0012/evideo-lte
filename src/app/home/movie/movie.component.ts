@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { DatePipe } from "@angular/common";
 import { Subject } from "rxjs";
 import { DataTableDirective } from "angular-datatables";
+import { DataService } from '../../v-share/service/data.service';
 declare const $: any;
 
 @Component({
@@ -33,7 +34,8 @@ export class MovieComponent implements OnInit {
   public editHolidayDate: any;
   constructor(
     private formBuilder: FormBuilder,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private dataService: DataService,
   ) {
     this.dtElement as DataTableDirective;
     this.dtOptions = {
@@ -41,6 +43,8 @@ export class MovieComponent implements OnInit {
       pageLength: 10,
       processing: true
     };
+    const url = (window.location.href).split('/');
+    this.dataService.visitParamRouterChange(url[4]);
   }
 
   ngOnInit() {

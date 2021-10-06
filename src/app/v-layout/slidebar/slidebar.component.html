@@ -8,15 +8,15 @@
                       <span>Main</span>
                   </li>
 
-                  <li [ngClass]="{ 'active' : urlComplete.subUrl === 'my-account' && urlComplete.mainUrl === 'my-account' }">
+                  <!-- <li [ngClass]="{ 'active' : urlComplete.subUrl === 'my-account' && urlComplete.mainUrl === 'my-account' }">
                     <a href="javascript:" (click)="onNavigateRoutor('/acc/my-account/')">
                       <i class="la la-files-o"></i>
                       <span>My Account</span>
                     </a>
-                  </li>
+                  </li> -->
 
                   <li [ngClass]="{ 'active' : urlComplete.subUrl === 'home' && urlComplete.mainUrl === 'home' }">
-                    <a href="javascript:" (click)="onNavigateRoutor('/home')">
+                    <a href="javascript:" (click)="onNavigateRoutor('/home')" [ngClass]="{ 'active' : urlComplete.subUrl === 'home' && urlComplete.mainUrl === 'home' }">
                       <i class="la la-files-o"></i>
                       <span>Lst Movie</span>
                     </a>
@@ -64,23 +64,27 @@
                       </ul>
                   </li>
 
-                  <li class="submenu">
+                  <li class="submenu" [ngClass]="{ 'active' : urlComplete.mainUrl === 'setting' }">
                     <a href="javascript:">
                       <i class="la la-cog"></i>
                       <span>Setting</span>
                       <span class="menu-arrow"></span>
                     </a>
-                    <ul style="display: none;">
-                      <li>
-                        <a href="javascript:" (click)="onNavigateRoutor('/home/seting-movie')"> <span>Movie</span></a>
+                    <ul [ngStyle]="{'display': urlComplete.mainUrl === 'setting' ? 'block' : 'none' }">
+                      <li [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-movie' }">
+                        <a href="javascript:" (click)="onNavigateRoutor('/home/seting-movie')" [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-movie' }"> <span>Movie</span></a>
                       </li>
 
-                      <li>
-                        <a href="javascript:" (click)="onNavigateRoutor('/home/seting-movie-type')"> <span>Movie-Type</span></a>
+                      <li [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-movie-type' }">
+                        <a href="javascript:" (click)="onNavigateRoutor('/home/seting-movie-type')" [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-movie-type' }">
+                           <span>Movie-Type</span>
+                        </a>
                       </li>
 
-                      <li>
-                        <a href="javascript:" (click)="onNavigateRoutor('/home/seting-client-vd')"> <span>Client-Setting</span></a>
+                      <li [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-client-vd' }">
+                        <a href="javascript:" (click)="onNavigateRoutor('/home/seting-client-vd')" [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-client-vd' }">
+                          <span>Client-Setting</span>
+                        </a>
                       </li>
 
                     </ul>

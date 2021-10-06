@@ -152,16 +152,24 @@ export class SlidebarComponent implements OnInit {
   }
 
   activeSidebar(msg: string) {
+
     switch (msg) {
       case 'profile':
         this.urlComplete.mainUrl = 'acc'+msg;
         this.urlComplete.subUrl = msg;
         break;
-      // case 'acc':
-      //   let account_type = Utils.getSecureStorage(LOCAL_STORAGE.AccountTypeCode);
-      //   this.urlComplete.mainUrl = 'acc';
-      //   this.urlComplete.subUrl = account_type;
-      //   break;
+      case 'seting-movie':
+        this.urlComplete.mainUrl = 'setting';
+        this.urlComplete.subUrl = 'seting-movie';
+        break;
+      case 'seting-movie-type':
+        this.urlComplete.mainUrl = 'setting';
+        this.urlComplete.subUrl = 'seting-movie-type';
+        break;
+      case 'seting-client-vd':
+        this.urlComplete.mainUrl = 'setting';
+        this.urlComplete.subUrl = 'seting-client-vd';
+        break;
       case 'home':
         this.urlComplete.mainUrl = 'home';
         this.urlComplete.subUrl = 'home';

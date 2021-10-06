@@ -120,6 +120,8 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
       }
       reader.onload = (event) => {
         this.url = (<FileReader>event.target).result;
+        console.log('url', this.url);
+
       }
     }
   }

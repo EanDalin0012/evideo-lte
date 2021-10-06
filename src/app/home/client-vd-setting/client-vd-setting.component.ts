@@ -20,8 +20,6 @@ export class ClientVdSettingComponent implements OnInit {
     private dataService: DataService,
   ) {
     const url = (window.location.href).split('/');
-    console.log(url);
-
     this.dataService.visitParamRouterChange(url[4]);
   }
 

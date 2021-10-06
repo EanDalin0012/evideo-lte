@@ -11,6 +11,10 @@ import { VideoSourceComponent } from './video-source/video-source.component';
 import { VideoSourceAddComponent } from './video-source-add/video-source-add.component';
 import { VideoSourceEditComponent } from './video-source-edit/video-source-edit.component';
 import { VideoSourcePlayComponent } from './video-source-play/video-source-play.component';
+import { MovieAddComponent } from './movie-add/movie-add.component';
+import { MovieEditComponent } from './movie-edit/movie-edit.component';
+import { MovieTypeAddComponent } from './movie-type-add/movie-type-add.component';
+import { MovieTypeEditComponent } from './movie-type-edit/movie-type-edit.component';
 
 const routes: Routes = [
   {
@@ -24,9 +28,16 @@ const routes: Routes = [
       {path: 'vd-source-play', component: VideoSourcePlayComponent},
       {path: 'vd-source-add', component: VideoSourceAddComponent},
       {path: 'vd-source-edit', component: VideoSourceEditComponent},
-      {path: 'seting-movie', component: MovieComponent},
+
       {path: 'seting-movie-type', component: MovieTypeComponent},
-      {path: 'seting-client-vd', component: ClientVdSettingComponent}
+      {path: 'seting-movie-type-add', component: MovieTypeAddComponent},
+      {path: 'seting-movie-type-edit', component: MovieTypeEditComponent},
+
+      {path: 'seting-client-vd', component: ClientVdSettingComponent},
+
+      {path: 'seting-movie', component: MovieComponent},
+      {path: 'seting-movie-add', component: MovieAddComponent},
+      {path: 'seting-movie-edit', component: MovieEditComponent}
 
     ]
   }

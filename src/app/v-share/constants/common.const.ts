@@ -7,6 +7,8 @@ export enum MODAL_STORE_KEY {
 export enum LOCAL_STORAGE {
   DEVICE_INFO     = 'deviceInfo',
   MOVEI_Edit     = 'Movei-edit',
+  Setting_Movie_Add     = 'Setting-Movie-Add',
+  Setting_Movie_Type_Edit     = 'Setting-Movie-Type-Edit',
   ToLstMovieSource    = 'ToLstMovieSource',
   ToAddMovieSource    = 'ToAddMovieSource',
   Account_Info     = 'AccountInfo',

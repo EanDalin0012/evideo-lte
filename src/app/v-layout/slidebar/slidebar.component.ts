@@ -166,9 +166,25 @@ export class SlidebarComponent implements OnInit {
         this.urlComplete.mainUrl = 'setting';
         this.urlComplete.subUrl = 'seting-movie-type';
         break;
+      case 'seting-movie-type-add':
+        this.urlComplete.mainUrl = 'setting';
+        this.urlComplete.subUrl = 'seting-movie-type-add';
+        break;
+      case 'seting-movie-type-edit':
+        this.urlComplete.mainUrl = 'setting';
+        this.urlComplete.subUrl = 'seting-movie-type-edit';
+        break;
       case 'seting-client-vd':
         this.urlComplete.mainUrl = 'setting';
         this.urlComplete.subUrl = 'seting-client-vd';
+        break;
+      case 'seting-movie-add':
+        this.urlComplete.mainUrl = 'setting';
+        this.urlComplete.subUrl = 'seting-movie-add';
+        break;
+      case 'seting-movie-edit':
+        this.urlComplete.mainUrl = 'setting';
+        this.urlComplete.subUrl = 'seting-movie-edit';
         break;
       case 'home':
         this.urlComplete.mainUrl = 'home';
@@ -180,6 +196,8 @@ export class SlidebarComponent implements OnInit {
         break;
     }
   }
+
+
 
 }
 

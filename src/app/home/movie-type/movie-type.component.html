@@ -12,8 +12,10 @@
             </ul>
         </div>
         <div class="col-auto float-right ml-auto">
-            <a  class="btn add-btn" data-toggle="modal" data-target="#add_holiday"><i
-                    class="fa fa-plus"></i> Add Movie-Type</a>
+          <button (click)="addSubMovieType()" class="btn btn-sm btn-primary float-right" type="button" data-toggle="modal" data-target="#add_custom_policy">
+            <i class="fa fa-plus-circle"></i>
+            Add Sub Movie-Type
+          </button>
         </div>
     </div>
   </div>
@@ -43,11 +45,11 @@
                                   <i class="material-icons">more_vert</i>
                               </a>
                               <div class="dropdown-menu dropdown-menu-right">
-                                  <a href="javascript:" class="dropdown-item"  data-toggle="modal" data-target="#edit_holiday" (click)="edit(row.id)">
+                                  <!-- <a href="javascript:" class="dropdown-item"  data-toggle="modal" data-target="#edit_holiday" (click)="edit(row)">
                                     <i class="fa fa-cog m-r-5"></i>
                                     settings
-                                  </a>
-                                  <a href="javascript:" class="dropdown-item"  data-toggle="modal" data-target="#edit_holiday" (click)="edit(row.id)">
+                                  </a> -->
+                                  <a href="javascript:" class="dropdown-item"  data-toggle="modal" data-target="#edit_holiday" (click)="edit(row)">
                                     <i  class="fa fa-pencil m-r-5"></i>
                                     Edit
                                   </a>

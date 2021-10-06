@@ -1,1 +1,58 @@
-<p>movie-add works!</p>
+<!-- Page Content -->
+<div class="content container-fluid">
+  <div class="row">
+      <div class="col-md-8 offset-md-2">
+
+        <!-- Page Header -->
+        <div class="page-header">
+          <div class="row align-items-center">
+              <div class="col">
+                  <h3 class="page-title">Add New Movie</h3>
+                  <ul class="breadcrumb">
+                      <li class="breadcrumb-item"><a routerLink = '/home/seting-movie'>Setting</a></li>
+                      <li class="breadcrumb-item active">Add Movie</li>
+                  </ul>
+              </div>
+              <!-- <div class="col-auto float-right ml-auto">
+                  <a  class="btn add-btn" data-toggle="modal" data-target="#add_holiday"><i
+                          class="fa fa-plus"></i> Add Movie</a>
+              </div> -->
+          </div>
+        </div>
+        <!-- /Page Header -->
+
+          <form [formGroup]="form">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group">
+                      <label>Movie Type<span class="text-danger">*</span></label>
+                      <input #movieType class="form-control" type="text" formControlName="movieType" placeholder="Enter movie-type">
+
+                      <div *ngIf="submitted && f.movieType.errors">
+                          <small class="text-danger"> *Movie type is required</small>
+                      </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                  <div class="col-sm-12">
+                      <div class="form-group">
+                          <label>Remark</label>
+                          <input class="form-control " type="text" formControlName="remark" placeholder="Enter remark">
+                      </div>
+                  </div>
+              </div>
+
+              <div class="submit-section">
+                <button (click)="save()" class="btn btn-sm btn-primary float-right" data-toggle="modal" data-target="#add_custom_policy">
+                  <i class="fa fa-floppy-o"></i>
+                  Save
+                </button>
+                  <!-- <button class="btn btn-primary submit-btn">Save</button> -->
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
+<!-- /Page Content -->

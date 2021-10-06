@@ -8266,3 +8266,30 @@ select {
 .float-right{
   float: right;
 }
+
+
+input::placeholder {
+  font-weight: normal;
+  opacity: .5;
+  font-family: 'El Messiri',  'Khmer', sans-serif !important;
+}
+
+input::placeholder {
+    font-weight: normal;
+    opacity: .5;
+    font-size: .9375rem;
+}
+
+input::-webkit-input-placeholder {
+    font-weight: normal;
+    opacity: .5;
+}
+
+input::-ms-clear,
+input::-ms-reveal {
+    display: none;
+}
+
+input::placeholder {
+  color: #1f1f1f94 !important;
+}

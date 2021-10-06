@@ -71,12 +71,14 @@
                       <span class="menu-arrow"></span>
                     </a>
                     <ul [ngStyle]="{'display': urlComplete.mainUrl === 'setting' ? 'block' : 'none' }">
-                      <li [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-movie' }">
-                        <a href="javascript:" (click)="onNavigateRoutor('/home/seting-movie')" [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-movie' }"> <span>Movie</span></a>
+                      <li [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-movie' || urlComplete.subUrl === 'seting-movie-add'}">
+                        <a href="javascript:" (click)="onNavigateRoutor('/home/seting-movie')" [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-movie' || urlComplete.subUrl === 'seting-movie-add' || urlComplete.subUrl === 'seting-movie-edit'}">
+                          <span>Movie</span>
+                        </a>
                       </li>
 
-                      <li [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-movie-type' }">
-                        <a href="javascript:" (click)="onNavigateRoutor('/home/seting-movie-type')" [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-movie-type' }">
+                      <li [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-movie-type' || urlComplete.subUrl === 'seting-movie-type-add' || urlComplete.subUrl === 'seting-movie-type-edit'}">
+                        <a href="javascript:" (click)="onNavigateRoutor('/home/seting-movie-type')" [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-movie-type' || urlComplete.subUrl === 'seting-movie-type-add' || urlComplete.subUrl === 'seting-movie-type-edit'}">
                            <span>Movie-Type</span>
                         </a>
                       </li>

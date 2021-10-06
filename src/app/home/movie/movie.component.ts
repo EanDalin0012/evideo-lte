@@ -6,6 +6,10 @@ import { DatePipe } from "@angular/common";
 import { Subject } from "rxjs";
 import { DataTableDirective } from "angular-datatables";
 import { DataService } from '../../v-share/service/data.service';
+import { Router } from '@angular/router';
+import { EncryptionUtil } from 'src/app/v-share/util/encryption-util';
+import { LOCAL_STORAGE } from 'src/app/v-share/constants/common.const';
+import { Utils } from 'src/app/v-share/util/utils.static';
 declare const $: any;
 
 @Component({
@@ -36,6 +40,7 @@ export class MovieComponent implements OnInit {
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private dataService: DataService,
+    private router: Router
   ) {
     this.dtElement as DataTableDirective;
     this.dtOptions = {
@@ -49,6 +54,14 @@ export class MovieComponent implements OnInit {
 
   ngOnInit() {
     this.loadholidays();
+  }
+
+  addMovieType() {
+    this.router.navigate(['/home/seting-movie-add']);
+  }
+
+  editMovieType(item:any) {
+    this.router.navigate(['/home/seting-movie-edit']);
   }
 
   // Get Employee  Api Call
@@ -126,18 +139,26 @@ export class MovieComponent implements OnInit {
 
   // To Get The holidays Edit Id And Set Values To Edit Modal Form
 
+  // edit(value:any) {
+  //   this.editId = value;
+  //   const index = this.lstMovies.findIndex((item) => {
+  //     return item.id === value;
+  //   });
+  //   let toSetValues = this.lstMovies[index];
+  //   this.editHolidayForm.setValue({
+  //     editHolidayName: toSetValues.title,
+  //     editHolidayDate: toSetValues.holidaydate,
+  //     editDaysName: toSetValues.day,
+  //   });
+  // }
+
   edit(value:any) {
-    this.editId = value;
-    const index = this.lstMovies.findIndex((item) => {
-      return item.id === value;
-    });
-    let toSetValues = this.lstMovies[index];
-    this.editHolidayForm.setValue({
-      editHolidayName: toSetValues.title,
-      editHolidayDate: toSetValues.holidaydate,
-      editDaysName: toSetValues.day,
-    });
+    const jsonString = JSON.stringify(value);
+    const item = EncryptionUtil.encrypt(jsonString.toString()).toString();
+    Utils.setSecureStorage(LOCAL_STORAGE.Setting_Movie_Add, item);
+    this.router.navigate(['/home/seting-movie-edit']);
   }
+
   ngOnDestroy(): void {
     // Do not forget to unsubscribe the event
     this.dtTrigger.unsubscribe();

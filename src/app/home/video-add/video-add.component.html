@@ -88,7 +88,11 @@
                           </button>
                         </div> -->
 
-                        <img [src]="imageSrc" *ngIf="imageSrc" style="height: 300px; width:500px">
+                        <!-- <img [src]="imageSrc" *ngIf="imageSrc" style="height: 300px; width:500px"> -->
+                        <div class="back"
+                        [ngStyle]="{'background-image': 'url(' + imageSrc + ')'}" *ngIf="imageSrc">
+
+                        </div>
 
                         <div *ngIf="currentFile" class="progress my-3">
                           <div

@@ -19,7 +19,8 @@ import { MovieTypeEditComponent } from './movie-type-edit/movie-type-edit.compon
 import { MovieTypeSettingComponent } from './movie-type-setting/movie-type-setting.component';
 import { ClientVdSettingComponent } from './client-vd-setting/client-vd-setting.component';
 import { VideoSourcePlayComponent } from './video-source-play/video-source-play.component' ;
-
+import { DataTablesModule } from 'angular-datatables';
+import { AgGridModule } from 'ag-grid-angular';
 
 @NgModule({
   declarations: [
@@ -44,9 +45,13 @@ import { VideoSourcePlayComponent } from './video-source-play/video-source-play.
     CommonModule,
     HomeRoutingModule,
     VShareModule,
-    // DataTablesModule,
+    DataTablesModule,
     BsDatepickerModule,
     BsDatepickerModule.forRoot(),
+    AgGridModule.withComponents([]),
+  ],
+  exports: [
+    DataTablesModule
   ]
 })
 export class HomeModule { }

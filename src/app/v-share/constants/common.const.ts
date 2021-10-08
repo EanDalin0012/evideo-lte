@@ -3,6 +3,9 @@ export enum MODAL_STORE_KEY {
   MODAL_STORE_KEY = 'Modal_Store_object_dialog'
 }
 
+export enum AES_INFO {
+  STORE = "AES_INFO"
+}
 
 export enum LOCAL_STORAGE {
   DEVICE_INFO     = 'deviceInfo',

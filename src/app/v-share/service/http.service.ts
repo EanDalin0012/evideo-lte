@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Utils } from '../util/utils.static';
 import { LOCAL_STORAGE, AESINFO } from '../constants/common.const';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
@@ -7,6 +7,9 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import * as $ from 'jquery';
+import { MyLogUtil } from '../util/my-log-util';
+import { ToastrService } from 'ngx-toastr';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +18,7 @@ export class HTTPService {
 
   modal: any;
   data: any;
-  private url: string = '';
+  private baseUrl: string = '';
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type':  'application/json'
@@ -25,34 +28,18 @@ export class HTTPService {
   constructor(
     private httpClient: HttpClient,
     private router: Router,
-    private translate: TranslateService
-  ) { }
+    private translate: TranslateService,
+    private toastr: ToastrService,
+    private authService: AuthService,
+    private zone: NgZone
+  ) {
+    this.baseUrl = environment.bizServer.server;
+  }
 
   public Post(api: string, TrClass: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      const aesInfo: any = Utils.getSecureStorage(LOCAL_STORAGE.LAST_EVENT_TIME) || {};
-      if (aesInfo && new Date().getTime() - aesInfo > environment.autoLogoutTime) {
-        if (this.modal) {
-          this.modal.close();
-        }
-
-        // this.modalService.alert(
-        //   'For security reason, sessions end after 10 minutes of inactivity.\n' +
-        //     'Your are required to sign in if  you wish to continue to use our services.\n' +
-        //     'Thank you for using.',
-        //     {
-        //       callback: () => {
-        //         $('kendo-dialog').remove();
-        //         Utils.removeSecureStorage(LOCAL_STORAGE.USER_INFO);
-        //         Utils.removeSecureStorage(LOCAL_STORAGE.Authorization);
-        //         this.router.navigate(['/login']);
-        //       }
-        //     }
-
-        // );
-
-      } else {
-        // $('div.loading').addClass('none');
+      console.log(TrClass);
+      if(this.authService.hasSession()) {
         $('div.loading').removeClass('none');
         $('body').removeClass('loaded');
 
@@ -79,7 +66,6 @@ export class HTTPService {
         };
 
         const userInfo = Utils.getSecureStorage(LOCAL_STORAGE.USER_INFO);
-
         const lang = Utils.getSecureStorage(LOCAL_STORAGE.I18N);
         // const date = moment().format('dddd, MMMM D, YYYY hh:mm:ss');
         const date = moment().format('YYYYMMDD hh:mm:ss');
@@ -88,7 +74,7 @@ export class HTTPService {
 
         // console.log(date);
 
-        const uri = this.url + api + '?userId=' + userInfo.id + '&lang=' + lang + '&date='+date;
+        const uri = this.baseUrl + api + '?userId=' + userInfo.id + '&lang=' + lang + '&date='+date;
 
         const dataBody = JSON.stringify(TrClass);
         // const encryptionData = this.cryptoService.encrypt(dataBody);
@@ -121,8 +107,10 @@ export class HTTPService {
         }, (error:any) => {
           console.log(error);
         });
+      } else {
+        this.showErrMsg('sessionExpired');
+        this.zone.run(() =>  this.router.navigate(['announce/5error']));
       }
-
     });
    }
 
@@ -131,11 +119,12 @@ export class HTTPService {
 
       $('div.loading').removeClass('none');
       $('body').removeClass('loaded');
-      const userInfo = Utils.getSecureStorage(localStorage.USER_INFO);
-      const lang = Utils.getSecureStorage(localStorage.I18N);
+      const userInfo = Utils.getSecureStorage(LOCAL_STORAGE.USER_INFO);
+      MyLogUtil.log('userInfo', userInfo);
+      const lang = Utils.getSecureStorage(LOCAL_STORAGE.I18N);
       const date = moment().format('dddd, MMMM D, YYYY hh:mm:ss');
-      const uri = this.url + api + '?userId=' + userInfo.id + '&lang=' + lang + '&date='+date;
-      const authorization = Utils.getSecureStorage(localStorage.Authorization);
+      const uri = this.baseUrl + api + '?userId=' + userInfo.id + '&lang=' + lang + '&date='+date;
+      const authorization = Utils.getSecureStorage(LOCAL_STORAGE.Authorization);
       const access_token = authorization.access_token;
 
       // if (!access_token) {
@@ -185,6 +174,24 @@ export class HTTPService {
     //     return false;
     //   }
     // });
+  }
+
+  showErrMsg(msgKey: string){
+    let message = '';
+    switch(msgKey) {
+      case 'sessionExpired':
+        message = this.translate.instant('serverResponseCode.label.sessionExpired');
+        break;
+      case '500':
+        message = this.translate.instant('serverResponseCode.label.serverError');
+        break;
+      default:
+        message = this.translate.instant('serverResponseCode.label.unknown');
+        break;
+    }
+    this.toastr.error(message, "Error",{
+      timeOut: 5000,
+    });
   }
 
 }

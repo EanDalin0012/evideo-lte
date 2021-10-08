@@ -14,8 +14,8 @@ import * as $ from 'jquery';
 import { finalize } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AuthentcatiionService } from './authentcatiion.service';
-import { ModalService } from './modal.service';
 import { MyLogUtil } from '../util/my-log-util';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Injectable({
@@ -31,7 +31,8 @@ export class AuthInterceptor implements HttpInterceptor {
     private translate: TranslateService,
     private router: Router,
     private zone: NgZone,
-    private modal: ModalService
+    private toastr: ToastrService,
+    // private modal: ModalService
   ) {
 
   }
@@ -132,16 +133,34 @@ export class AuthInterceptor implements HttpInterceptor {
         this.zone.run(() =>  this.router.navigate(['/login'],{ replaceUrl: true }));
         return Observable.of(new HttpResponse({body:{ 'header':{'result':false, 'resultCode': httpErrorCode },'body':{}} }));
       }
-      if(error.status == 401 && error.error.error === 'invalid_token') {
-        this.modal.alert(
-          error.error.error_description,
-         {
-          modalClass: 'open-alert',
-          btnText: this.translate.instant('Common.Button.Confirme'),
-          callback :() => {
+      if(error.status === 404) {
+        this.toastr.error(this.translate.instant('serverResponseCode.label.apiNotFound'), "Error",{
+          timeOut: 5000,
+        });
+        return Observable.of(new HttpResponse({body:{
+          'header':{'result':false, 'resultCode': httpErrorCode },
+          'result': {
+            responseCode: '404',
+            responseMessage: 'invalid_token'
+          },
+          'body':{
 
           }
-        });
+        } }));
+      }
+
+      if(error.status == 401 && error.error.error === 'invalid_token') {
+        alert(error.error.error_description);
+
+        // this.modal.alert(
+        //   error.error.error_description,
+        //  {
+        //   modalClass: 'open-alert',
+        //   btnText: this.translate.instant('Common.Button.Confirme'),
+        //   callback :() => {
+
+        //   }
+        // });
         this.zone.run(() =>  this.router.navigate(['/login'],{ replaceUrl: true }));
         return Observable.of(new HttpResponse({body:{
           'header':{'result':false, 'resultCode': httpErrorCode },
@@ -210,36 +229,42 @@ export class AuthInterceptor implements HttpInterceptor {
             msg = this.translate.instant('ServerResponseCode.Label.Unauthorized');
             break;
         }
-        this.modal.alert(
-          msg,
-         {
-          modalClass: 'open-alert',
-          btnText: this.translate.instant('Common.Button.Confirme'),
-          callback :() => {
-            this.zone.run(() =>  this.router.navigate(['/login']));
-          }
-        });
+        alert(msg);
+        this.zone.run(() =>  this.router.navigate(['/login']));
+        // this.modal.alert(
+        //   msg,
+        //  {
+        //   modalClass: 'open-alert',
+        //   btnText: this.translate.instant('Common.Button.Confirme'),
+        //   callback :() => {
+        //     this.zone.run(() =>  this.router.navigate(['/login']));
+        //   }
+        // });
   }
 
   showErrMsg1(msgKey: string){
     this.translate.get('COMMON.ERROR').subscribe( message => {
       if(msgKey === "NOTLOGIN"){
-        this.modal.alert(
-         message[msgKey],
-         {
-          modalClass: 'open-alert',
-          callback :() => {
-            this.zone.run(() =>  this.router.navigate(['/login']));
-          }
-        });
+        alert(message[msgKey]);
+        this.zone.run(() =>  this.router.navigate(['/login']));
+        // this.modal.alert(
+        //  message[msgKey],
+        //  {
+        //   modalClass: 'open-alert',
+        //   callback :() => {
+        //     this.zone.run(() =>  this.router.navigate(['/login']));
+        //   }
+        // });
       } else {
-        this.modal.alert(
-          message[msgKey],
-          {
-            callback :() => {
-              this.zone.run(() =>  this.router.navigate(['/login'], { replaceUrl: true }));
-            }
-        });
+        alert(message[msgKey],);
+        this.zone.run(() =>  this.router.navigate(['/login'], { replaceUrl: true }));
+        // this.modal.alert(
+        //   message[msgKey],
+        //   {
+        //     callback :() => {
+        //       this.zone.run(() =>  this.router.navigate(['/login'], { replaceUrl: true }));
+        //     }
+        // });
 
       }
     });

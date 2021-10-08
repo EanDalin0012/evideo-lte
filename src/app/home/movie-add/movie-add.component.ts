@@ -5,6 +5,9 @@ import { ToastrService } from 'ngx-toastr';
 import { FileUploadService } from '../../v-share/service/file-upload.service';
 import { MyLogUtil } from '../../v-share/util/my-log-util';
 import { DataService } from '../../v-share/service/data.service';
+import { HTTPService } from '../../v-share/service/http.service';
+import { environment } from '../../../environments/environment.prod';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-movie-add',
@@ -13,24 +16,20 @@ import { DataService } from '../../v-share/service/data.service';
 })
 export class MovieAddComponent implements OnInit {
 
+  private baseUrl: string = '';
+
   @ViewChild("movieType") inputMovieType: any;
 
   submitted: boolean = false;
-  selectedFiles?: FileList;
-  currentFile?: File;
-  progress = 0;
-  message = '';
-  imageSrc: string = '';
-  fileInfos?: Observable<any>;
-
-  movies: any[] = [];
-
   public form: any;
   constructor(
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private dataService: DataService,
+    private hTTPService: HTTPService,
+    private translate: TranslateService,
   ) {
+    this.baseUrl = environment.bizServer.server;
     const url = (window.location.href).split('/');
     this.dataService.visitParamRouterChange(url[4]);
 
@@ -47,30 +46,6 @@ export class MovieAddComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this.movies = [
-      {
-        id: 1,
-        value: 'Khmer',
-        code: 'kh'
-      },
-      {
-        id: 2,
-        value: 'Thai',
-        code: 'thai'
-      },
-      {
-        id: 3,
-        value: 'Koran',
-        code: 'koran'
-      },
-      {
-        id: 4,
-        value: 'Chiness',
-        code: 'ch'
-      }
-    ];
-
   }
 
   get f(): { [key: string]: AbstractControl } {
@@ -105,11 +80,48 @@ export class MovieAddComponent implements OnInit {
     } else {
       const data = this.form.getRawValue();
       MyLogUtil.log('data', data);
-      console.log(this.imageSrc);
-      this.toastr.info("Movie type is added", "Success",{
-        timeOut: 5000,
+      const api = '/api/movie-type/v0/create';
+      const jsonData = {
+        name: data.movieType,
+        remark: data.remark
+      };
+
+      this.hTTPService.Post(api, jsonData).then(response => {
+        console.log('response', response);
+
+        if(response.result.responseCode === '200') {
+          this.toastr.info("Movie type is added", "Success",{
+            timeOut: 5000,
+          });
+          this.form = this.formBuilder.group({
+            movieType: '',
+            remark: ''
+          });
+        } else {
+          this.showErrMsg(response.result.responseMessage);
+        }
       });
+
     }
+  }
+
+
+  showErrMsg(msgKey: string){
+    let message = '';
+    switch(msgKey) {
+      case 'Invalid_Name':
+        message = this.translate.instant('Movie.Message.MovieTypeRequired');
+        break;
+      case '500':
+        message = this.translate.instant('serverResponseCode.label.server_Error');
+        break;
+      default:
+        message = this.translate.instant('serverResponseCode.label.unknown');
+        break;
+    }
+    this.toastr.error(message, "Error",{
+      timeOut: 5000,
+    });
   }
 
 }

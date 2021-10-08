@@ -1,156 +1,258 @@
-import { Component, OnInit } from '@angular/core';
+
+
+import {  Component, OnInit, ElementRef } from '@angular/core';
 import { ViewChild } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
-import { FormBuilder, FormGroup } from "@angular/forms";
-import { DatePipe } from "@angular/common";
-import { Subject } from "rxjs";
-import { DataTableDirective } from "angular-datatables";
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { DataService } from '../../v-share/service/data.service';
 import { Router } from '@angular/router';
 import { EncryptionUtil } from 'src/app/v-share/util/encryption-util';
 import { LOCAL_STORAGE } from 'src/app/v-share/constants/common.const';
 import { Utils } from 'src/app/v-share/util/utils.static';
+import { HTTPService } from '../../v-share/service/http.service';
+import { TranslateService } from '@ngx-translate/core';
 declare const $: any;
-
+import { AllCommunityModules } from '@ag-grid-community/all-modules';
+import { ColDef } from 'ag-grid-community';
+import { ActionComponent } from '../../v-share/component/action/action.component';
 @Component({
   selector: 'app-movie',
   templateUrl: './movie.component.html',
   styleUrls: ['./movie.component.css']
 })
-export class MovieComponent implements OnInit {
+export class MovieComponent implements OnInit  {
 
-  @ViewChild(DataTableDirective, { static: false })
-  public dtElement: any;
-  public dtOptions: DataTables.Settings = {};
+  // Add Modal
+  submitted: boolean = false;
+  public form: any;
+  @ViewChild("movieType") inputMovieType: any;
+
+  // Edit Modal
+  editSubmitted: boolean = false;
+  public formEdit: any;
+  @ViewChild("editMovieType") inputEditMovieType: any;
+
+  selectedJson: any;
 
   lstMovies: any[] = [];
-  url: any = "holidays";
-  public tempId: any;
-  public editId: any;
+  disabled = true;
 
-  public rows:any[] = [];
-  public srch:any[] = [];
-  public statusValue: any;
-  public dtTrigger: Subject<any> = new Subject();
-  public pipe = new DatePipe("en-US");
-  public addHolidayForm: any;
-  public editHolidayForm: any;
-  public editHolidayDate: any;
+  pagination = true;
+  paginationPageSize = 20;
+  gridApi:any;
+  gridColumnApi :any;
+  public modules: any[] = AllCommunityModules;
+  frameworkComponents: any;
+  defaultColDef: any;
+  columnDefs: ColDef[] = [];
+  rowData: any;
+  rowSelection: any;
+  isRowSelectable: any;
+
   constructor(
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private dataService: DataService,
-    private router: Router
+    private router: Router,
+    private hTTPService: HTTPService,
+    private translate: TranslateService
   ) {
-    this.dtElement as DataTableDirective;
-    this.dtOptions = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      processing: true
-    };
+
     const url = (window.location.href).split('/');
     this.dataService.visitParamRouterChange(url[4]);
+
+    this.form as FormGroup;
+    this.formEdit as FormGroup;
+    this.inputMovieType as ElementRef;
+    this.inputEditMovieType as ElementRef;
+
+    this.form = this.formBuilder.group({
+      movieType: ['', [Validators.required]],
+      remark: ['', [Validators.required]]
+    });
+
+    this.formEdit = this.formBuilder.group({
+      editMovieType: ['', [Validators.required]],
+      editRemark: ['', [Validators.required]]
+    });
+
   }
+
+  checked = false;
 
   ngOnInit() {
-    this.loadholidays();
+
+    this.inquiry();
+
+    this.columnDefs = [
+      {
+        headerName: '#',
+        field: 'id', minWidth: 50, width: 50},
+      {
+        headerName: this.translate.instant('common.label.name'),
+        field: 'name' },
+      {
+        headerName: this.translate.instant('common.label.remark'),
+        field: 'remark',
+      }
+    ];
+
+    this.frameworkComponents = {
+      medalCellRenderer: ActionComponent
+    };
+
+    this.defaultColDef = {
+      editable: false,
+      sortable: true,
+      flex: 1,
+      minWidth: 100,
+      filter: true,
+      resizable: true,
+    };
+
+    this.rowSelection = 'multiple';
+    this.isRowSelectable = function (rowNode: any) {
+      return rowNode.data;
+    };
+
   }
+
+  onGridReady(params:any) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+    this.inquiry();
+  }
+
+  onSelectionChanged(event: any) {
+    var selectedRows = this.gridApi.getSelectedRows();
+    if(selectedRows) {
+      this.disabled = false;
+    }
+  }
+
+  getSelectedRowData(note:string) {
+    let selectedNodes = this.gridApi.getSelectedNodes();
+    let selectedData = selectedNodes.map((node: { data: any; }) => node.data);
+    this.selectedJson = selectedData[0];
+    if(note === 'edit') {
+      this.formEdit.patchValue({
+        editMovieType: this.selectedJson.name,
+        editRemark: this.selectedJson.remark
+      });
+      $("#edit_movie_type").modal("show");
+    } else if (note === 'delete') {
+      $("#delele").modal("show");
+    }
+    return selectedData;
+  }
+
+  onBtnExport() {
+    this.gridApi.exportDataAsCsv();
+  }
+
 
   addMovieType() {
-    this.router.navigate(['/home/seting-movie-add']);
+    $("#add_movie_type").modal("show");
   }
 
-  editMovieType(item:any) {
-    this.router.navigate(['/home/seting-movie-edit']);
+  save() {
+    this.submitted = true;
+    if(this.f.movieType.errors) {
+      this.inputMovieType.nativeElement.focus();
+    } else {
+      const data = this.form.getRawValue();
+      const api = '/api/movie-type/v0/create';
+      const jsonData = {
+        name: data.movieType,
+        remark: data.remark
+      };
+      this.hTTPService.Post(api, jsonData).then(response => {
+        if(response.result.responseCode === '200') {
+          this.inquiry();
+          this.toastr.info("Movie type is added", "Success",{
+            timeOut: 5000,
+          });
+          this.form = this.formBuilder.group({
+            movieType: '',
+            remark: ''
+          });
+          $("#add_movie_type").modal("hide");
+        } else {
+          this.showErrMsg(response.result.responseMessage);
+        }
+      });
+    }
+  }
+
+  update() {
+    this.editSubmitted = true;
+    if(this.fEdit.editMovieType.errors) {
+      this.inputEditMovieType.nativeElement.focus();
+    } else if(!this.selectedJson.id) {
+      this.showErrMsg('unSelectRow');
+    } else {
+      const data = this.formEdit.getRawValue();
+      const api = '/api/movie-type/v0/update';
+      const jsonData = {
+        id: this.selectedJson.id,
+        name: data.editMovieType,
+        remark: data.editRemark
+      };
+      this.hTTPService.Post(api, jsonData).then(response => {
+        if(response.result.responseCode === '200') {
+          this.inquiry();
+          this.disabled = true;
+          $("#edit_movie_type").modal("hide");
+          this.toastr.info(this.translate.instant('movie.message.udpated'), this.translate.instant('common.label.success'),{
+            timeOut: 5000,
+          });
+          this.formEdit = this.formBuilder.group({
+            editMovieType: '',
+            editRemark: ''
+          });
+
+        } else {
+          this.showErrMsg(response.result.responseMessage);
+        }
+      });
+    }
+  }
+
+  delete() {
+    if (this.selectedJson.id) {
+      const api = '/api/movie-type/v0/delete';
+      const jsonData = {
+        id: this.selectedJson.id
+      };
+      this.hTTPService.Post(api, jsonData).then(response => {
+        if(response.result.responseCode === '200') {
+          this.inquiry();
+          this.disabled = true;
+          $("#delele").modal("hide");
+          this.toastr.info(this.translate.instant('movie.message.deleted'), this.translate.instant('common.label.success'),{
+            timeOut: 5000,
+          });
+        } else {
+          this.showErrMsg(response.result.responseMessage);
+        }
+      });
+    } else {
+      this.showErrMsg('Invalid_Vd_ID');
+    }
+
   }
 
   // Get Employee  Api Call
-  loadholidays() {
-    this.lstMovies = movies;
-    this.dtTrigger.next();
-    this.rows = this.lstMovies;
-    this.srch = [...this.rows];
-    // this.srvModuleService.get(this.url).subscribe((data) => {
-    // });
+  inquiry() {
+    const api = '/api/movie-type/v0/read';
+    this.hTTPService.Get(api).then(response => {
+      console.log(response);
+      if (response) {
+        this.lstMovies = response;
+        this.rowData =this.lstMovies;
+      }
+    });
   }
-
-  // Add holidays Modal Api Call
-
-  addholidays() {
-    if (this.addHolidayForm.valid) {
-      let holiday = this.pipe.transform(
-        this.addHolidayForm.value.Holidaydate,
-        "dd-MM-yyyy"
-      );
-      let obj = {
-        title: this.addHolidayForm.value.HolidayName,
-        holidaydate: holiday,
-        day: this.addHolidayForm.value.DaysName,
-      };
-      // this.srvModuleService.add(obj, this.url).subscribe((data) => {
-      //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      //     dtInstance.destroy();
-      //   });
-      // });
-      this.loadholidays();
-      $("#add_holiday").modal("hide");
-      this.addHolidayForm.reset();
-      this.toastr.success("Holidays added", "Success");
-    }
-  }
-
-  from(data:any) {
-    this.editHolidayDate = this.pipe.transform(data, "dd-MM-yyyy");
-  }
-
-  // Edit holidays Modal Api Call
-
-  editHolidays() {
-    if (this.editHolidayForm.valid) {
-      let obj = {
-        title: this.editHolidayForm.value.editHolidayName,
-        holidaydate: this.editHolidayDate,
-        day: this.editHolidayForm.value.editDaysName,
-        id: this.editId,
-      };
-      // this.srvModuleService.update(obj, this.url).subscribe((data1) => {
-      //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      //     dtInstance.destroy();
-      //   });
-      // });
-      this.loadholidays();
-      $("#edit_holiday").modal("hide");
-      this.toastr.success("Holidays Updated succesfully", "Success");
-    }
-  }
-
-  // Delete holidays Modal Api Call
-
-  deleteHolidays() {
-    // this.srvModuleService.delete(this.tempId, this.url).subscribe((data) => {
-    //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-    //     dtInstance.destroy();
-    //   });
-    //   this.loadholidays();
-    //   $("#delete_holiday").modal("hide");
-    //   this.toastr.success("Holidays Deleted", "Success");
-    // });
-  }
-
-  // To Get The holidays Edit Id And Set Values To Edit Modal Form
-
-  // edit(value:any) {
-  //   this.editId = value;
-  //   const index = this.lstMovies.findIndex((item) => {
-  //     return item.id === value;
-  //   });
-  //   let toSetValues = this.lstMovies[index];
-  //   this.editHolidayForm.setValue({
-  //     editHolidayName: toSetValues.title,
-  //     editHolidayDate: toSetValues.holidaydate,
-  //     editDaysName: toSetValues.day,
-  //   });
-  // }
 
   edit(value:any) {
     const jsonString = JSON.stringify(value);
@@ -160,36 +262,50 @@ export class MovieComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
+  }
+
+  searchChange(event:any): void {
+    if (event) {
+     const search = this.lstMovies.filter( data => data.name.toLowerCase().includes(event.target.value));
+     this.rowData = search;
+    }
+  }
+
+  showErrMsg(msgKey: string, value?: any){
+    let message = '';
+    switch(msgKey) {
+      case 'Invalid_Name':
+        message = this.translate.instant('movie.message.movieTypeRequired');
+        break;
+      case 'Invalid_Vd_Id':
+        message = this.translate.instant('serverResponseCode.label.inValidMovieTypeIdWithValue', {value: value});
+        break;
+
+      case 'Invalid_Vd_ID':
+        message = this.translate.instant('serverResponseCode.label.inValidMovieTypeId');
+        break;
+      case 'unSelectRow':
+        message = this.translate.instant('common.message.unSelectRow');
+        break;
+      case '500':
+        message = this.translate.instant('serverResponseCode.label.serverError');
+        break;
+      default:
+        message = this.translate.instant('serverResponseCode.label.unknown');
+        break;
+    }
+    this.toastr.error(message, this.translate.instant('common.label.error'),{
+      timeOut: 5000,
+    });
+  }
+
+  get f(): { [key: string]: AbstractControl } {
+    return this.form.controls;
+  }
+
+  get fEdit(): { [key: string]: AbstractControl } {
+    return this.formEdit.controls;
   }
 
 }
 
-export const movies = [
-  {
-    id: 1,
-    name: "Khmer",
-    remark: "Khmer",
-  },
-  {
-    id: 2,
-    name: "Thai",
-    remark: "Thai",
-  },
-  {
-    id: 3,
-    name: "Chiness",
-    remark: "Chiness",
-  },
-  {
-    id: 4,
-    name: "Korean",
-    remark: "Korean",
-  },
-  {
-    id: 5,
-    name: "HoliFood",
-    remark: "HoliFood",
-  },
-];

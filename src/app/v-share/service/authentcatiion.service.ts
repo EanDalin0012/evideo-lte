@@ -10,6 +10,7 @@ import { Utils } from '../util/utils.static';
 import * as moment from 'moment';
 import { EncryptionUtil } from '../util/encryption-util';
 import { MyLogUtil } from '../util/my-log-util';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,21 +24,24 @@ export class AuthentcatiionService {
     private router: Router,
     private httpService: HTTPService,
     private deviceService: DeviceDetectorService,
+    private authService: AuthService
   ) {
     this.baseUrl = environment.bizServer.server;
   }
 
   public login(auth: AuthentcatiionRequest, basicAuth?: BasicAuth): Promise<any> {
     return new Promise((resovle) => {
+            // 이벤트 타임 설정
+      this.authService.setLastEventTime();
       this.accessTokenRequest(auth, basicAuth).then(response => {
         MyLogUtil.log('response', response);
 
         if (response.access_token) {
           Utils.setSecureStorage(LOCAL_STORAGE.Authorization, response);
           this.loadUserByUserName(auth.user_name, response.access_token).then((result) => {
+            MyLogUtil.log('loadUserByUserName', result);
             if (result) {
-              Utils.setSecureStorage(LOCAL_STORAGE.USER_INFO, result.userInfo);
-              Utils.setSecureStorage(LOCAL_STORAGE.Account_Info, result.accountInfo);
+              Utils.setSecureStorage(LOCAL_STORAGE.USER_INFO, result);
               resovle(result);
             }
           }).catch((err) => {
@@ -97,7 +101,7 @@ export class AuthentcatiionService {
 
   private accessTokenRequest(auth: AuthentcatiionRequest, basicAuth?: BasicAuth): Promise<any> {
     return new Promise((resovle) => {
-      $('div.loading').removeClass('none');
+      // $('div.loading').removeClass('none');
 
       if (!auth.user_name || auth.user_name === null) {
         // this.modalService.alert(
@@ -170,7 +174,7 @@ export class AuthentcatiionService {
           headers: new HttpHeaders(httpOptionsObj),
         })
         .subscribe((auth) => {
-          $('div.loading').addClass('none');
+          // $('div.loading').addClass('none');
           resovle(auth);
         });
     });

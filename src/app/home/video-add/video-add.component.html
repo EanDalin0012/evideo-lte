@@ -82,13 +82,6 @@
                         <label>Image</label>
 
                         <input type="file" formControlName="fileSource"  accept="image/png, image/jpeg" (change)="selectFile($event)" class="form-control"/>
-                        <!-- <div class="col-12" style="margin-top: 15px;">
-                          <button class="btn btn-success btn-sm float-right" [disabled]="!selectedFiles" (click)="upload()" style="float: right;">
-                            Upload
-                          </button>
-                        </div> -->
-
-                        <!-- <img [src]="imageSrc" *ngIf="imageSrc" style="height: 300px; width:500px"> -->
                         <div class="back"
                         [ngStyle]="{'background-image': 'url(' + imageSrc + ')'}" *ngIf="imageSrc">
 
@@ -120,7 +113,6 @@
                   <i class="fa fa-floppy-o"></i>
                   Save
                 </button>
-                  <!-- <button class="btn btn-primary submit-btn">Save</button> -->
               </div>
           </form>
       </div>

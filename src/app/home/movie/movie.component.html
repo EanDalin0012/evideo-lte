@@ -5,66 +5,194 @@
   <div class="page-header">
     <div class="row align-items-center">
         <div class="col">
-            <h3 class="page-title">Movie</h3>
+            <h3 class="page-title">{{'movie.label.movie' | translate}}</h3>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:">Setting</a></li>
-                <li class="breadcrumb-item active">Movies</li>
+                <li class="breadcrumb-item"><a href="javascript:">{{'common.label.setting' | translate}}</a></li>
+                <li class="breadcrumb-item active">{{'common.label.movies' | translate}}</li>
             </ul>
-        </div>
-        <div class="col-auto float-right ml-auto">
-          <button (click)="addMovieType()" class="btn btn-sm btn-primary float-right" type="button" data-toggle="modal" data-target="#add_custom_policy">
-            <i class="fa fa-plus-circle"></i>
-            Add Movie-Type
-          </button>
         </div>
     </div>
   </div>
 <!-- /Page Header -->
 
 <div class="row">
-  <div class="col-md-12">
-      <div class="table-responsive">
-          <table datatable [dtOptions]="dtOptions"
-              class="table table-striped custom-table mb-0">
-              <thead>
-                  <tr>
-                      <th>#</th>
-                      <th>Name </th>
-                      <th>Remark</th>
-                      <th class="text-right">Action</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr class="holiday-completed" *ngFor="let row of lstMovies">
-                      <td>{{row.id}}</td>
-                      <td>{{row.name}}</td>
-                      <td>{{row.remark}}</td>
-                      <td class="text-center" [width] = "50">
-                          <div class="dropdown dropdown-action">
-                              <a href="javascript:" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                  <i class="material-icons">more_vert</i>
-                              </a>
-                              <div class="dropdown-menu dropdown-menu-right">
-                                  <!-- <a href="javascript:" class="dropdown-item"  data-toggle="modal" data-target="#edit_holiday" (click)="edit(row.id)">
-                                    <i class="fa fa-cog m-r-5"></i>
-                                    settings
-                                  </a> -->
-                                  <a href="javascript:" class="dropdown-item"  data-toggle="modal" data-target="#edit_holiday" (click)="edit(row)">
-                                    <i  class="fa fa-pencil m-r-5"></i>
-                                    Edit
-                                  </a>
-                                  <a href="javascript:" class="dropdown-item"  data-toggle="modal" data-target="#delete_holiday" (click)="tempId = row.id">
-                                    <i class="fa fa-trash-o m-r-5"></i>
-                                    Delete
-                                  </a>
-                              </div>
-                          </div>
-                      </td>
-                  </tr>
-              </tbody>
-          </table>
+  <div class="row col-md-12">
+    <div>
+      <button (click)="addMovieType()" class="btn btn-sm btn-primary float-left" type="button">
+        <i class="fa fa-plus-circle"></i>
+        {{'movie.label.addMovieType' | translate}}
+      </button>
+      <button (click)="getSelectedRowData('edit')"  [disabled] = "disabled" class="btn btn-sm btn-primary float-left left-12" type="button">
+        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+        {{'common.button.edit' | translate}}
+      </button>
+      <button (click)="getSelectedRowData('delete')"  [disabled] = "disabled" class="btn btn-sm btn-primary float-left left-12" type="button">
+        <i class="fa fa-trash-o" aria-hidden="true"></i>
+        {{'common.button.delete' | translate}}
+      </button>
+
+      <div style="width: 300px;" class="float-right">
+        <input type="text" class="form-control form-control-sm" (input)="searchChange($event)" placeholder="{{'common.label.searchNameThere' | translate}} ...">
+    </div>
+      <label class="col-form-label float-right" style="width: 80px;">{{'common.label.search' | translate}} :</label>
+
+    </div>
+
+  </div>
+
+
+  <div class="row col-md-12">
+    <ag-grid-angular
+    #agGrid
+    style="width: 100%; height: 500px;"
+    id="myGrid"
+    class="ag-theme-alpine"
+    [modules]="modules"
+    [columnDefs]="columnDefs"
+    [frameworkComponents]="frameworkComponents"
+    [defaultColDef]="defaultColDef"
+    [rowData]="rowData"
+    [rowSelection]="rowSelection"
+    (selectionChanged)="onSelectionChanged($event)"
+    (gridReady)="onGridReady($event)"
+    [isRowSelectable]="isRowSelectable"
+    [pagination]="pagination"
+    [paginationPageSize]="paginationPageSize"
+    ></ag-grid-angular>
+  </div>
+
+</div>
+
+
+<!-- Add Modal -->
+<div id="add_movie_type" class="modal custom-modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">{{'movie.label.addMovieType' | translate}}</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+
+            <form [formGroup]="form">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group">
+                      <label> {{'movie.label.movieType' | translate}}<span class="text-danger">*</span></label>
+                      <input #movieType class="form-control form-control-sm" type="text" formControlName="movieType" placeholder="{{'movie.holder.enterMovieType'|translate}}">
+
+                      <div *ngIf="submitted && f.movieType.errors">
+                          <small class="text-danger"> {{'movie.message.movieTypeRequired' | translate}}</small>
+                      </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                  <div class="col-sm-12">
+                      <div class="form-group">
+                          <label>{{'common.label.remark' | translate}}</label>
+                          <input class="form-control form-control-sm" type="text" formControlName="remark" placeholder="{{'common.holder.enterRemark' | translate}}">
+                      </div>
+                  </div>
+              </div>
+
+              <div class="submit-section">
+                <button (click)="save()" class="btn btn-sm btn-primary float-right">
+                  <i class="fa fa-floppy-o"></i>
+                  {{'common.button.save' | translate}}
+                </button>
+              </div>
+          </form>
+
+          </div>
       </div>
   </div>
 </div>
+<!-- /Add Modal -->
+
+
+<!-- Edit Modal -->
+<div id="edit_movie_type" class="modal custom-modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">{{'movie.label.updateMovieType' | translate}}</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+
+            <form [formGroup]="formEdit">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group">
+                      <label> {{'movie.label.movieType' | translate}}<span class="text-danger">*</span></label>
+                      <input #editMovieType class="form-control form-control-sm" type="text" formControlName="editMovieType" placeholder="{{'movie.holder.enterMovieType'|translate}}">
+
+                      <div *ngIf="editSubmitted && fEdit.editMovieType.errors">
+                          <small class="text-danger"> {{'movie.message.movieTypeRequired' | translate}}</small>
+                      </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                  <div class="col-sm-12">
+                      <div class="form-group">
+                          <label>{{'common.label.remark' | translate}}</label>
+                          <input class="form-control form-control-sm" type="text" formControlName="editRemark" placeholder="{{'common.holder.enterRemark' | translate}}">
+                      </div>
+                  </div>
+              </div>
+
+              <div class="submit-section">
+                <button (click)="update()" class="btn btn-sm btn-primary float-right">
+                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                  {{'common.button.update' | translate}}
+                </button>
+              </div>
+          </form>
+
+          </div>
+      </div>
+  </div>
+</div>
+<!-- /Edit Modal -->
+
+
+
+<!-- Delete Modal -->
+<div id="delele" class="modal custom-modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">{{'movie.label.deleteMovieType' | translate}}</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+            <h3 class="page-title">{{'movie.message.qDelete' | translate:{'name': selectedJson?.name} }}</h3>
+
+            <div style="margin-top: 25px;">
+              <button (click)="delete()" class="btn btn-sm btn-primary float-right" type="button" style="margin-left: 15px;">
+                <i class="fa fa-check-circle" aria-hidden="true"></i>
+                {{'common.button.yes' | translate}}
+              </button>
+              <button class="btn btn-sm btn-primary float-right" data-dismiss="modal" aria-label="Close" type="button" >
+                <i class="fa fa-times-circle" aria-hidden="true"></i>
+                {{'common.button.no' | translate}}
+              </button>
+            </div>
+
+          </div>
+      </div>
+  </div>
+</div>
+<!-- /Delete Modal -->
 
 </div>

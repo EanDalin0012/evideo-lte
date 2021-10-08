@@ -11,8 +11,7 @@ import { ModalComponent } from './component/modal/modal.component';
 import { AlertDialogComponent } from './component/alert-dialog/alert-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { DataTablesModule } from 'angular-datatables';
-
+import { ActionComponent } from './component/action/action.component';
 
 
 @NgModule({
@@ -27,16 +26,16 @@ import { DataTablesModule } from 'angular-datatables';
     AccountTypeCodePipe,
     DateFormatPipe,
     GenderPipe,
+    ActionComponent,
   ],
   imports: [
     CommonModule,
-    DataTablesModule
   ],
   exports: [
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,
-    DataTablesModule,
+    // DataTablesModule,
     // Pipe
     AccountPipe,
     AccountStatusPipe,

@@ -73,6 +73,11 @@ Version      : 3.6
 64. Responsive
 
 ========================================*/
+/* @import "~@ag-grid-enterprise/all-modules/dist/styles/ag-grid.css";
+@import "~@ag-grid-enterprise/all-modules/dist/styles/ag-theme-alpine.css";
+@import "~bootstrap/dist/css/bootstrap.min.css"; */
+@import "ag-grid-community/dist/styles/ag-grid.css";
+@import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 
 @font-face {
 	font-family: 'Material Icons';
@@ -8267,7 +8272,7 @@ select {
   float: right;
 }
 
-
+/*
 input::placeholder {
   font-weight: normal;
   opacity: .5;
@@ -8288,8 +8293,95 @@ input::-webkit-input-placeholder {
 input::-ms-clear,
 input::-ms-reveal {
     display: none;
+} */
+
+/* input::placeholder {
+  color: #1f1f1f94 !important;
+} */
+
+.contentsWrap .loading {
+  z-index: 150;
 }
 
-input::placeholder {
-  color: #1f1f1f94 !important;
+body>.loading {
+  position: fixed;
+}
+
+.none {
+  display: none !important;
+}
+
+.loading {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  font-size: .75rem;
+  color: #fff;
+  text-align: center;
+  background: rgba(0, 0, 0, .7);
+  z-index: 999999;
+}
+
+.loading>*:first-child {
+  position: absolute;
+  left: 10%;
+  top: 50%;
+  width: 80%;
+  padding-top: 56px;
+  background: url("assets/img/ico_loading.gif") no-repeat center top;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  background-size: 5%;
+}
+
+.loading strong {
+  display: block;
+  font-size: .875rem;
+}
+
+.loading.st02 {
+  color: #000;
+  background: none;
+}
+
+
+.ag-body-horizontal-scroll::-webkit-scrollbar-button:start:decrement{
+  background:transparent !important;
+  display:none !important;
+}
+.ag-body-horizontal-scroll::-webkit-scrollbar-track-piece{
+  background:rgba(9,30,66,.08) !important;
+}
+.ag-body-horizontal-scroll::-webkit-scrollbar-track-piece:vertical:start{
+  border-radius:4px 4px 0 0 !important;
+}
+.ag-body-horizontal-scroll::-webkit-scrollbar-track-piece:vertical:end{
+  border-radius:0 0 4px 4px !important;
+}
+.ag-body-horizontal-scroll::-webkit-scrollbar-track-piece:horizontal:start{
+  border-radius:4px 0 0 4px !important;
+}
+.ag-body-horizontal-scroll::-webkit-scrollbar-track-piece:horizontal:end{
+  border-radius:0 4px 4px 0 !important
+}
+.ag-body-horizontal-scroll::-webkit-scrollbar-thumb:horizontal,
+.ag-body-horizontal-scroll::-webkit-scrollbar-thumb:vertical{
+  background:rgba(9,30,66,.13) !important;
+  border-radius:4px !important;
+  display:block;height:48px !important;
+}
+
+
+.form-control-sm.form-control {
+  border-radius: 5px;
+}
+
+input:focus {
+  border-color: #86b7fe !important;
+  outline: 0 !important;
+  box-shadow: 0 0 0 0.15rem rgb(13 110 253 / 25%) !important;
 }

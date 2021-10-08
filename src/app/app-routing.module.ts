@@ -1,9 +1,11 @@
+
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { VLayoutComponent } from './v-layout/v-layout/v-layout.component';
 import { BlankLayoutComponent } from './v-layout/blank-layout/blank-layout.component';
 import { Error404Component } from './errorpages/error404/error404.component';
 import { Error500Component } from './errorpages/error500/error500.component';
+import { AuthGuard } from './v-share/guard/guard.guard';
 
 const routes: Routes = [
   {
@@ -16,7 +18,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: '', component: VLayoutComponent,
+    path: '', component: VLayoutComponent, canActivate: [AuthGuard],
     children: [
       {
         path: 'home',
@@ -44,7 +46,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

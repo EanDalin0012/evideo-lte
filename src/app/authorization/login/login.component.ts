@@ -74,7 +74,7 @@ export class LoginComponent implements OnInit {
       };
       this.authentcatiionService.login(logInfo).then((result: any) => {
         if(result) {
-          console.log(result);
+          console.log('authentcatiionService', result);
           this.isFirstLogin = result.isFirstLogin;
           if(this.isFirstLogin == true) {
             this.zone.run(() =>  this.router.navigate(['/home'], { replaceUrl: true }));

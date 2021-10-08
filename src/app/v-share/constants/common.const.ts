@@ -2,6 +2,10 @@
 export enum MODAL_STORE_KEY {
   MODAL_STORE_KEY = 'Modal_Store_object_dialog'
 }
+export enum HTTPResponseCode {
+  Success = "200",
+  NotFound = "404"
+}
 
 export enum AES_INFO {
   STORE = "AES_INFO"

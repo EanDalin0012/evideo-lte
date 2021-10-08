@@ -65,7 +65,7 @@
       "addNewMovieType":"Add New Movie Type",
       "addMovieType":"Add Movie Type",
       "movie":"Movie",
-      "movies":"Movies",
+      "lstMovieType":"Lst Movie Type",
       "updateMovieType":"Update Movie Type",
       "deleteMovieType":"Delete Movie Type"
     },
@@ -78,6 +78,26 @@
       "added":"Movie type is added",
       "udpated":"Movie type is updated",
       "qDelete":"Do you want to delete item name {{name}} ?"
+    }
+  },
+  "movieType": {
+    "label": {
+      "lstSubMovieType":"Lst Sub Movie Type",
+      "addNewSubMovieType":"Add New Sub Movie Type",
+      "addSubMovieType":"Add Sub Movie Type",
+      "subMovieType":"Sub Movie Type",
+      "updateSubMovieType":"Update Sub Movie Type",
+      "deleteSunMovieType":"Delete Sub Movie Type"
+    },
+    "holder": {
+      "enterSubMovieType":"Enter sub movie type"
+    },
+    "message": {
+      "subMovieTypeRequired":"*Sub Movie type is required",
+      "deleted":"Sub Movie Type Deleted",
+      "added":"Sub Movie Type is added",
+      "udpated":"Movie type is updated",
+      "qDelete":"Do you want delete item name {{name}} ?"
     }
   },
   "serverResponseCode":{

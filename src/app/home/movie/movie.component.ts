@@ -1,20 +1,16 @@
-
-
 import {  Component, OnInit, ElementRef } from '@angular/core';
 import { ViewChild } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { DataService } from '../../v-share/service/data.service';
 import { Router } from '@angular/router';
-import { EncryptionUtil } from 'src/app/v-share/util/encryption-util';
-import { LOCAL_STORAGE } from 'src/app/v-share/constants/common.const';
-import { Utils } from 'src/app/v-share/util/utils.static';
 import { HTTPService } from '../../v-share/service/http.service';
 import { TranslateService } from '@ngx-translate/core';
 declare const $: any;
 import { AllCommunityModules } from '@ag-grid-community/all-modules';
 import { ColDef } from 'ag-grid-community';
 import { ActionComponent } from '../../v-share/component/action/action.component';
+import { HTTPResponseCode } from '../../v-share/constants/common.const';
 @Component({
   selector: 'app-movie',
   templateUrl: './movie.component.html',
@@ -167,7 +163,7 @@ export class MovieComponent implements OnInit  {
         remark: data.remark
       };
       this.hTTPService.Post(api, jsonData).then(response => {
-        if(response.result.responseCode === '200') {
+        if(response.result.responseCode === HTTPResponseCode.Success) {
           this.inquiry();
           this.toastr.info("Movie type is added", "Success",{
             timeOut: 5000,
@@ -199,7 +195,7 @@ export class MovieComponent implements OnInit  {
         remark: data.editRemark
       };
       this.hTTPService.Post(api, jsonData).then(response => {
-        if(response.result.responseCode === '200') {
+        if(response.result.responseCode === HTTPResponseCode.Success) {
           this.inquiry();
           this.disabled = true;
           $("#edit_movie_type").modal("hide");
@@ -225,7 +221,7 @@ export class MovieComponent implements OnInit  {
         id: this.selectedJson.id
       };
       this.hTTPService.Post(api, jsonData).then(response => {
-        if(response.result.responseCode === '200') {
+        if(response.result.responseCode === HTTPResponseCode.Success) {
           this.inquiry();
           this.disabled = true;
           $("#delele").modal("hide");
@@ -246,19 +242,13 @@ export class MovieComponent implements OnInit  {
   inquiry() {
     const api = '/api/movie-type/v0/read';
     this.hTTPService.Get(api).then(response => {
-      console.log(response);
-      if (response) {
-        this.lstMovies = response;
+      if(response.result.responseCode !== HTTPResponseCode.Success) {
+        this.showErrMsg(response.result.responseMessage);
+     }else {
+        this.lstMovies = response.body;
         this.rowData =this.lstMovies;
       }
     });
-  }
-
-  edit(value:any) {
-    const jsonString = JSON.stringify(value);
-    const item = EncryptionUtil.encrypt(jsonString.toString()).toString();
-    Utils.setSecureStorage(LOCAL_STORAGE.Setting_Movie_Add, item);
-    this.router.navigate(['/home/seting-movie-edit']);
   }
 
   ngOnDestroy(): void {

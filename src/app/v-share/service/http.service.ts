@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import * as $ from 'jquery';
-import { MyLogUtil } from '../util/my-log-util';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from './auth.service';
 
@@ -38,7 +37,6 @@ export class HTTPService {
 
   public Post(api: string, TrClass: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      console.log(TrClass);
       if(this.authService.hasSession()) {
         $('div.loading').removeClass('none');
         $('body').removeClass('loaded');
@@ -93,13 +91,12 @@ export class HTTPService {
             const result = res as any;
             if (result) {
               const responseData = result; //JSON.parse(result);
-              const rawData = responseData;
               // const decryptData = JSON.parse(this.cryptoService.decrypt(String(rawData)));
-              if (rawData.error != null) {
+              if (!responseData) {
                 reject();
                 // this.message(result.error.message);
               } else {
-                resolve(rawData);
+                resolve(responseData);
               }
             } else {
               reject();
@@ -120,7 +117,6 @@ export class HTTPService {
       $('div.loading').removeClass('none');
       $('body').removeClass('loaded');
       const userInfo = Utils.getSecureStorage(LOCAL_STORAGE.USER_INFO);
-      MyLogUtil.log('userInfo', userInfo);
       const lang = Utils.getSecureStorage(LOCAL_STORAGE.I18N);
       const date = moment().format('dddd, MMMM D, YYYY hh:mm:ss');
       const uri = this.baseUrl + api + '?userId=' + userInfo.id + '&lang=' + lang + '&date='+date;
@@ -141,39 +137,21 @@ export class HTTPService {
         Authorization: 'Bearer ' + access_token
       };
 
-      console.log(uri);
-
       this.httpClient.get(uri, {headers}).subscribe( (rest:any) => {
-
         $('body').addClass('loaded');
         $('div.loading').addClass('none');
         const result = rest as any;
-        console.log(rest);
         const responseData = result; //JSON.parse(result);
-        const rawData = responseData.body;
         // const decryptData = JSON.parse(this.cryptoService.decrypt(String(rawData)));
-
-        if (rawData.error != null) {
-          this.message(result.error.message);
+        if (!responseData) {
+          //this.showErrMsg(responseData.result.message);
           reject();
         } else {
-          resolve(rawData);
+          resolve(responseData);
         }
 
       });
     });
-  }
-
-  private message(message: string) {
-    // this.modalService.alert(
-    //   '<h2>' + message + '</h2>',
-    //   {
-    //   modalClass: 'pop_confirm open-alert',
-    //   btnText: 'Confirm',
-    //   callback: (res: any) => {
-    //     return false;
-    //   }
-    // });
   }
 
   showErrMsg(msgKey: string){

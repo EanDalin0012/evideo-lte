@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { ViewChild } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
-import { FormBuilder, FormGroup } from "@angular/forms";
-import { DatePipe } from "@angular/common";
-import { Subject } from "rxjs";
-import { DataTableDirective } from "angular-datatables";
 import { DataService } from '../../v-share/service/data.service';
 import { Router } from '@angular/router';
 import { EncryptionUtil } from 'src/app/v-share/util/encryption-util';
 import { Utils } from '../../v-share/util/utils.static';
-import { LOCAL_STORAGE } from '../../v-share/constants/common.const';
+import { LOCAL_STORAGE, HTTPResponseCode } from '../../v-share/constants/common.const';
 declare const $: any;
-
+import { AllCommunityModules } from '@ag-grid-community/all-modules';
+import { ColDef } from 'ag-grid-community';
+import { HTTPService } from '../../v-share/service/http.service';
+import { TranslateService } from '@ngx-translate/core';
+import { SrcImgComponent } from '../../v-share/component/src-img/src-img.component';
 @Component({
   selector: 'app-video',
   templateUrl: './video.component.html',
@@ -19,37 +18,28 @@ declare const $: any;
 })
 export class VideoComponent implements OnInit {
 
-  // Utils.setSecureStorage(LOCAL_STORAGE.USER_INFO, result.userInfo);
+  lstMovies: any[] = [];
+  pagination = true;
+  paginationPageSize = 20;
+  gridApi:any;
+  gridColumnApi :any;
+  public modules: any[] = AllCommunityModules;
+  frameworkComponents: any;
+  defaultColDef: any;
+  columnDefs: ColDef[] = [];
+  rowData: any;
+  rowSelection: any;
+  isRowSelectable: any;
+  disabled = true;
+  onFocusInt = false;
 
-  @ViewChild(DataTableDirective, { static: false })
-  public dtElement: any;
-  public dtOptions: DataTables.Settings = {};
-
-  lstHolidays: any[] = [];
-  url: any = "holidays";
-  public tempId: any;
-  public editId: any;
-
-  public rows:any[] = [];
-  public srch:any[] = [];
-  public statusValue: any;
-  public dtTrigger: Subject<any> = new Subject();
-  public pipe = new DatePipe("en-US");
-  public addHolidayForm: any;
-  public editHolidayForm: any;
-  public editHolidayDate: any;
   constructor(
-    private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private dataService: DataService,
-    private router: Router
+    private router: Router,
+    private hTTPService: HTTPService,
+    private translate: TranslateService
   ) {
-    this.dtElement as DataTableDirective;
-    this.dtOptions = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      processing: true
-    };
 
     const url = (window.location.href).split('/');
     this.dataService.visitParamRouterChange(url[3]);
@@ -57,85 +47,111 @@ export class VideoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadholidays();
+    this.columnDefs = [
+      {
+        headerName: '#',
+        field: 'id',
+        cellClass: 'id'
+      },
+      {
+        headerName: this.translate.instant('common.label.settingClientVideoMenu'),
+        field: 'status',
+        cellRenderer: 'srcImg',
+        cellClass: 'text-center',
+        sortable: false,
+        filter: false,
+      },
+      {
+        headerName: this.translate.instant('common.label.name'),
+        field: 'vdName'
+      },
+      {
+        headerName: this.translate.instant('common.label.name'),
+        field: 'vdTypeName'
+      },
+      {
+        headerName: this.translate.instant('common.label.name'),
+        field: 'vdSubTypeIdName'
+      },
+      {
+        headerName: this.translate.instant('common.label.remark'),
+        field: 'remark',
+      }
+    ];
+
+    this.frameworkComponents = {
+      srcImg: SrcImgComponent
+    };
+
+    this.defaultColDef = {
+      editable: false,
+      sortable: true,
+      flex: 1,
+      minWidth: 100,
+      filter: true,
+      resizable: true,
+    };
+
+    this.rowSelection = 'multiple';
+    this.isRowSelectable = function (rowNode: any) {
+      return rowNode.data;
+    };
+
     Utils.removeSecureStorage(LOCAL_STORAGE.ToLstMovieSource);
   }
 
-  // Get Employee  Api Call
-  loadholidays() {
-    this.lstHolidays = holidays;
-    this.dtTrigger.next();
-    this.rows = this.lstHolidays;
-    this.srch = [...this.rows];
-    // this.srvModuleService.get(this.url).subscribe((data) => {
-    // });
+  onGridReady(params:any) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+    this.inquiry();
   }
+
+  // Get Movie Type  Api Call
+  inquiry() {
+    const api = '/api/video/v0/read';
+    this.hTTPService.Get(api).then(response => {
+      if(response.result.responseCode !== HTTPResponseCode.Success) {
+        this.showErrMsg(response.result.responseMessage);
+     }else {
+        this.lstMovies = response.body;
+        this.rowData =this.lstMovies;
+        console.log(this.lstMovies);
+
+      }
+    });
+  }
+
+  onSelectionChanged(event: any) {
+    var selectedRows = this.gridApi.getSelectedRows();
+    if(selectedRows) {
+      this.disabled = false;
+    }
+  }
+
+  searchChange(event:any): void {
+    if (event) {
+     const search = this.lstMovies.filter( data => data.name.toLowerCase().includes(event.target.value));
+     this.rowData = search;
+    }
+  }
+  onFocusEvent(event: any){
+    this.onFocusInt = true;
+    console.log('onFocusEvent', event.target.value);
+
+ }
+
+  onFocusOutEvent(event: any){
+    this.onFocusInt = false;
+    console.log('onFocusOutEvent', event.target.value);
+
+ }
 
   newMovie() {
     this.router.navigate(['/home/vd-add']);
   }
   // Add holidays Modal Api Call
 
-  addholidays() {
-    if (this.addHolidayForm.valid) {
-      let holiday = this.pipe.transform(
-        this.addHolidayForm.value.Holidaydate,
-        "dd-MM-yyyy"
-      );
-      let obj = {
-        title: this.addHolidayForm.value.HolidayName,
-        holidaydate: holiday,
-        day: this.addHolidayForm.value.DaysName,
-      };
-      // this.srvModuleService.add(obj, this.url).subscribe((data) => {
-      //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      //     dtInstance.destroy();
-      //   });
-      // });
-      this.loadholidays();
-      $("#add_holiday").modal("hide");
-      this.addHolidayForm.reset();
-      this.toastr.success("Holidays added", "Success");
-    }
-  }
 
-  from(data:any) {
-    this.editHolidayDate = this.pipe.transform(data, "dd-MM-yyyy");
-  }
-
-  // Edit holidays Modal Api Call
-
-  editHolidays() {
-    if (this.editHolidayForm.valid) {
-      let obj = {
-        title: this.editHolidayForm.value.editHolidayName,
-        holidaydate: this.editHolidayDate,
-        day: this.editHolidayForm.value.editDaysName,
-        id: this.editId,
-      };
-      // this.srvModuleService.update(obj, this.url).subscribe((data1) => {
-      //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      //     dtInstance.destroy();
-      //   });
-      // });
-      this.loadholidays();
-      $("#edit_holiday").modal("hide");
-      this.toastr.success("Holidays Updated succesfully", "Success");
-    }
-  }
-
-  // Delete holidays Modal Api Call
-
-  deleteHolidays() {
-    // this.srvModuleService.delete(this.tempId, this.url).subscribe((data) => {
-    //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-    //     dtInstance.destroy();
-    //   });
-    //   this.loadholidays();
-    //   $("#delete_holiday").modal("hide");
-    //   this.toastr.success("Holidays Deleted", "Success");
-    // });
-  }
 
   // To Get The holidays Edit Id And Set Values To Edit Modal Form
 
@@ -151,7 +167,6 @@ export class VideoComponent implements OnInit {
   }
   ngOnDestroy(): void {
     // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
   }
 
   toMovieSource(item:any) {
@@ -162,6 +177,21 @@ export class VideoComponent implements OnInit {
 
     Utils.setSecureStorage(LOCAL_STORAGE.ToLstMovieSource, encryptString);
     this.router.navigate(['/home/vd-source']);
+  }
+
+  showErrMsg(msgKey: string, value?: any){
+    let message = '';
+    switch(msgKey) {
+      case '500':
+        message = this.translate.instant('serverResponseCode.label.serverError');
+        break;
+      default:
+        message = this.translate.instant('serverResponseCode.label.unknown');
+        break;
+    }
+    this.toastr.error(message, this.translate.instant('common.label.error'),{
+      timeOut: 5000,
+    });
   }
 
 }

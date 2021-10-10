@@ -5,6 +5,7 @@ import { AuthService } from '../service/auth.service';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../environments/environment.prod';
 import { Location } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,10 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   constructor(
     private router: Router,
     private authService: AuthService,
-    // private modal: ModalService,
     private translate: TranslateService,
     private zone: NgZone,
-    private location: Location
+    private location: Location,
+    private toastr: ToastrService,
   ) {
     this.location = location;
   }
@@ -33,6 +34,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
       }
       environment.production ? (() => '')() : console.log("canActivity start " + state.url);
       // console.log("!this.authService.hasPermission() " + !this.authService.hasPermission(state.url));
+      // check permission access menue
       if (!this.authService.hasPermission(state.url)) {
         environment.production ? (() => '')() : console.log("you dont have permission. ");
         this.showErrMsg("NOACCESS");
@@ -61,36 +63,48 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   }
 
   showErrMsg(msgKey: string){
-    alert(msgKey);
-    this.translate.get('COMMON.ERROR').subscribe( message => {
-
       if(msgKey == "NOTLOGIN"){
-
         this.zone.run(() =>  this.router.navigate(['/login']));
-
-        // this.modal.alert({
-        //   content : message[msgKey],
-        //   callback :() => {
-        //     this.zone.run(() =>  this.router.navigate(['/login']));
-        //   }
-        // });
-
+        this.toastr.error(this.translate.instant('common.message.notLogin'), this.translate.instant('common.label.error'),{
+          timeOut: 5000,
+        });
       }
 
       if(msgKey == "NOACCESS"){
-        alert(message[msgKey]);
         this.zone.run(() =>  this.router.navigate(['/home']));
-        // this.modal.alert({
-        //   content : message[msgKey],
-        //   callback :() => {
-        //     this.zone.run(() =>  this.router.navigate(['/main/home']));
-        //   }
-        // });
-
+        this.toastr.error(this.translate.instant('common.message.notLogin'), this.translate.instant('common.label.error'),{
+          timeOut: 5000,
+        });
       }
 
 
-    });
   }
+
+  showErrMsg1(msgKey: string){
+    let msg = '';
+    switch (msgKey) {
+      case 'userNotFound':
+        msg = this.translate.instant('serverResponseCode.label.userNotFound');
+        break;
+      case 'accountLocked':
+        msg = this.translate.instant('serverResponseCode.label.accountLocked');
+        break;
+      case 'userDisabled':
+        msg = this.translate.instant('serverResponseCode.label.userDisabled');
+        break;
+      case 'userExpired':
+        msg = this.translate.instant('serverResponseCode.label.userExpired');
+        break;
+      case 'invalidPassword':
+          msg = this.translate.instant('serverResponseCode.label.invalidPassword');
+          break;
+      default:
+        msg = this.translate.instant('serverResponseCode.label.unknown');
+        break;
+    }
+    this.toastr.error(msg, this.translate.instant('common.label.error'),{
+      timeOut: 5000,
+    });
+}
 
 }

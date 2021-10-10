@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { Utils } from '../util/utils.static';
@@ -15,7 +15,8 @@ export class AuthService {
 
   constructor(
     // private modalService: ModalService,
-    private router: Router
+    private router: Router,
+    private zone: NgZone,
   ) {
   }
 
@@ -114,16 +115,8 @@ export class AuthService {
   }
 
   public logout() {
-    Utils.removeSecureStorage(AES_INFO.STORE);
-    Utils.removeSecureStorage("USER_INFO");
-    Utils.removeSecureStorage("MENU_RIGHT");
-    Utils.removeSecureStorage("FIRST_LOAD");
-
-    Utils.removeSecureStorage('SEARCH_CONDITION');
-    Utils.removeSecureStorage('SEARCHFAQ_CONDITION');
-    Utils.removeSecureStorage('INQUIRY_CONDITION');
-
-    this.router.navigate(['/login']);
+    Utils.clearSecureStorage();
+    this.zone.run(() =>  this.router.navigate(['/login'], ));
   }
 
   /**

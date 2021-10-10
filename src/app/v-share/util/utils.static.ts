@@ -1,5 +1,4 @@
 
-import { LOCAL_STORAGE } from '../constants/common.const';
 export abstract class Utils {
 
    constructor() {
@@ -43,6 +42,12 @@ export abstract class Utils {
     public static removeSecureStorage(sKey: string) {
       window.localStorage.removeItem(sKey);
     }
+
+    public static clearSecureStorage() {
+      window.localStorage.clear();
+    }
+
+
 
    // 100 - ( 15 / 100)
 }

@@ -10,8 +10,8 @@
 
       <div class="account-box">
           <div class="account-wrapper">
-              <h3 class="account-title">Login</h3>
-              <p class="account-subtitle">Access to our dashboard</p>
+              <h3 class="account-title">{{'login.label.login' | translate}}</h3>
+              <p class="account-subtitle">{{'login.label.accessToOurSystem' | translate}}</p>
 
               <!-- Account Form -->
               <form [formGroup]="formLogin">
@@ -19,35 +19,35 @@
 
                 <div class="form-row row">
                   <div class="form-group col-md-12">
-                    <label class="font-khmer-cursive">{{'Account.Label.UserName' | translate}}</label>
+                    <label class="font-khmer-cursive">{{'login.label.userName' | translate}}</label>
                     <span class="text-danger">*</span>
-                    <input #userName formControlName="userName" type="text" [ngClass]="formLogin.getRawValue().userName? 'active-input' : ''" class=" form-control font-khmer-cursive" placeholder="{{'Account.Holder.EnterUserName' | translate}}">
+                    <input #userName formControlName="userName" type="text" [ngClass]="formLogin.getRawValue().userName? 'active-input' : ''" class=" form-control font-khmer-cursive" placeholder="{{'login.holder.enterUserName' | translate}} ...">
 
                     <ng-container *ngIf="submitted && f.userName.errors">
-                      <small class="text-danger"> *Account Name is required</small>
+                      <small class="text-danger"> {{'login.message.userNameRequired' | translate}}</small>
                     </ng-container>
                   </div>
                 </div>
 
                 <div class="form-row row">
                   <div class="form-group col-md-12">
-                    <label class="font-khmer-cursive">{{'Account.Label.Password' | translate}}</label>
+                    <label class="font-khmer-cursive">{{'login.label.password' | translate}}</label>
                     <span class="text-danger">*</span>
-                    <input #password formControlName="password" type="password" [ngClass]="formLogin.getRawValue().password? 'active-input' : ''" class=" form-control font-khmer-cursive" placeholder="{{'Account.Holder.EnterPassword' | translate}}">
+                    <input #password formControlName="password" type="password" [ngClass]="formLogin.getRawValue().password? 'active-input' : ''" class=" form-control font-khmer-cursive" placeholder="{{'login.holder.enterPassword' | translate}} ...">
 
                     <ng-container *ngIf="submitted && f.password.errors">
-                      <small class="text-danger"> *Account Name is required</small>
+                      <small class="text-danger"> {{'login.message.passwordRequired' | translate}}</small>
                     </ng-container>
                   </div>
                 </div>
 
                 <div class="form-group text-center">
-                  <button class="btn btn-primary account-btn" type="button" (click)="onLogin()">
-                    <span class = "scroll-load-vd login" *ngIf = "submitted">
+                  <button class="btn btn-primary account-btn btn-login" type="button" (click)="onLogin()">
+                    <span class = "scroll-load-vd login" *ngIf = "submitted && isValidLoading">
                       <img src="assets/img/loading.gif" alt="" style = "width: 100%;height: 100%;">
                     </span>
                     <span>Login</span>
-                    <i class="fa fa-sign-in i-con" aria-hidden="true" *ngIf = "!submitted"></i>
+                    <i class="fa fa-sign-in i-con" aria-hidden="true" *ngIf = "!isValidLoading"></i>
                   </button>
                 </div>
 

@@ -235,7 +235,7 @@ textarea.form-control {
 	height: 46px;
 }
 .form-control-sm.form-control {
-	height: 30px;
+	height: 35px;
 	border-radius: 0;
 }
 .input-group.input-group-lg .form-control {
@@ -8330,7 +8330,7 @@ body>.loading {
   top: 50%;
   width: 80%;
   padding-top: 56px;
-  background: url("assets/img/ico_loading.gif") no-repeat center top;
+  background: url("assets/img/loading.gif") no-repeat center top;
   -webkit-transform: translateY(-50%);
   -moz-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
@@ -8346,6 +8346,9 @@ body>.loading {
 .loading.st02 {
   color: #000;
   background: none;
+}
+.textLoading {
+  margin-top: 15px;
 }
 
 
@@ -8388,3 +8391,10 @@ input:focus {
 .left-12 {
 	margin-left: 12px;
   }
+
+  .account-box .form-control {
+    background-color: #fbfbfb;
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+    height: 35px !important;
+}

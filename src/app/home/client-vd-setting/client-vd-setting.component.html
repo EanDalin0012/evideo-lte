@@ -27,20 +27,16 @@
                           <ul id="task-list">
                             <ng-container *ngFor="let item of lstMovies">
                               <li class="task">
-                                <a href="javascript:">
+                                <a href="javascript:" (click)="updateStatusYN(item)">
                                   <div class="task-container">
                                     <span class="task-action-btn task-check">
-                                      <ng-container *ngIf="item.check === 'Y'">
+                                      <ng-container *ngIf="item.status === 'Y'">
                                         <i class="fa fa-check-square-o" aria-hidden="true"></i>
                                       </ng-container>
 
-                                      <ng-container *ngIf="item.check !== 'Y'">
+                                      <ng-container *ngIf="item.status !== 'Y'">
                                         <i class="fa fa-square-o" aria-hidden="true"></i>
                                       </ng-container>
-
-
-
-
                                     </span>
                                     <span class="task-label">{{item.name}}</span>
                                   </div>
@@ -85,8 +81,8 @@
                             <div class="roles-menu">
                               <ul>
                                 <ng-container *ngFor="let item of lstMovies">
-                                  <li [ngClass] = "{'active': item.id === moviesIdCheked}">
-                                    <a href="javascript:void(0);">{{item.name}}</a>
+                                  <li [ngClass] = "{'active': item.id === activeTabMovieId}">
+                                    <a href="javascript:void(0);" (click)="tabChange(item)">{{item.name}}</a>
                                   </li>
                                 </ng-container>
                               </ul>
@@ -106,11 +102,24 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of lstMovieTypes">
+                        <tr *ngFor="let item of lstSubMovieType">
                             <td>{{item.name}}</td>
                             <td class="text-center">
-                                <input [checked]="item.check === 'Y'"
-                                (change)="onChecke(item)" type="checkbox" value="item" >
+                                <ng-container *ngIf="lstMovieDetail.length >= 1;">
+                                  <ng-container *ngFor="let ite of lstMovieDetail">
+                                    <span>{{item.id}} {{ite.vdId}}</span>
+                                    <ng-container *ngIf="item.id === ite.vdId && ite.status === 'Y'">
+                                      <input [checked]="activeTabMovieId === ite.vdId && ite.status === 'Y'" (change)="onChecke(ite, item.id === ite.vdId &&  ite.status === 'Y' ? 'Y': 'N')" type="checkbox" [value]="item.id === ite.vdId && ite.status === 'Y' ? 'Y': 'N'" >
+                                      </ng-container>
+
+                                  </ng-container>
+                                </ng-container>
+
+                                <ng-container *ngIf="lstMovieDetail.length <= 0">
+                                  <input [checked]="item.status === 'Y'" (change)="onChecke(item, 'N')" type="checkbox" value="N" >
+                                </ng-container>
+
+
                             </td>
                         </tr>
 

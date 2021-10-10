@@ -7,6 +7,7 @@ import { environment } from '../../../environments/environment';
 import { Utils } from '../../v-share/util/utils.static';
 import { LOCAL_STORAGE } from '../../v-share/constants/common.const';
 import { MessagesData } from '../../v-share/model/message-data';
+import { AuthService } from '../../v-share/service/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -50,6 +51,7 @@ export class HeaderComponent implements OnInit {
     private authentcatiionService: AuthentcatiionService,
     private dataService: DataService,
     private zone: NgZone,
+    private authService: AuthService
     ) {
       this.baseUrl = environment.bizServer.server;
 
@@ -187,7 +189,8 @@ export class HeaderComponent implements OnInit {
     this.authentcatiionService.revokeToken().then(response => {
       console.log('response revokeToken:', response);
     });
-    this.zone.run(() =>  this.router.navigate(['/login'], ));
+    this.authService.logout();
+    // this.zone.run(() =>  this.router.navigate(['/login'], ));
   }
 
   myProfile() {

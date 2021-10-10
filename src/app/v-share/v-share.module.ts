@@ -12,6 +12,8 @@ import { AlertDialogComponent } from './component/alert-dialog/alert-dialog.comp
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { ActionComponent } from './component/action/action.component';
+import { StatusYNComponent } from './component/status-yn/status-yn.component';
+import { SrcImgComponent } from './component/src-img/src-img.component';
 
 
 @NgModule({
@@ -27,6 +29,8 @@ import { ActionComponent } from './component/action/action.component';
     DateFormatPipe,
     GenderPipe,
     ActionComponent,
+    StatusYNComponent,
+    SrcImgComponent,
   ],
   imports: [
     CommonModule,

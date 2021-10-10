@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
   isFirstLogin = false;
 
   public formLogin: any;
+  isValidLoading = false;
   constructor(
     private dataService: DataService,
     private authentcatiionService: AuthentcatiionService,
@@ -67,20 +68,25 @@ export class LoginComponent implements OnInit {
     } else if (this.f.password.errors) {
       this.inputPassword.nativeElement.focus();
     } else {
+      this.isValidLoading = true;
       const formData = this.formLogin.getRawValue();
       const logInfo = {
         user_name: formData.userName,
         password: formData.password
       };
-      this.authentcatiionService.login(logInfo).then((result: any) => {
-        if(result) {
-          console.log('authentcatiionService', result);
-          this.isFirstLogin = result.isFirstLogin;
-          if(this.isFirstLogin == true) {
-            this.zone.run(() =>  this.router.navigate(['/home'], { replaceUrl: true }));
+      this.authentcatiionService.login(logInfo).then((resp: any) => {
+        if(resp) {
+          if(resp.result === false) {
+            this.isValidLoading = false;
           } else {
-            this.zone.run(() =>  this.router.navigate(['/home'], { replaceUrl: true }));
+            this.isFirstLogin = resp.isFirstLogin;
+            if(this.isFirstLogin == true) {
+              this.zone.run(() =>  this.router.navigate(['/home'], { replaceUrl: true }));
+            } else {
+              this.zone.run(() =>  this.router.navigate(['/home'], { replaceUrl: true }));
+            }
           }
+
         }
       }).catch((err: any) => {
           console.log(err);

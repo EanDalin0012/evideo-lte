@@ -31,15 +31,14 @@ export class AuthentcatiionService {
 
   public login(auth: AuthentcatiionRequest, basicAuth?: BasicAuth): Promise<any> {
     return new Promise((resovle) => {
-            // 이벤트 타임 설정
       this.authService.setLastEventTime();
       this.accessTokenRequest(auth, basicAuth).then(response => {
-        MyLogUtil.log('response', response);
-
+        if(response?.header?.result== false) {
+          resovle(response.header);
+        }
         if (response.access_token) {
           Utils.setSecureStorage(LOCAL_STORAGE.Authorization, response);
           this.loadUserByUserName(auth.user_name, response.access_token).then((result) => {
-            MyLogUtil.log('loadUserByUserName', result);
             if (result) {
               Utils.setSecureStorage(LOCAL_STORAGE.USER_INFO, result);
               resovle(result);
@@ -161,20 +160,13 @@ export class AuthentcatiionService {
         networkIP: Utils.getSecureStorage(LOCAL_STORAGE.NekWorkIP),
         date: date
       };
-      // const deviceServiceBase64 = Base
 
       formData.append('deviceInfo', EncryptionUtil.encrypt(JSON.stringify(deviceInfo)));
 
-      // const deviceServiceBase64 = Base
-
-      // formData.append('deviceService', deviceService);
-
-      this.httpClient
-        .post(uri, formData, {
+      this.httpClient.post(uri, formData, {
           headers: new HttpHeaders(httpOptionsObj),
         })
         .subscribe((auth) => {
-          // $('div.loading').addClass('none');
           resovle(auth);
         });
     });

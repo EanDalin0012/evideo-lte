@@ -16,6 +16,7 @@ import { environment } from 'src/environments/environment';
 import { AuthentcatiionService } from './authentcatiion.service';
 import { MyLogUtil } from '../util/my-log-util';
 import { ToastrService } from 'ngx-toastr';
+import { Utils } from '../util/utils.static';
 
 
 @Injectable({
@@ -115,7 +116,8 @@ export class AuthInterceptor implements HttpInterceptor {
       // ------------------------------------------------------------------
 
       // ------------------------------------------------------------------
-      MyLogUtil.log('HttpErrorResponse', error);
+      Utils.clearSecureStorage();
+
       $("div.loading").addClass("none");
       // environment.production ? (() => '')() : console.log(req.url + " reqeusting failed. " );
       // console.log("Http Response Error");
@@ -174,6 +176,21 @@ export class AuthInterceptor implements HttpInterceptor {
         } }));
       }
 
+      if (error.status == 400) {
+        this.zone.run(() =>  this.router.navigate(['/login'],{ replaceUrl: true }));
+        this.showErrMsg(error.error.error_description);
+        return Observable.of(new HttpResponse({body:{
+          'header':{'result':false, 'resultCode': httpErrorCode },
+          'result': {
+            responseCode: '401',
+            responseMessage: 'invalid_token'
+          },
+          'body':{
+
+          }
+        } }));
+      }
+
       // if (error.status >= 400 && error.status < 500) {
       //   this.zone.run(() =>  this.router.navigate(['announce/4error']));
       // } else if (error.status >= 500 && error.status < 600) {
@@ -210,36 +227,28 @@ export class AuthInterceptor implements HttpInterceptor {
   showErrMsg(msgKey: string){
         let msg = '';
         switch (msgKey) {
-          case 'UserNameNotFound':
-            msg = this.translate.instant('ServerResponseCode.Label.UserNotFound');
+          case 'userNotFound':
+            msg = this.translate.instant('serverResponseCode.label.userNotFound');
             break;
-          case 'UserLocked':
-            msg = this.translate.instant('ServerResponseCode.Label.UserLocked');
+          case 'accountLocked':
+            msg = this.translate.instant('serverResponseCode.label.accountLocked');
             break;
-          case 'UserDisabled':
-            msg = this.translate.instant('ServerResponseCode.Label.UserDisabled');
+          case 'userDisabled':
+            msg = this.translate.instant('serverResponseCode.label.userDisabled');
             break;
-          case 'UserExpired':
-            msg = this.translate.instant('ServerResponseCode.Label.UserExpired');
+          case 'userExpired':
+            msg = this.translate.instant('serverResponseCode.label.userExpired');
             break;
-          case 'InvalidPassword':
-              msg = this.translate.instant('ServerResponseCode.Label.InvalidPassword');
+          case 'invalidPassword':
+              msg = this.translate.instant('serverResponseCode.label.invalidPassword');
               break;
           default:
-            msg = this.translate.instant('ServerResponseCode.Label.Unauthorized');
+            msg = this.translate.instant('serverResponseCode.label.unknown');
             break;
         }
-        alert(msg);
-        this.zone.run(() =>  this.router.navigate(['/login']));
-        // this.modal.alert(
-        //   msg,
-        //  {
-        //   modalClass: 'open-alert',
-        //   btnText: this.translate.instant('Common.Button.Confirme'),
-        //   callback :() => {
-        //     this.zone.run(() =>  this.router.navigate(['/login']));
-        //   }
-        // });
+        this.toastr.error(msg, this.translate.instant('common.label.error'),{
+          timeOut: 5000,
+        });
   }
 
   showErrMsg1(msgKey: string){

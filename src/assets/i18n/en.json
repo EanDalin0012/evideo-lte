@@ -25,7 +25,10 @@
       "error":"Error",
       "name":"Name",
       "searchNameThere":"Search name there",
-      "search":"Search"
+      "search":"Search",
+      "settingClientVideoMenu":"Setting Client Video Menu",
+      "loading":"Loading",
+      "pleaseWait":"Please wait"
     },
     "button": {
       "back": "Back",
@@ -56,7 +59,26 @@
       "enterAmount": "Enter amount"
     },
     "message": {
-      "unSelectRow":"Please row on grid."
+      "unSelectRow":"Please row on grid.",
+      "noAccess": "You do not have menu permissions.",
+      "notLogin": "Connection is lost, Please log in.",
+      "reqFail": "Your request failed. please try again later"
+    }
+  },
+  "login":{
+    "label": {
+      "userName":"User Name",
+      "password":"Password",
+      "login":"Login",
+      "accessToOurSystem":"Access to our System"
+    },
+    "holder": {
+      "enterUserName":"Enter user name",
+      "enterPassword":"Enter password"
+    },
+    "message": {
+      "userNameRequired":"*User name is required",
+      "passwordRequired":"*Password is required"
     }
   },
   "movie": {
@@ -100,14 +122,52 @@
       "qDelete":"Do you want delete item name {{name}} ?"
     }
   },
+  "clientVdSetting": {
+    "label": {},
+    "message": {
+      "settingClientVideoMenuUpdate":"Setting Client Video Menu Updated to {{value}}"
+    }
+  },
+  "video": {
+    "label": {
+      "title":"Title",
+      "movie":"Movie",
+      "image":"Image",
+      "type":"Type",
+      "addNewMovie":"Add New Movie",
+      "addMovie":"Add Movie",
+      "movieType":"Movie Type",
+      "subMovieType":"Sub Movie Type"
+    },
+    "message": {
+      "titleRequired":"*Title is required",
+      "movieRequired":"*Movie Type is required",
+      "typeRequired":"*Sub movie type is required",
+      "imageRequired":"*Image is required",
+      "added":"New movie is added.",
+      "udpated":"New movie is updated.",
+      "qDelete":"Do you want delete item name {{name}} ?",
+      "deleted":"Movie is deleted."
+    },
+    "holder": {
+      "enterSubMovieType":"Enter sub movie type",
+      "enterTitle":"Enter title"
+    }
+  },
   "serverResponseCode":{
     "label": {
       "unknown":"Unknown Error.",
       "serverError":"Server Error.",
       "apiNotFound":"Api Not Found.",
-      "sessionExpired":"Session Expired",
-      "inValidMovieTypeIdWithValue":"Invalid Movie Type Id : {{value}}",
-      "inValidMovieTypeId":"Invalid Movie Type Id"
+      "sessionExpired":"Session Expired.",
+      "inValidMovieTypeIdWithValue":"Invalid Movie Type Id : {{value}}.",
+      "inValidMovieTypeId":"Invalid Movie Type Id.",
+      "userNotFound":"User Name Not Found.",
+      "accountLocked":"User is locked.",
+      "userDisabled":"user is disabled.",
+      "userExpired":"User is expired login.",
+      "invalidPassword":"Enter wrong password",
+      "inValidVdId":"Invalid Movie Type Id."
     }
   }
 }

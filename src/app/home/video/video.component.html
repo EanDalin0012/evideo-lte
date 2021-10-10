@@ -22,62 +22,55 @@
 <!-- /Page Header -->
 
 <div class="row">
-  <div class="col-md-12">
-      <div class="table-responsive">
-          <table datatable [dtOptions]="dtOptions"
-              class="table table-striped custom-table mb-0">
-              <thead>
-                  <tr>
-                      <th>#</th>
-                      <th>Source Image</th>
-                      <th>Movie</th>
-                      <th>Type</th>
-                      <th>Remark</th>
-                      <th>Holiday Date</th>
-                      <th class="text-center">Action</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr class="holiday-completed" *ngFor="let row of lstHolidays">
-                      <td>{{row.id}}</td>
-                      <td>
-                        <div class="welcome-img">
-                          <img alt="" src="https://1.bp.blogspot.com/-A67LP-W_yO4/YVpFQ3xr8dI/AAAAAAAACys/eA3sh3CH89QyS9NoMb3HSAcT-QHNrV9mwCLcBGAsYHQ/w222-h230-p-k-no-nu/Besdoung-Reusya.png">
-                          <span style="margin-left: 25px;">{{row.title}}</span>
-                          <span class="badge bg-inverse-success">10</span>
-                        </div>
-                      </td>
-                      <th>{{row.movie}}</th>
-                      <th>{{row.movieType}}</th>
-                      <td>{{row.remark}}</td>
-                      <td>{{row.createAt }}</td>
-                      <td class="text-center" [width] = "50">
-                          <div class="dropdown dropdown-action">
-                              <a href="javascript:" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <i class="material-icons">more_vert</i>
-                              </a>
+  <div class="row col-md-12">
+    <div>
+      <button  class="btn btn-sm btn-primary float-left" type="button">
+        <i class="fa fa-plus-circle"></i>
+        {{'movie.label.addMovieType' | translate}}
+      </button>
+      <button   [disabled] = "disabled" class="btn btn-sm btn-primary float-left left-12" type="button">
+        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+        {{'common.button.edit' | translate}}
+      </button>
+      <button  [disabled] = "disabled" class="btn btn-sm btn-primary float-left left-12" type="button">
+        <i class="fa fa-trash-o" aria-hidden="true"></i>
+        {{'common.button.delete' | translate}}
+      </button>
 
-                              <div class="dropdown-menu dropdown-menu-right">
+      <div style="width: 300px;" class="float-right">
+        <input type="text" class="form-control form-control-sm" (focus)="onFocusEvent($event)" (focusout)="onFocusOutEvent($event)" (input)="searchChange($event)" placeholder="{{'common.label.searchNameThere' | translate}} ...">
+        <div class="dropdown-menu"  style="position: absolute; width: 300px;" [ngClass]="{'show': onFocusInt}">
+          <a  href="javascript:" routerlink="/employees/employeeprofile" class="dropdown-item">My Profile</a>
+          <a href="javascript:" routerlink="/settings/company-settings" class="dropdown-item">Settings</a>
+          <a  href="javascript:" class="dropdown-item">Logout</a>
+        </div>
+    </div>
+      <label class="col-form-label float-right" style="width: 80px;">{{'common.label.search' | translate}} :</label>
 
-                                  <a href="javascript:" class="dropdown-item"  data-toggle="modal" data-target="#edit_holiday" (click)="toMovieSource(row)">
-                                    <i class="fa fa-align-left" aria-hidden="true"></i>
-                                      Lst Movie Source
-                                  </a>
+    </div>
 
-                                  <a href="javascript:" class="dropdown-item"  data-toggle="modal" data-target="#edit_holiday" (click)="edit(row)">
-                                    <i class="fa fa-pencil m-r-5"></i>
-                                    Edit
-                                  </a>
-                                  <a href="javascript:" class="dropdown-item"  data-toggle="modal" data-target="#delete_holiday" (click)="tempId = row.id">
-                                    <i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                              </div>
-                          </div>
-                      </td>
-                  </tr>
-              </tbody>
-          </table>
-      </div>
   </div>
+
+
+<div class="row col-md-12">
+  <ag-grid-angular
+  #agGrid
+  style="width: 100%; height: 500px;"
+  id="myGrid"
+  class="ag-theme-alpine"
+  [modules]="modules"
+  [columnDefs]="columnDefs"
+  [frameworkComponents]="frameworkComponents"
+  [defaultColDef]="defaultColDef"
+  [rowData]="rowData"
+  [rowSelection]="rowSelection"
+  (selectionChanged)="onSelectionChanged($event)"
+  (gridReady)="onGridReady($event)"
+  [isRowSelectable]="isRowSelectable"
+  [pagination]="pagination"
+  [paginationPageSize]="paginationPageSize"
+  ></ag-grid-angular>
 </div>
+
 
 </div>

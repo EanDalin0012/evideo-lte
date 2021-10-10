@@ -11,3 +11,12 @@
     margin-top: 2px;
     font-size: 30px;
 }
+
+.btn-login {
+  width: 150px;
+  float: right;
+}
+
+.account-box .account-btn {
+  padding: 5px 25px;
+}

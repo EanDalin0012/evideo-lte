@@ -9,8 +9,8 @@ import { TranslateService } from '@ngx-translate/core';
 declare const $: any;
 import { AllCommunityModules } from '@ag-grid-community/all-modules';
 import { ColDef } from 'ag-grid-community';
-import { ActionComponent } from '../../v-share/component/action/action.component';
 import { HTTPResponseCode } from '../../v-share/constants/common.const';
+import { StatusYNComponent } from '../../v-share/component/status-yn/status-yn.component';
 @Component({
   selector: 'app-movie',
   templateUrl: './movie.component.html',
@@ -86,15 +86,22 @@ export class MovieComponent implements OnInit  {
         field: 'id', minWidth: 50, width: 50},
       {
         headerName: this.translate.instant('common.label.name'),
-        field: 'name' },
+        field: 'name'
+      },
       {
         headerName: this.translate.instant('common.label.remark'),
         field: 'remark',
+      },
+      {
+        headerName: this.translate.instant('common.label.settingClientVideoMenu'),
+        field: 'status',
+        cellRenderer: 'statusYN',
+        cellClass: 'text-center'
       }
     ];
 
     this.frameworkComponents = {
-      medalCellRenderer: ActionComponent
+      statusYN: StatusYNComponent
     };
 
     this.defaultColDef = {
@@ -165,7 +172,7 @@ export class MovieComponent implements OnInit  {
       this.hTTPService.Post(api, jsonData).then(response => {
         if(response.result.responseCode === HTTPResponseCode.Success) {
           this.inquiry();
-          this.toastr.info("Movie type is added", "Success",{
+          this.toastr.info(this.translate.instant('movie.message.added'), this.translate.instant('common.label.success'),{
             timeOut: 5000,
           });
           this.form = this.formBuilder.group({
@@ -238,7 +245,7 @@ export class MovieComponent implements OnInit  {
 
   }
 
-  // Get Employee  Api Call
+  // Get Movie Type  Api Call
   inquiry() {
     const api = '/api/movie-type/v0/read';
     this.hTTPService.Get(api).then(response => {

@@ -115,7 +115,10 @@ export class AuthService {
   }
 
   public logout() {
-    Utils.clearSecureStorage();
+    // Utils.clearSecureStorage();
+    Utils.removeSecureStorage(LOCAL_STORAGE.Authorization);
+    Utils.removeSecureStorage(LOCAL_STORAGE.USER_INFO);
+    Utils.removeSecureStorage(LOCAL_STORAGE.LAST_EVENT_TIME);
     this.zone.run(() =>  this.router.navigate(['/login'], ));
   }
 

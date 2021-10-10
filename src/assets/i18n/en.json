@@ -167,7 +167,8 @@
       "userDisabled":"user is disabled.",
       "userExpired":"User is expired login.",
       "invalidPassword":"Enter wrong password",
-      "inValidVdId":"Invalid Movie Type Id."
+      "inValidVdId":"Invalid Movie Type Id.",
+      "errorConectionRefused":"Error conection refused."
     }
   }
 }

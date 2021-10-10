@@ -33,6 +33,10 @@ export class VideoComponent implements OnInit {
   disabled = true;
   onFocusInt = false;
 
+  lstSearch: any[] =[];
+  search: string  = '';
+  searchTr = false;
+
   constructor(
     private toastr: ToastrService,
     private dataService: DataService,
@@ -47,6 +51,17 @@ export class VideoComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.dataService.currentMessageBody.subscribe(message => {
+      console.log('message', message);
+
+      if(this.search !== '') {
+        this.onFocusOutEvent(this.search);
+
+        this.searchTr = false;
+      }
+      this.onFocusInt = false;
+    });
+
     this.columnDefs = [
       {
         headerName: '#',
@@ -106,6 +121,10 @@ export class VideoComponent implements OnInit {
     this.inquiry();
   }
 
+  onFocusOut(event:any) {
+    // this.onFocusInt = false;
+  }
+
   // Get Movie Type  Api Call
   inquiry() {
     const api = '/api/video/v0/read';
@@ -129,21 +148,91 @@ export class VideoComponent implements OnInit {
   }
 
   searchChange(event:any): void {
+    console.log('event',event);
+
     if (event) {
-     const search = this.lstMovies.filter( data => data.name.toLowerCase().includes(event.target.value));
+     const search = this.lstMovies.filter( data => data.vdName.toLowerCase().includes(event.target.value));
      this.rowData = search;
     }
   }
+
   onFocusEvent(event: any){
     this.onFocusInt = true;
-    console.log('onFocusEvent', event.target.value);
+    this.searchTr = true;
+    // console.log('onFocusEvent', event.target.value);
+    // this.dataService.unsubscribeBodyEvent();
+    const data = Utils.getSecureStorage(LOCAL_STORAGE.SearchHistoryVideo);
+    if(data) {
+      const decryptSearch = EncryptionUtil.decrypt(data);
+      this.lstSearch = JSON.parse(decryptSearch);
+      console.log(this.lstSearch);
+    }
 
+
+
+
+    // console.log('searchs', searchs);
+    // if(searchs) {
+    //   const decryptSearch = EncryptionUtil.decrypt(searchs);
+    //   console.log('decryptSearch', decryptSearch);
+
+    // } else {
+    //   const jsonData = [{
+    //     search: event.target.value
+    //   }];
+    //   const jsonString = JSON.stringify(jsonData);
+    //   const item = EncryptionUtil.encrypt(jsonString.toString()).toString();
+    //   console.log('item', item);
+    //   Utils.setSecureStorage(LOCAL_STORAGE.SearchHistoryVideo, item);
+    //   console.log('onFocusOutEvent', event.target.value);
+    // }
  }
 
-  onFocusOutEvent(event: any){
-    this.onFocusInt = false;
-    console.log('onFocusOutEvent', event.target.value);
+ searchHistoryClick(item: any) {
+  this.onFocusInt = false;
+  this.search = item.search;
+  const search = this.lstMovies.filter( data => data.vdName.toLowerCase().includes(this.search));
+  this.rowData = search;
+}
 
+expression() {
+  console.log('expression');
+
+}
+  onFocusOutEvent(value: string){
+    const searchs = Utils.getSecureStorage(LOCAL_STORAGE.SearchHistoryVideo);
+    let jsonData = [];
+    let jsonArr = [];
+    if(searchs) {
+      const decryptSearch = EncryptionUtil.decrypt(searchs);
+      jsonArr = JSON.parse(decryptSearch);
+      console.log(jsonArr.length);
+
+      const search = jsonArr.filter( (data:any) => data.search.toLowerCase() === (value));
+      if(search.length === 0 && value.trim() !== '') {
+        jsonArr.push(
+          {
+            search: value
+          }
+        );
+        const jsonString = JSON.stringify(jsonArr);
+        const item = EncryptionUtil.encrypt(jsonString.toString()).toString();
+        console.log('jsonData', jsonArr);
+        Utils.setSecureStorage(LOCAL_STORAGE.SearchHistoryVideo, item);
+
+      }
+    } else {
+      if(value !== '') {
+        jsonData.push(
+          {
+            search: value
+          }
+        );
+        const jsonString = JSON.stringify(jsonData);
+        const item = EncryptionUtil.encrypt(jsonString.toString()).toString();
+        Utils.setSecureStorage(LOCAL_STORAGE.SearchHistoryVideo, item);
+      }
+    }
  }
 
   newMovie() {
@@ -195,95 +284,3 @@ export class VideoComponent implements OnInit {
   }
 
 }
-
-export const holidays = [
-  {
-    id: 1,
-    title: "New Year",
-    createAt: "01-01-2020",
-    remark: "sun day",
-    movie: 'Khmer',
-    movieType: 'Drama'
-  },
-  {
-    id: 2,
-    title: "Diwali",
-    createAt: "28-02-2020",
-    remark: "Thursday ",
-    movie: 'Khmer',
-    movieType: 'Drama'
-  },
-  {
-    id: 3,
-    title: "Christmas",
-    createAt: "28-02-2020",
-    remark: "Friday",
-    movie: 'Khmer',
-    movieType: 'Drama'
-  },
-  {
-    id: 4,
-    title: "Ramzon",
-    createAt: "17-02-2020",
-    remark: "sun day",
-    movie: 'Khmer',
-    movieType: 'Drama'
-  },
-  {
-    id: 5,
-    title: "Bakrid",
-    createAt: "15-09-2020",
-    remark: "Saturday",
-    movie: 'Khmer',
-    movieType: 'Drama'
-  },
-  {
-    id: 6,
-    title: "Bakrid",
-    createAt: "15-09-2020",
-    remark: "Saturday",
-    movie: 'Khmer',
-    movieType: 'Drama'
-  },
-  {
-    id: 7,
-    title: "Bakrid",
-    createAt: "15-09-2020",
-    remark: "Saturday",
-    movie: 'Khmer',
-    movieType: 'Drama'
-  },
-  {
-    id: 8,
-    title: "Bakrid",
-    createAt: "15-09-2020",
-    remark: "Saturday",
-    movie: 'Khmer',
-    movieType: 'Drama'
-  },
-  {
-    id: 9,
-    title: "Bakrid",
-    createAt: "15-09-2020",
-    remark: "Saturday",
-    movie: 'Khmer',
-    movieType: 'Drama'
-  },
-  {
-    id: 10,
-    title: "Bakrid",
-    createAt: "15-09-2020",
-    remark: "Saturday",
-    movie: 'Khmer',
-    movieType: 'Drama'
-  },
-  {
-    id: 11,
-    title: "Bakrid",
-    createAt: "15-09-2020",
-    remark: "Saturday",
-    movie: 'Khmer',
-    movieType: 'Drama'
-  },
-];
-

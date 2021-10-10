@@ -130,6 +130,9 @@ export class AuthInterceptor implements HttpInterceptor {
         httpErrorCode = '999999';
       }
       MyLogUtil.log('error', error);
+      if(error.status === 0) {
+        this.showErrMsg('ERR_CONNECTION_REFUSED');
+      }
       if(error.status === 401) {
         this.showErrMsg(error.error.error_description);
         this.zone.run(() =>  this.router.navigate(['/login'],{ replaceUrl: true }));
@@ -227,6 +230,9 @@ export class AuthInterceptor implements HttpInterceptor {
   showErrMsg(msgKey: string){
         let msg = '';
         switch (msgKey) {
+          case 'ERR_CONNECTION_REFUSED':
+            msg = this.translate.instant('serverResponseCode.label.errorConectionRefused');
+            break;
           case 'userNotFound':
             msg = this.translate.instant('serverResponseCode.label.userNotFound');
             break;

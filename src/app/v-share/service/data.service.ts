@@ -9,6 +9,10 @@ export class DataService {
   private messageSource = new BehaviorSubject('default message');
   currentMessage = this.messageSource.asObservable();
 
+  private messageSourceBodyEvent = new BehaviorSubject('default message event');
+  currentMessageBody = this.messageSourceBodyEvent.asObservable();
+
+
   private messageSourceNotification = new BehaviorSubject('default message');
   currentMessageNotification = this.messageSourceNotification.asObservable();
 
@@ -30,6 +34,10 @@ export class DataService {
 
   sendMessageNotification(message: string) {
     this.messageSourceNotification.next(message);
+  }
+
+  sendMessageBodyEvent(message: string) {
+    this.messageSourceBodyEvent.next(message);
   }
 
   sendMessage(message: string) {
@@ -59,4 +67,9 @@ export class DataService {
   unsubscribeNewAccountClose() {
     this.viewNewAccountClose.complete();
   }
+
+  unsubscribeBodyEvent() {
+    this.messageSourceBodyEvent.complete();
+  }
 }
+

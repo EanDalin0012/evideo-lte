@@ -22,8 +22,6 @@ export enum LOCAL_STORAGE {
   SubAccountSenair = "Sub-Account-Senair",
   SubAccountMaster = "Sub-Account-Master",
   SubAccountAgent = "Sub-Account-Agent",
-  SubAccountMember = "Sub-Account-Member",
-  SubAccount_Info     = 'SubAccountInfo',
   NekWorkIP       = 'NekWorkIP',
   CONTENTS_VERSION= 'contentsVersion',
   PRE_TRANSACTION = 'preTransaction',
@@ -35,7 +33,8 @@ export enum LOCAL_STORAGE {
   LAST_EVENT_TIME = 'lastEventTime',
   LAST_TIME_CHECK_NOTIFICATION = 'theLastTimeCheckNotification',
   Authorization   = 'Authorization',
-  AccountTypeCode = 'AccountTypeCode'
+  AccountTypeCode = 'AccountTypeCode',
+  SearchHistoryVideo = 'SearchHistoryVideo'
 }
 
 

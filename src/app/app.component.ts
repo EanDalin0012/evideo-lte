@@ -4,6 +4,7 @@ import { LOCAL_STORAGE, LANGUAGE } from './v-share/constants/common.const';
 import { Utils } from './v-share/util/utils.static';
 import { MyLogUtil } from './v-share/util/my-log-util';
 import * as $ from 'jquery';
+import { DataService } from './v-share/service/data.service';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,7 @@ import * as $ from 'jquery';
 export class AppComponent {
   title = 'evideo-lte';
   constructor(
+    private dataService: DataService,
     private translate: TranslateService) {
     this.setInitialAppLanguage();
   }
@@ -75,5 +77,10 @@ export class AppComponent {
       this.translate.setDefaultLang( 'en' );
       this.translate.use( i18n );
     }
+  }
+
+  expression() {
+    this.dataService.sendMessageBodyEvent('message event');
+
   }
 }

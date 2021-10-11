@@ -3,34 +3,28 @@
   <div class="row">
       <div class="col-md-8 offset-md-2">
 
-          <!-- Page Header -->
+        <!-- Page Header -->
         <div class="page-header">
           <div class="row align-items-center">
               <div class="col">
-                  <h3 class="page-title">Edit Movie</h3>
+                  <h3 class="page-title">{{'video.label.editMovie' | translate}}</h3>
                   <ul class="breadcrumb">
-                      <li class="breadcrumb-item"><a routerLink = '/home'>Edit Movie</a></li>
-                      <li class="breadcrumb-item active">Edit Movie</li>
+                      <li class="breadcrumb-item"><a routerLink = '/home'>{{'video.label.movie' | translate}}</a></li>
+                      <li class="breadcrumb-item active">{{'video.label.editMovie' | translate}}</li>
                   </ul>
               </div>
-              <!-- <div class="col-auto float-right ml-auto">
-                  <a  class="btn add-btn" data-toggle="modal" data-target="#add_holiday"><i
-                          class="fa fa-plus"></i> Add Movie</a>
-              </div> -->
           </div>
         </div>
         <!-- /Page Header -->
 
-          <form (ngSubmit)="submitCompany()" [formGroup]="form">
+          <form [formGroup]="form">
               <div class="row">
                 <div class="col-sm-12">
                   <div class="form-group">
-                      <label>Title<span class="text-danger">*</span></label>
-                      <input class="form-control" type="text" value="Dreamguy's Technologies"
-                          [class.invalid]="form.get('title').invalid && form.get('title').touched"
-                          formControlName="title">
+                      <label>{{'video.label.title' | translate}}<span class="text-danger">*</span></label>
+                      <input #title class="form-control form-control-sm" type="text" formControlName="title" placeholder="{{'video.holder.enterTitle' | translate}}">
                       <div *ngIf="submitted && f.title.errors">
-                          <small class="text-danger"> *Company name is required</small>
+                          <small class="text-danger">{{'video.message.titleRequired' | translate}}</small>
                       </div>
                   </div>
                 </div>
@@ -39,63 +33,72 @@
               <div class="row">
                   <div class="col-sm-6">
                       <div class="form-group">
-                          <label>Movie<span class="text-danger">*</span></label>
-                          <select class="form-control select"
+                          <label>{{'video.label.movieType' | translate}}<span class="text-danger">*</span></label>
+                          <select #stateMovie class="form-control form-control-sm select"
                               formControlName="stateMovie">
-                              <option *ngFor="let state of movies" [ngValue]="state">
-                                {{ state.value }}
+                              <option *ngFor="let state of lstMovies" [ngValue]="state">
+                                {{ state.name }}
                               </option>
                           </select>
                           <div *ngIf="submitted && f.stateMovie.errors">
-                              <small class="text-danger"> *Company name is required</small>
+                              <small class="text-danger">{{'video.message.movieRequired' | translate}}</small>
                           </div>
                       </div>
                   </div>
                   <div class="col-sm-6">
                       <div class="form-group">
-                          <label>Type<span class="text-danger">*</span></label>
-                          <select class="form-control select"
+                          <label>{{'video.label.subMovieType' | translate}}<span class="text-danger">*</span></label>
+                          <select #state class="form-control form-control-sm select"
                               formControlName="state">
 
-                              <option *ngFor="let state of movies" [ngValue]="state">
-                                {{ state.value }}
+                              <option *ngFor="let state of lstSubMovieType" [ngValue]="state">
+                                {{ state.name }}
                               </option>
 
                           </select>
                           <div *ngIf="submitted && f.state.errors">
-                              <small class="text-danger"> *Contact person is required</small>
+                              <small class="text-danger">{{'video.message.typeRequired' | translate}}</small>
                           </div>
                       </div>
                   </div>
               </div>
 
+              <!-- <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group cal-icon">
+                        <label>{{'video.label.runSchedule' | translate}}</label>
+                        <input class="form-control datetimepicker form-control-sm" type="text" bsDatepicker type="text"
+                                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                                        formControlName="runOnDate">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                      <label>{{'common.label.remark' | translate}}</label>
+                      <input class="form-control form-control-sm" type="text" formControlName="remark" placeholder="{{'common.holder.enterRemark' | translate}}">
+                  </div>
+              </div>
+            </div> -->
+
               <div class="row">
                   <div class="col-sm-12">
                       <div class="form-group">
-                          <label>Remark</label>
-                          <input class="form-control " value="3864 Quiet Valley Lane, Sherman Oaks, CA, 91403"
-                              type="text" formControlName="remark">
-                          <div *ngIf="submitted && f.remark.errors">
-                              <small class="text-danger"> *Address is required</small>
-                          </div>
+                          <label>{{'common.label.remark' | translate}}</label>
+                          <input class="form-control form-control-sm" type="text" formControlName="remark" placeholder="{{'common.holder.enterRemark' | translate}}">
                       </div>
                   </div>
-
               </div>
 
               <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group">
-                        <label>Image</label>
+                        <label>{{'video.label.image' | translate}}<span class="text-danger">*</span></label>
 
-                        <input type="file" accept="image/png, image/jpeg" (change)="selectFile($event)" class="form-control"/>
-                        <!-- <div class="col-12" style="margin-top: 15px;">
-                          <button class="btn btn-success btn-sm float-right" [disabled]="!selectedFiles" (click)="upload()" style="float: right;">
-                            Upload
-                          </button>
-                        </div> -->
+                        <input #fileSource type="file" formControlName="fileSource"  accept="image/png, image/jpeg" (change)="selectFile($event)" class="form-control form-control-sm"/>
 
-                        <img [src]="imageSrc" *ngIf="imageSrc" style="height: 300px; width:500px">
+                        <div class="back" [ngStyle]="{'background-image': 'url(' + imageSrc + ')'}" *ngIf="imageSrc">
+
+                        </div>
 
                         <div *ngIf="currentFile" class="progress my-3">
                           <div
@@ -110,20 +113,19 @@
                           </div>
                         </div>
 
-                        <div *ngIf="submitted && f.fileSource.errors">
-                        <small class="text-danger"> *Light logo is required</small>
-                    </div>
+                        <!-- <div *ngIf="submitted && f.fileSource.errors">
+                          <small class="text-danger"> {{'video.message.imageRequired' | translate}}</small>
+                        </div> -->
 
                     </div>
                 </div>
             </div>
 
               <div class="submit-section">
-                <button class="btn btn-sm btn-primary float-right" type="button" data-toggle="modal" data-target="#add_custom_policy">
+                <button (click)="update()" class="btn btn-sm btn-primary float-right" type="button">
                   <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                  Update
+                  {{'common.button.update' | translate}}
                 </button>
-                  <!-- <button class="btn btn-primary submit-btn">Save</button> -->
               </div>
           </form>
       </div>

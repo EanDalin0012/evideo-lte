@@ -29,39 +29,39 @@
                       <div class="row">
                           <div class="col-md-3">
                               <div class="profile-info-left">
-                                <img alt="" src="https://1.bp.blogspot.com/-A67LP-W_yO4/YVpFQ3xr8dI/AAAAAAAACys/eA3sh3CH89QyS9NoMb3HSAcT-QHNrV9mwCLcBGAsYHQ/w222-h230-p-k-no-nu/Besdoung-Reusya.png">
+                                <img alt="" [src]="src">
                               </div>
                           </div>
                           <div class="col-md-7">
-                              <ul class="personal-info">
+                              <ul class="personal-info vd-source">
                                   <li>
                                       <div class="title">ID:</div>
-                                      <div class="text"><a href="javascript:">{{jsonData.id}}</a></div>
+                                      <div class="text title"><a>{{jsonData.id}}</a></div>
                                   </li>
                                   <li>
                                       <div class="title">Title:</div>
-                                      <div class="text"><a href="javascript:">{{jsonData.title}}</a></div>
+                                      <div class="text"><a>{{jsonData.vdName}}</a></div>
                                   </li>
                                   <li>
                                     <div class="title">Movie:</div>
-                                    <div class="text"><a href="javascript:">{{jsonData.movie}}</a></div>
+                                    <div class="text"><a href="javascript:">{{jsonData.vdTypeName}}</a></div>
                                   </li>
                                   <li>
                                     <div class="title">Type:</div>
                                     <div class="text">
-                                      <a href="javascript:">{{jsonData.movieType}}</a>
+                                      <a href="javascript:">{{jsonData.vdSubTypeName}}</a>
                                     </div>
                                   </li>
                                   <li>
                                       <div class="title">Rmark:</div>
-                                      <div class="text">
+                                      <div class="text" *ngIf = "jsonData.remark">
                                         <a href="javascript:">{{jsonData.remark}}</a>
                                       </div>
                                   </li>
                                   <li>
                                       <div class="title">Create At:</div>
                                       <div class="text">
-                                        <a href="javascript:">{{jsonData.createAt}}</a>
+                                        <a href="javascript:">{{jsonData.vdTypeName}}</a>
                                       </div>
                                   </li>
                               </ul>
@@ -80,71 +80,55 @@
   </div>
   <!-- /Content Tile -->
 
-  <!-- Data Table -->
   <div class="row">
-    <div class="col-auto float-right ml-auto addNew">
-      <button (click)="addMovieSource()" class="btn btn-sm btn-primary float-right" type="button" data-toggle="modal" data-target="#add_custom_policy">
-        <i class="fa fa-plus"></i>
-        Add Movie Source
-      </button>
-    </div>
+    <div class="row col-md-12">
+      <div>
+        <button class="btn btn-sm btn-primary float-left" type="button">
+          <i class="fa fa-plus-circle"></i>
+          {{'video.label.addMovie' | translate}}
+        </button>
+        <button  [disabled] = "disabled" class="btn btn-sm btn-primary float-left left-12" type="button">
+          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          {{'common.button.edit' | translate}}
+        </button>
+        <button  [disabled] = "disabled" class="btn btn-sm btn-primary float-left left-12" type="button">
+          <i class="fa fa-trash-o" aria-hidden="true"></i>
+          {{'common.button.delete' | translate}}
+        </button>
 
-    <div class="col-md-12">
-      <div class="table-responsive">
-          <table datatable [dtOptions]="dtOptions"
-              class="table table-striped custom-table mb-0">
-              <thead>
-                  <tr>
-                      <th>#</th>
-                      <th>Part </th>
-                      <th>Remark</th>
-                      <th>Create At</th>
-                      <th>View Video</th>
-                      <th class="text-right">Action</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr class="holiday-completed" *ngFor="let row of lstMovies">
-                      <td [width] = '100'>{{row.id}}</td>
-                      <td [width] = '150'>
-                        {{row.part}}
-                        <span *ngIf="row.end === 'Y'">End</span>
-                      </td>
-                      <td>{{row.remark}}</td>
-                      <td>{{row.createAt}}</td>
-                      <td [width] = '140' class="text-center">
-                        <button class="btn btn-sm btn-primary float-right" type="button" data-toggle="modal" data-target="#add_custom_policy">
-                          <i class="fa fa-play-circle-o"></i>
-                          Play
-                        </button>
-                      </td>
-                      <td class="text-center" [width] = "50">
-                          <div class="dropdown dropdown-action">
-                              <a href="javascript:" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                  <i class="material-icons">more_vert</i>
-                              </a>
-                              <div class="dropdown-menu dropdown-menu-right">
-                                  <a href="javascript:" class="dropdown-item"  data-toggle="modal" data-target="#edit_holiday" (click)="edit(row.id)">
-                                    <i class="fa fa-cog m-r-5"></i>
-                                    settings
-                                  </a>
-                                  <a href="javascript:" class="dropdown-item"  data-toggle="modal" data-target="#edit_holiday" (click)="edit(row.id)">
-                                    <i  class="fa fa-pencil m-r-5"></i>
-                                    Edit
-                                  </a>
-                                  <a href="javascript:" class="dropdown-item"  data-toggle="modal" data-target="#delete_holiday" (click)="tempId = row.id">
-                                    <i class="fa fa-trash-o m-r-5"></i>
-                                    Delete
-                                  </a>
-                              </div>
-                          </div>
-                      </td>
-                  </tr>
-              </tbody>
-          </table>
+        <div style="width: 300px;" class="float-right">
+          <input type="text" class="form-control form-control-sm" [(ngModel)]="search" (focus)="onFocusEvent($event)" (input)="searchChange($event)" placeholder="{{'common.label.searchNameThere' | translate}} ...">
+          <!-- <div class="dropdown-menu"  style="position: absolute; width: 300px;" [ngClass]="{'show': onFocusInt}">
+            <a  href="javascript:" class="dropdown-item" *ngFor="let item of lstSearch" (click)="searchHistoryClick(item)">
+              <i class="fa fa-history" aria-hidden="true"></i>
+              <span style= "margin-left: 10px;">{{item?.search}}</span>
+            </a>
+          </div> -->
+      </div>
+        <label class="col-form-label float-right" style="width: 80px;">{{'common.label.search' | translate}} :</label>
       </div>
     </div>
+
+    <div class="row col-md-12">
+      <ag-grid-angular
+      #agGrid
+      style="width: 100%; height: 500px;"
+      id="myGrid"
+      class="ag-theme-alpine"
+      [modules]="modules"
+      [columnDefs]="columnDefs"
+      [frameworkComponents]="frameworkComponents"
+      [defaultColDef]="defaultColDef"
+      [rowData]="rowData"
+      [rowSelection]="rowSelection"
+      (selectionChanged)="onSelectionChanged($event)"
+      (gridReady)="onGridReady($event)"
+      [isRowSelectable]="isRowSelectable"
+      [pagination]="pagination"
+      [paginationPageSize]="paginationPageSize"
+      ></ag-grid-angular>
+    </div>
+
   </div>
-  <!--/Data Table -->
 
 </div>

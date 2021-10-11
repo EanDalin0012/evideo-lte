@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AgRendererComponent } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
+declare const $: any;
 
 @Component({
   selector: 'app-status-yn',
@@ -20,5 +21,10 @@ export class StatusYNComponent implements OnInit,AgRendererComponent {
   }
   agInit(params: ICellRendererParams): void {
     this.params = params;
+  }
+
+  test() {
+    alert();
+    $("#delele").modal("show");
   }
 }

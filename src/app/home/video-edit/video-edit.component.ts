@@ -1,13 +1,15 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { FormBuilder, FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { FileUploadService } from '../../v-share/service/file-upload.service';
-import { HttpEventType, HttpResponse } from '@angular/common/http';
-import { MyLogUtil } from '../../v-share/util/my-log-util';
+import { DataService } from '../../v-share/service/data.service';
+import { HTTPService } from '../../v-share/service/http.service';
+import { HTTPResponseCode, LOCAL_STORAGE } from '../../v-share/constants/common.const';
+import { TranslateService } from '@ngx-translate/core';
 import { Utils } from '../../v-share/util/utils.static';
-import { LOCAL_STORAGE } from '../../v-share/constants/common.const';
 import { EncryptionUtil } from '../../v-share/util/encryption-util';
+import { environment } from '../../../environments/environment.prod';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-video-edit',
@@ -16,6 +18,13 @@ import { EncryptionUtil } from '../../v-share/util/encryption-util';
 })
 export class VideoEditComponent implements OnInit, OnDestroy {
 
+  @ViewChild("title") inputTitle: any;
+  @ViewChild("stateMovie") inputStateMovie: any;
+  @ViewChild("state") inputState: any;
+  @ViewChild("fileSource") inputFileSource: any;
+
+  baseUrl: string = '';
+
   submitted = false;
   selectedFiles?: FileList;
   currentFile?: File;
@@ -23,19 +32,29 @@ export class VideoEditComponent implements OnInit, OnDestroy {
   message = '';
   imageSrc: string = '';
   fileInfos?: Observable<any>;
-
-  movies: any[] = [];
+  fileName: string = '';
 
   public form: any;
+
+  lstMovies: any[] = [];
+  lstSubMovieType: any[] = [];
+  jsonData: any;
+
+  showEditImage = false;
+  isSelectedFile = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
-    private uploadService: FileUploadService
+    private dataService: DataService,
+    private hTTPService: HTTPService,
+    private translate: TranslateService,
+    private router: Router,
   ) {
-    this.form as FormGroup;
-  }
+    this.baseUrl = environment.bizServer.server;
 
-  ngOnInit() {
+    this.form as FormGroup;
+
     this.form = this.formBuilder.group({
       title: ['', [Validators.required]],
       stateMovie: ['', [Validators.required]],
@@ -43,130 +62,166 @@ export class VideoEditComponent implements OnInit, OnDestroy {
       remark: ['', [Validators.required]],
       fileSource: new FormControl('', [Validators.required]),
     });
-    this.movies = [
-      {
-        id: 1,
-        value: 'Khmer',
-        code: 'kh'
-      },
-      {
-        id: 2,
-        value: 'Thai',
-        code: 'thai'
-      },
-      {
-        id: 3,
-        value: 'Koran',
-        code: 'koran'
-      },
-      {
-        id: 4,
-        value: 'Chiness',
-        code: 'ch'
-      }
-    ];
-    const data = Utils.getSecureStorage(LOCAL_STORAGE.MOVEI_Edit);
-    const decryptString = EncryptionUtil.decrypt(data);
-    const jsonData = JSON.parse(decryptString);
-    console.log('decyptionString', decryptString);
 
-    this.form.patchValue({
-      state: this.movies[0],
-      title: jsonData.title
-    });
-    this.form.patchValue({
-      stateMovie: this.movies[0]
-    });
+    const url = (window.location.href).split('/');
+    this.dataService.visitParamRouterChange(url[4]);
+  }
+  ngOnDestroy(): void {
   }
 
-  ngOnDestroy(): void {
-    Utils.removeSecureStorage(LOCAL_STORAGE.MOVEI_Edit);
+  ngOnInit() {
+    const data = Utils.getSecureStorage(LOCAL_STORAGE.VdSourceEdit);
+    const decryptString = EncryptionUtil.decrypt(data);
+    this.jsonData = JSON.parse(decryptString);
+    console.log('jsonData',this.jsonData);
+
+    this.form.patchValue({
+      title: this.jsonData.vdName,
+      remark: this.jsonData.remark,
+    });
+
+    this.inquiry();
+    this.inquirySubMovieType();
+    this.imageSrc = this.baseUrl+"/unsecur/api/image/reader/v0/read/"+this.jsonData.resourceId;
   }
 
   get f(): { [key: string]: AbstractControl } {
     return this.form.controls;
   }
 
-  submitCompany() {
-    const data = this.form.getRawValue();
-    MyLogUtil.log('data', data);
-    // this.toastr.success("Company Settings is added", "Success",{
-    //   timeOut: 9000,
-    // });
-    // this.toastr.error("Company Settings is added", "Success",{
-    //   timeOut: 3000,
-    // });
-
-    this.toastr.info("Company Settings is added", "Success",{
-      timeOut: 3000,
-    });
-
-    if (this.form.valid) {
-      this.toastr.success("Company Settings is added", "Success");
-    }
-  }
 
   selectFile(event: any): void {
-    this.selectedFiles = event.target.files;
     const reader = new FileReader();
-
     if(event.target.files && event.target.files.length) {
+      this.currentFile = event.target.files[0];
+      this.fileName = this.currentFile?.name ? this.currentFile?.name : '';
       const [file] = event.target.files;
       reader.readAsDataURL(file);
-
       reader.onload = () => {
-
         this.imageSrc = reader.result as string;
-
-        this.form.patchValue({
-          fileSource: reader.result
-        });
-
-      };
-
+      }
+      this.isSelectedFile = true;
     }
   }
 
-  upload(): void {
-    this.progress = 0;
+  update() {
+    this.submitted = true;
+    console.log('isSelectedFile', this.isSelectedFile);
 
-    if (this.selectedFiles) {
-      const file: File | null = this.selectedFiles.item(0);
-
-      if (file) {
-        this.currentFile = file;
-
-        this.uploadService.upload(this.currentFile).subscribe(
-          (event: any) => {
-            if (event.type === HttpEventType.UploadProgress) {
-              this.progress = Math.round(100 * event.loaded / event.total);
-            } else if (event instanceof HttpResponse) {
-              this.message = event.body.message;
-              this.fileInfos = this.uploadService.getFiles();
-            }
-          },
-          (err: any) => {
-            console.log(err);
-            this.progress = 0;
-
-            if (err.error && err.error.message) {
-              this.message = err.error.message;
-            } else {
-              this.message = 'Could not upload the file!';
-            }
-
-            this.currentFile = undefined;
-          });
-
+    if(this.f.title.errors) {
+      this.inputTitle.nativeElement.focus();
+    } else if(this.f.stateMovie.errors) {
+      this.inputStateMovie.nativeElement.focus();
+    } else if (this.f.state.errors) {
+      this.inputState.nativeElement.focus();
+    } else {
+      const data = this.form.getRawValue();
+      let jsonData = {};
+      if(this.isSelectedFile) {
+        jsonData = {
+          id: this.jsonData.id,
+          vdId: data.stateMovie.id,
+          subVdTypeId: data.state.id,
+          vdName: data.title,
+          remark: data.remark,
+          isSelectedFile: this.isSelectedFile,
+          fileInfo: {
+            fileBits: this.imageSrc,
+            fileName: this.fileName.split('.')[0],
+            fileExtension: this.fileName.split('.')[1],
+          }
+        };
+      } else {
+        jsonData = {
+          id: this.jsonData.id,
+          vdId: data.stateMovie.id,
+          subVdTypeId: data.state.id,
+          vdName: data.title,
+          remark: data.remark,
+          isSelectedFile: this.isSelectedFile,
+          sourceId: this.jsonData.resourceId
+        };
       }
 
-      this.selectedFiles = undefined;
+      console.log(jsonData);
+      const api = '/api/video/v0/update';
+      this.hTTPService.Post(api, jsonData).then(response => {
+        if(response.result.responseCode === HTTPResponseCode.Success) {
+          this.toastr.info(this.translate.instant('video.message.udpated'), this.translate.instant('common.label.success'),{
+            timeOut: 5000,
+          });
+          this.router.navigate(['/home']);
+        } else {
+          this.showErrMsg(response.result.responseMessage);
+        }
+      });
+      // console.log(this.imageSrc);
     }
   }
 
-  save() {
-    const data = this.form.getRawValue();
-    MyLogUtil.log('data', data);
+    // Get Movie Type  Api Call
+    inquiry() {
+      const api = '/api/movie-type/v0/read';
+      this.hTTPService.Get(api).then(response => {
+        if(response.result.responseCode !== HTTPResponseCode.Success) {
+          this.showErrMsg(response.result.responseMessage);
+       }else {
+          this.lstMovies = response.body;
+          this.lstMovies.forEach( (element, index) => {
+            if(element.id === this.jsonData.vdTypeId) {
+              this.form.patchValue({
+                stateMovie: this.lstMovies[index]
+              });
+            }
+          });
+        }
+      });
+    }
+
+  // Get Employee  Api Call
+  inquirySubMovieType() {
+    const api = '/api/sub-movie-type/v0/read';
+    this.hTTPService.Get(api).then(response => {
+      if(response.result.responseCode !== HTTPResponseCode.Success) {
+        this.showErrMsg(response.result.responseMessage);
+      } else {
+        this.lstSubMovieType = response.body;
+        this.lstSubMovieType.forEach( (element, index) => {
+          if(element.id === this.jsonData.vdSubTypeId) {
+            this.form.patchValue({
+              state: this.lstSubMovieType[index]
+            });
+          }
+        });
+      }
+    });
   }
+
+  showErrMsg(msgKey: string, value?: any){
+      let message = '';
+      switch(msgKey) {
+        case 'invalidVdId':
+          message = this.translate.instant('video.label.movieRequired');
+          break;
+        case 'invalidSubVdTypeId':
+            message = this.translate.instant('video.label.typeRequired');
+            break;
+        case 'invalidVdName':
+          message = this.translate.instant('video.label.titleRequired');
+          break;
+        case 'invalidFileImage':
+          message = this.translate.instant('video.label.imageRequired');
+          break;
+        case '500':
+          message = this.translate.instant('serverResponseCode.label.serverError');
+          break;
+        default:
+          message = this.translate.instant('serverResponseCode.label.unknown');
+          break;
+      }
+      this.toastr.error(message, this.translate.instant('common.label.error'),{
+        timeOut: 5000,
+      });
+    }
 
 }

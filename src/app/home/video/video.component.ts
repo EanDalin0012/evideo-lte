@@ -11,6 +11,7 @@ import { ColDef } from 'ag-grid-community';
 import { HTTPService } from '../../v-share/service/http.service';
 import { TranslateService } from '@ngx-translate/core';
 import { SrcImgComponent } from '../../v-share/component/src-img/src-img.component';
+import { ThrowStmt } from '@angular/compiler';
 @Component({
   selector: 'app-video',
   templateUrl: './video.component.html',
@@ -32,6 +33,7 @@ export class VideoComponent implements OnInit {
   isRowSelectable: any;
   disabled = true;
   onFocusInt = false;
+  selectedJson: any;
 
   lstSearch: any[] =[];
   search: string  = '';
@@ -51,16 +53,16 @@ export class VideoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dataService.currentMessageBody.subscribe(message => {
-      console.log('message', message);
+    // this.dataService.currentMessageBody.subscribe(message => {
+    //   console.log('message', message);
 
-      if(this.search !== '') {
-        this.onFocusOutEvent(this.search);
+    //   if(this.search !== '') {
+    //     this.onFocusOutEvent(this.search);
 
-        this.searchTr = false;
-      }
-      this.onFocusInt = false;
-    });
+    //     this.searchTr = false;
+    //   }
+    //   this.onFocusInt = false;
+    // });
 
     this.columnDefs = [
       {
@@ -69,7 +71,7 @@ export class VideoComponent implements OnInit {
         cellClass: 'id'
       },
       {
-        headerName: this.translate.instant('common.label.settingClientVideoMenu'),
+        headerName: this.translate.instant('video.label.image'),
         field: 'status',
         cellRenderer: 'srcImg',
         cellClass: 'text-center',
@@ -77,16 +79,16 @@ export class VideoComponent implements OnInit {
         filter: false,
       },
       {
-        headerName: this.translate.instant('common.label.name'),
+        headerName: this.translate.instant('video.label.title'),
         field: 'vdName'
       },
       {
-        headerName: this.translate.instant('common.label.name'),
+        headerName: this.translate.instant('video.label.movieType'),
         field: 'vdTypeName'
       },
       {
-        headerName: this.translate.instant('common.label.name'),
-        field: 'vdSubTypeIdName'
+        headerName: this.translate.instant('video.label.subMovieType'),
+        field: 'vdSubTypeName'
       },
       {
         headerName: this.translate.instant('common.label.remark'),
@@ -112,7 +114,7 @@ export class VideoComponent implements OnInit {
       return rowNode.data;
     };
 
-    Utils.removeSecureStorage(LOCAL_STORAGE.ToLstMovieSource);
+    Utils.removeSecureStorage(LOCAL_STORAGE.VdSource);
   }
 
   onGridReady(params:any) {
@@ -167,25 +169,6 @@ export class VideoComponent implements OnInit {
       this.lstSearch = JSON.parse(decryptSearch);
       console.log(this.lstSearch);
     }
-
-
-
-
-    // console.log('searchs', searchs);
-    // if(searchs) {
-    //   const decryptSearch = EncryptionUtil.decrypt(searchs);
-    //   console.log('decryptSearch', decryptSearch);
-
-    // } else {
-    //   const jsonData = [{
-    //     search: event.target.value
-    //   }];
-    //   const jsonString = JSON.stringify(jsonData);
-    //   const item = EncryptionUtil.encrypt(jsonString.toString()).toString();
-    //   console.log('item', item);
-    //   Utils.setSecureStorage(LOCAL_STORAGE.SearchHistoryVideo, item);
-    //   console.log('onFocusOutEvent', event.target.value);
-    // }
  }
 
  searchHistoryClick(item: any) {
@@ -195,10 +178,20 @@ export class VideoComponent implements OnInit {
   this.rowData = search;
 }
 
-expression() {
-  console.log('expression');
-
+onCellDoubleClicked(event:any) {
+  if(event) {
+    const jsonString = JSON.stringify(this.lstMovies[event.rowIndex]);
+    const encryptString = EncryptionUtil.encrypt(jsonString.toString()).toString();
+    Utils.setSecureStorage(LOCAL_STORAGE.VdSource, encryptString);
+    this.router.navigate(['home/vd-source']);
+  }
 }
+
+  expression() {
+    console.log('expression');
+
+  }
+
   onFocusOutEvent(value: string){
     const searchs = Utils.getSecureStorage(LOCAL_STORAGE.SearchHistoryVideo);
     let jsonData = [];
@@ -238,22 +231,60 @@ expression() {
   newMovie() {
     this.router.navigate(['/home/vd-add']);
   }
-  // Add holidays Modal Api Call
 
+  edit1() {
+    let selectedNodes = this.gridApi.getSelectedNodes();
+    let selectedData = selectedNodes.map((node: { data: any; }) => node.data);
+    this.selectedJson = selectedData[0];
+    const jsonString = JSON.stringify(this.selectedJson);
+    const encryptString = EncryptionUtil.encrypt(jsonString.toString()).toString();
+    Utils.setSecureStorage(LOCAL_STORAGE.VdSourceEdit, encryptString);
+    this.router.navigate(['home/vd-edit']);
+
+
+  }
+
+  deleteShow() {
+    let selectedNodes = this.gridApi.getSelectedNodes();
+    let selectedData = selectedNodes.map((node: { data: any; }) => node.data);
+    this.selectedJson = selectedData[0];
+    console.log('selectedJson', this.selectedJson);
+    $("#delele").modal("show");
+  }
+
+  delete() {
+    if (this.selectedJson.id) {
+      const api = '/api/video/v0/delete';
+      const jsonData = {
+        id: this.selectedJson.id
+      };
+      this.hTTPService.Post(api, jsonData).then(response => {
+        if(response.result.responseCode === HTTPResponseCode.Success) {
+          this.inquiry();
+          this.disabled = true;
+          $("#delele").modal("hide");
+          this.toastr.info(this.translate.instant('movie.message.deleted'), this.translate.instant('common.label.success'),{
+            timeOut: 5000,
+          });
+        } else {
+          this.showErrMsg(response.result.responseMessage);
+        }
+      });
+    } else {
+      this.showErrMsg('Invalid_Vd_ID');
+    }
+
+  }
 
 
   // To Get The holidays Edit Id And Set Values To Edit Modal Form
-
   edit(value:any) {
-    console.log('value', value, JSON.stringify(value));
     const jsonString = JSON.stringify(value);
     const item = EncryptionUtil.encrypt(jsonString.toString()).toString();
-    console.log('item', item);
-
     Utils.setSecureStorage(LOCAL_STORAGE.MOVEI_Edit, item);
     this.router.navigate(['/home/vd-edit']);
-
   }
+
   ngOnDestroy(): void {
     // Do not forget to unsubscribe the event
   }
@@ -264,7 +295,7 @@ expression() {
     const encryptString = EncryptionUtil.encrypt(jsonString.toString()).toString();
     console.log('item', encryptString);
 
-    Utils.setSecureStorage(LOCAL_STORAGE.ToLstMovieSource, encryptString);
+    Utils.setSecureStorage(LOCAL_STORAGE.VdSource, encryptString);
     this.router.navigate(['/home/vd-source']);
   }
 

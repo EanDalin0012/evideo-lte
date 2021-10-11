@@ -8398,3 +8398,18 @@ input:focus {
     border-radius: 4px;
     height: 35px !important;
 }
+
+
+.cal-icon:after {
+  top: 38px !important;
+}
+
+.vd-source li {
+  width: 100% !important;
+  display: flex !important;
+  color: #4f4f4f !important;
+}
+
+.vd-source li a{
+  color: #4f4f4f !important;
+}

@@ -137,7 +137,10 @@
       "addNewMovie":"Add New Movie",
       "addMovie":"Add Movie",
       "movieType":"Movie Type",
-      "subMovieType":"Sub Movie Type"
+      "subMovieType":"Sub Movie Type",
+      "runSchedule":"Show Video To Client On Date",
+      "deleteMovie":"Delete Movie",
+      "editMovie":"Edit Movie"
     },
     "message": {
       "titleRequired":"*Title is required",

@@ -3,6 +3,36 @@
 </ng-container>
 
 <ng-container *ngIf="this.params.data?.status === 'Y'">
-  <span class="badge bg-inverse-success">Y</span>
+  <span class="badge bg-inverse-success" (click)="test()">Y</span>
 </ng-container>
 
+
+<!-- Delete Modal -->
+<div id="delele" class="modal custom-modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">movie.label.deleteMovieType' </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+            <h3 class="page-title">movie.message.qDelete' </h3>
+
+            <!-- <div style="margin-top: 25px;">
+              <button (click)="delete()" class="btn btn-sm btn-primary float-right" type="button" style="margin-left: 15px;">
+                <i class="fa fa-check-circle" aria-hidden="true"></i>
+                {{'common.button.yes' | translate}}
+              </button>
+              <button class="btn btn-sm btn-primary float-right" data-dismiss="modal" aria-label="Close" type="button" >
+                <i class="fa fa-times-circle" aria-hidden="true"></i>
+                {{'common.button.no' | translate}}
+              </button>
+            </div> -->
+
+          </div>
+      </div>
+  </div>
+</div>
+<!-- /Delete Modal -->

@@ -1,226 +1,198 @@
 {
-  "Common": {
-    "Label": {
-      "Sort": "Sort",
-      "All": "All",
-      "No": "No",
-      "Items": "{{value}} Item(s)",
-      "Add_New": "Add New",
-      "Register": "Register",
-      "Remark":"Remark",
-      "Amount":"Amount",
-      "Active":"Active",
-      "Inactive":"Inactive",
-      "OtherStatus":"Other Status",
-      "DepositMoney":"Deposit Money",
-      "Status":"Status",
-      "Action":"Action",
-      "Setting":"Setting",
-      "Dashboard":"Dashboard",
-      "Master":"Master",
-      "Agent":"Agent",
-      "Seniar":"Seniar",
-      "Member":"Member",
-      "Deposit":"Deposit",
-      "NewMasterAccount":"New Master Account",
-      "NewAgentAccount":"New Agent Account",
-      "NewMemberAccount":"New Member Account",
-      "WithDrawalMoney":"WithDrawal Money",
-      "Details":"Details",
-      "FileName":"File Name",
-      "AllSubAccount":"All Sub Account",
-      "AccountDepositMoney":"Account Deposit Money",
-      "AccountWithdrawalMoney":"Account Withdrawal Money",
-      "DeviceInformationLogin":"Device Information Login",
-      "FileSize":"File Size {{value}}",
-      "PreviewSelectedImages":"Preview Selected Images",
-      "DepositCashOut":"Deposit Cash Out"
+  "common": {
+    "label": {
+      "sort": "Sort",
+      "all": "All",
+      "no": "No",
+      "items": "{{value}} Item(s)",
+      "add_New": "Add New",
+      "register": "Register",
+      "remark":"Remark",
+      "amount":"Amount",
+      "active":"Active",
+      "inactive":"Inactive",
+      "otherStatus":"Other Status",
+      "status":"Status",
+      "details":"Details",
+      "fileName":"File Name {{value}}",
+      "fileSize":"File Size {{value}}",
+      "secondary":"Secondary",
+      "primary":"Primary",
+      "updatePassword":"Update Password",
+      "searchBy":"Search by",
+      "setting":"Setting",
+      "success":"Success",
+      "error":"Error",
+      "name":"Name",
+      "searchNameThere":"Search name there",
+      "search":"Search",
+      "settingClientVideoMenu":"Setting Client Video Menu",
+      "loading":"Loading",
+      "pleaseWait":"Please wait"
     },
-    "Button": {
-      "Back": "Back",
-      "Close": "Close",
-      "Register": "Register",
-      "Save": "Save",
-      "Edit": "edit",
-      "Update": "Update",
-      "Confirme": "Confirme",
-      "Yes": "Yes",
-      "No": "No",
-      "Delete": "Delete",
-      "Add_New": "Add New",
-      "Export_PDF": "Export to PDF",
-      "Export_Excel": "Export to Excel",
-      "Add_Img": "add img",
-      "Upload":"Upload",
-      "Remove":"Remove",
-      "Logout":"Logout",
-      "Profile":"Profile",
-      "Login":"Login",
-      "Next":"Next",
-      "Previous":"Previous",
-      "Action":"Action",
-      "CashOut":"Cash Out",
-      "CashOutMoney":"Cash Out Money"
+    "button": {
+      "back": "Back",
+      "close": "Close",
+      "register": "Register",
+      "save": "Save",
+      "edit": "Edit",
+      "update": "Update",
+      "confirme": "Confirme",
+      "yes": "Yes",
+      "no": "No",
+      "delete": "Delete",
+      "add_New": "Add New",
+      "export_PDF": "Export to PDF",
+      "export_Excel": "Export to Excel",
+      "add_Img": "add img",
+      "upload":"Upload",
+      "remove":"Remove",
+      "logout":"Logout",
+      "profile":"Profile",
+      "login":"Login",
+      "next":"Next",
+      "previous":"Previous",
+      "action":"Action"
     },
-    "Holder": {
-      "EnterRemark": "Enter remark",
-      "EnterAmount": "Enter amount"
+    "holder": {
+      "enterRemark": "Enter remark",
+      "enterAmount": "Enter amount"
+    },
+    "message": {
+      "unSelectRow":"Please row on grid.",
+      "noAccess": "You do not have menu permissions.",
+      "notLogin": "Connection is lost, Please log in.",
+      "reqFail": "Your request failed. please try again later"
     }
   },
-  "Account": {
-    "Label": {
-      "Account":"គណនី",
-      "AccountValue":"គណនី : {{account}}",
-      "SubAccount":"គណនីរង",
-      "Id": "លេខសម្គាល់",
-      "AccountID": "លេខសម្គាល់គណនី",
-      "AccountName":"ឈ្មោះ​គណនី",
-      "Balance":"សមតុល្យ",
-      "AccountBalance":"សមតុល្យ​គណនី",
-      "AccountStatus":"ស្ថានភាពគណនី",
-      "AccountType":"ប្រភេទ​គណនី",
-      "SelectAccountStatus":"Select Account Status",
-      "FromAccount":"ពីគណនី",
-      "FromAccountName":"From Account Name",
-      "ToAccount":"To Account",
-      "AccountSettings":"Account Settings",
-      "NewSeniarAccount":"New Seniar Account",
-      "NewAgentAccount":"New Agent Account",
-      "SubSeniarAccount":"Sub Seniar Account",
-      "SubMasterAccount":"Sub Master Account",
-      "SubAgentAccount":"Sub Agent Account",
-      "FirstName":"First Name",
-      "LastName":"Last Name",
-      "Gender":"Gender",
-      "DateBirth":"Date of Birth",
-      "PhoneNumber":"Phone Number",
-      "OtherPhoneNumber":"Other Phone Number",
-      "CreateNewSeniarAccount":"Create New Account",
-      "PersonalInformations":"Personal Informations",
-      "UserAccount":"User Account",
-      "UserName":"User Name",
-      "Password":"Password",
-      "ConfirmPassword":"Confirm Password",
-      "Profile":"Profile",
-      "IdentifyInformations":"Identify Informations",
-      "IdentifyID":"Identify ID",
-      "ImageIdentify":"Image of Identify",
-      "MainAccount":"Main Account : {{account}}",
-      "Amount":"Amount",
-      "Date":"Date",
-      "Address":"Address",
-      "UpatePersonalInformation":"Update Personal Information",
-      "UpateAccountInformation":"Update Account Information",
-      "ResetPassword":"Reset Password",
-      "YourAccount":"Your Account",
-      "WithdrawalCashOut":"Withdrawal Cash Out",
-      "DepositMoney":"Deposit Money",
-      "CashOutFromAccount":"Cash Out From Account",
-      "Currency":"Currency"
+  "login":{
+    "label": {
+      "userName":"User Name",
+      "password":"Password",
+      "login":"Login",
+      "accessToOurSystem":"Access to our System"
     },
-    "Message": {
-      "DoYouWantDepositMoney":"Do you want to deposit money from account : {{fromAccountID}} to account : {{toAccountId}} amount : {{amount}} ?",
-      "AccountNameRequired":"*Account Name is required",
-      "AccountStatusRequired":"*Account Status is required",
-      "FirstNameRequired":"*First Name is required",
-      "LastNameRequired":"*Last Name is required",
-      "GenderRequired":"*Gender is required",
-      "DateBirthRequired":"*Date of birth is required",
-      "PhoneNumberRequired":"*Phone number is required",
-      "UserNameRequired":"*User Name is required",
-      "PasswordNoteFirstTime":"Password is generate by system. When user login first time need to change password again. thank",
-      "ConfirmPasswordRequired":"*Confirm Password is required",
-      "PasswordRequired":"*Password is required",
-      "PasswordReseted":"Your password reseted. Thank you",
-      "PasswordNotMatch":"Your password not match.",
-      "PasswordChanged":"Password changed",
-      "AcountBalance0":"Your acount balance is zero.",
-      "AmountRequire":"*Amount is required.",
-      "AmountOverZero":"Amount must be over zero",
-      "AccountBalanceNotEnough":"Your account balance is not an enough amount.",
-      "AccountNotEnoughBalance":"{{account}} is not enough balance."
+    "holder": {
+      "enterUserName":"Enter user name",
+      "enterPassword":"Enter password"
     },
-    "Holder": {
-      "EnterAccountID": "Enter account ID",
-      "EnterAccountName": "Enter account name",
-      "EnterAccountBalance": "Enter account balance",
-      "EnterAccountStatus": "Enter account status",
-      "EnterFirstName": "Enter first name",
-      "EnterLastName": "Enter last name",
-      "EnterDateBirth": "Enter date of birth",
-      "EnterPhoneNumber": "Enter phone number",
-      "EnterOtherPhoneNumber": "Enter other phone number",
-      "EnterUserName": "Enter user name",
-      "EnterPassword": "Enter password",
-      "EnterConfirmPassword": "Enter confirm password",
-      "EnterIdentifyID": "Enter identify ID",
-      "EnterAddress":"Enter address"
-    }
-
-  },
-  "MyAccount": {
-    "Label": {
-      "MyAccount":"My Account",
-      "AccountInformation":"Account Information",
-      "Os":"Os",
-      "OsVersion":"Os Version",
-      "Browser":"Browser",
-      "BrowserVersion":"Browser Version",
-      "Device":"Device",
-      "DeviceType":"Device Type",
-      "Orientation":"Orientation",
-      "IP":"IP",
-      "UserAgent":"User Agent"
+    "message": {
+      "userNameRequired":"*User name is required",
+      "passwordRequired":"*Password is required"
     }
   },
-  "Deposit": {
-    "Label": {
-      "FromAccount":"From account",
-      "FromAccountName":"From Account Name",
-      "DisplayToAccount":"Account ID: {{accountID}} , Account Name: {{accountName}}"
+  "movie": {
+    "label": {
+      "movieType":"ប្រភេទភាពយន្ត",
+      "addNewMovieType":"បន្ថែមប្រភេទភាពយន្តថ្មី",
+      "addMovieType":"បន្ថែមប្រភេទភាពយន្ត",
+      "movie":"ភាពយន្ត",
+      "lstMovieType":"Lst Movie Type",
+      "updateMovieType":"Update Movie Type",
+      "deleteMovieType":"Delete Movie Type"
     },
-    "Holder": {
-
+    "holder": {
+      "enterMovieType":"Enter movie type"
+    },
+    "message": {
+      "movieTypeRequired":"*Movie type is required",
+      "deleted":"Movie Type Deleted",
+      "added":"Movie type is added",
+      "udpated":"Movie type is updated",
+      "qDelete":"Do you want to delete item name {{name}} ?"
     }
   },
-  "AccountDetail": {
-    "DeviceInfo":{
-      "ID":"ID",
-      "UserAgent":"User Agent",
-      "Os":"OS",
-      "Browser":"Browser",
-      "Device":"Device",
-      "OsVersion":"OS Version",
-      "BrowserVersion":"Browser Version",
-      "DeviceType":"Device Type",
-      "Orientation":"Orientation"
+  "movieType": {
+    "label": {
+      "lstSubMovieType":"Lst Sub Movie Type",
+      "addNewSubMovieType":"Add New Sub Movie Type",
+      "addSubMovieType":"Add Sub Movie Type",
+      "subMovieType":"Sub Movie Type",
+      "updateSubMovieType":"Update Sub Movie Type",
+      "deleteSunMovieType":"Delete Sub Movie Type"
+    },
+    "holder": {
+      "enterSubMovieType":"Enter sub movie type"
+    },
+    "message": {
+      "subMovieTypeRequired":"*Sub Movie type is required",
+      "deleted":"Sub Movie Type Deleted",
+      "added":"Sub Movie Type is added",
+      "udpated":"Movie type is updated",
+      "qDelete":"Do you want delete item name {{name}} ?"
     }
   },
-  "ServerResponseCode":{
-    "Label": {
-      "Invalid_UserName":"User name is required.",
-      "Invalid_Password":"Your password isn't correct.",
-      "UserNotFound":"Invalid user name.",
-      "UserDisabled":"Your user is disable.",
-      "UserLocked":"Your account is blocked.",
-      "UserExpired":"Your user expired.",
-      "Invalid_UserID":"User id is required.",
-      "Server_Error":"Server Error",
-      "Invalid_MainAccountID":"Main account id is required.",
-      "Invalid_FirstName":"First name is required.",
-      "Invalid_LastName":"Last name is required.",
-      "Invalid_Gender":" gender is required.",
-      "Invalid_DB":"Date of birth is required.",
-      "Invalid_AccountType":"Account type is required.",
-      "Invalid_Currency":"Account currency is required.",
-      "Invalid_Token":"Invalid access token.",
-      "UserNameNotFound":"Your user name not found.",
-      "InvalidPassword":"Your password is wrong.",
-      "User_Had":"Your user name ready have.",
-      "Invalid_AccountID":"Your Account ID Invalid.",
-      "Invalid_ToAccountID":"To account ID Invalid.",
-      "Invalid_AccountStatus":"Invalid account status.",
-      "Require_Amount":"Amount is required"
+  "clientVdSetting": {
+    "label": {},
+    "message": {
+      "settingClientVideoMenuUpdate":"Setting Client Video Menu Updated to {{value}}"
+    }
+  },
+  "video": {
+    "label": {
+      "title":"ចំណងជើង",
+      "movie":"ភាពយន្ត",
+      "image":"Image",
+      "type":"Type",
+      "addNewMovie":"បន្ថែមភាពយន្តថ្មី",
+      "addMovie":"បន្ថែមភាពយន្ត",
+      "movieType":"Movie Type",
+      "subMovieType":"Sub Movie Type",
+      "runSchedule":"Show Video To Client On Date",
+      "deleteMovie":"Delete Movie",
+      "editMovie":"Edit Movie",
+      "lstMovie":"បញ្ជីភាពយន្ត",
+      "movies":"ភាពយន្ត",
+      "part":"Part"
+    },
+    "message": {
+      "titleRequired":"*Title is required",
+      "movieRequired":"*Movie Type is required",
+      "typeRequired":"*Sub movie type is required",
+      "imageRequired":"*Image is required",
+      "added":"New movie is added.",
+      "udpated":"New movie is updated.",
+      "qDelete":"Do you want delete item name {{name}} ?",
+      "deleted":"Movie is deleted."
+    },
+    "holder": {
+      "enterSubMovieType":"Enter sub movie type",
+      "enterTitle":"Enter title"
+    }
+  },
+  "videoSource": {
+    "label": {
+      "addNewMovieSource":"Add New Movie Source",
+      "movieSource":"Movie Source",
+      "addMovieSource":"Add Movie Source",
+      "part":"Part",
+      "videoIsEnd":"Video Is End",
+      "videoEnableOn":"Video Enable On"
+    },
+    "message": {
+      "partRequired":"*Part is required",
+      "videoSourceRequired":"*Video Source is required"
+    },
+    "holder": {
+      "enterPart":"Enter part",
+      "selectDate":"Select Date"
+    }
+  },
+  "serverResponseCode":{
+    "label": {
+      "unknown":"Unknown Error.",
+      "serverError":"Server Error.",
+      "apiNotFound":"Api Not Found.",
+      "sessionExpired":"Session Expired.",
+      "inValidMovieTypeIdWithValue":"Invalid Movie Type Id : {{value}}.",
+      "inValidMovieTypeId":"Invalid Movie Type Id.",
+      "userNotFound":"User Name Not Found.",
+      "accountLocked":"User is locked.",
+      "userDisabled":"user is disabled.",
+      "userExpired":"User is expired login.",
+      "invalidPassword":"Enter wrong password",
+      "inValidVdId":"Invalid Movie Type Id.",
+      "errorConectionRefused":"Error conection refused."
     }
   }
 }

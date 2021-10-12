@@ -15,6 +15,7 @@ import { MovieAddComponent } from './movie-add/movie-add.component';
 import { MovieEditComponent } from './movie-edit/movie-edit.component';
 import { MovieTypeAddComponent } from './movie-type-add/movie-type-add.component';
 import { MovieTypeEditComponent } from './movie-type-edit/movie-type-edit.component';
+import { VideoPreViewComponent } from './video-pre-view/video-pre-view.component';
 
 const routes: Routes = [
   {
@@ -28,7 +29,7 @@ const routes: Routes = [
       {path: 'vd-source-play', component: VideoSourcePlayComponent},
       {path: 'vd-source-add', component: VideoSourceAddComponent},
       {path: 'vd-source-edit', component: VideoSourceEditComponent},
-
+      {path: 'vd-source-pre-view', component: VideoPreViewComponent},
       {path: 'seting-movie-type', component: MovieTypeComponent},
       {path: 'seting-movie-type-add', component: MovieTypeAddComponent},
       {path: 'seting-movie-type-edit', component: MovieTypeEditComponent},

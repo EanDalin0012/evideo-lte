@@ -17,6 +17,7 @@ export enum LOCAL_STORAGE {
   Setting_Movie_Add           = 'Setting-Movie-Add',
   Setting_Movie_Type_Edit     = 'Setting-Movie-Type-Edit',
   VdSource        = 'vd-source',
+  VdSourcePreview        = 'VdSourcePreview',
   VdSourceEdit    = 'vd-source-edit',
   videoSourceAdd  = 'videoSourceAdd',
   videoSourceEdit  = 'videoSourceEdit',

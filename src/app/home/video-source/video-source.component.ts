@@ -57,6 +57,8 @@ export class VideoSourceComponent implements OnInit, OnDestroy {
     const data = Utils.getSecureStorage(LOCAL_STORAGE.VdSource);
     const decryptString = EncryptionUtil.decrypt(data);
     this.jsonData = JSON.parse(decryptString);
+    console.log(this.jsonData);
+
     this.src = this.baseUrl+"/unsecur/api/image/reader/v0/read/"+this.jsonData.resourceId;
 
     this.inquiry();
@@ -116,8 +118,12 @@ export class VideoSourceComponent implements OnInit, OnDestroy {
 
   // Get videoSource Type  Api Call
   inquiry() {
-    const api = '/api/videoSource/v0/read';
-    this.hTTPService.Get(api).then(response => {
+    const api = '/api/videoSource/v0/inquiry';
+    const data = {
+      vdId: this.jsonData.id
+    };
+    this.hTTPService.Post(api, data).then(response => {
+
       if(response.result.responseCode !== HTTPResponseCode.Success) {
         this.showErrMsg(response.result.responseMessage);
       }else {
@@ -137,10 +143,14 @@ export class VideoSourceComponent implements OnInit, OnDestroy {
   onCellDoubleClicked(event:any) {
     if(event) {
       console.log(this.lstVideoSource[event.rowIndex]);
-      const jsonString = JSON.stringify(this.lstVideoSource[event.rowIndex]);
+      const dataInfo = {
+        jsonData: this.jsonData,
+        itemInfo: this.lstVideoSource[event.rowIndex]
+      };
+      const jsonString = JSON.stringify(dataInfo);
       const encryptString = EncryptionUtil.encrypt(jsonString.toString()).toString();
-      Utils.setSecureStorage(LOCAL_STORAGE.VdSource, encryptString);
-      // this.router.navigate(['home/vd-source']);
+      Utils.setSecureStorage(LOCAL_STORAGE.VdSourcePreview, encryptString);
+      this.router.navigate(['home/vd-source-pre-view']);
     }
   }
 

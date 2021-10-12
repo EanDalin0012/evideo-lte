@@ -1,18 +1,17 @@
 <!-- Page Content -->
 <div class="content container-fluid">
-
-  <!-- Page Header -->
-  <div class="page-header">
-    <div class="row align-items-center">
-        <div class="col">
-            <h3 class="page-title">Lst Movie Source</h3>
-            <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a routerLink="/home">Movies</a></li>
-                <li class="breadcrumb-item active">Movies Source</li>
-            </ul>
-        </div>
-    </div>
+<!-- Page Header -->
+<div class="page-header">
+  <div class="row align-items-center">
+      <div class="col">
+          <h3 class="page-title">Lst Movie Source</h3>
+          <ul class="breadcrumb">
+              <li class="breadcrumb-item"><a routerLink="/home/vd-source">Movies</a></li>
+              <li class="breadcrumb-item active">Movies Source</li>
+          </ul>
+      </div>
   </div>
+</div>
 <!-- /Page Header -->
 
 <!-- Content Tile -->
@@ -39,6 +38,12 @@
                                       <div class="text"><a>{{jsonData.vdName}}</a></div>
                                   </li>
                                   <li>
+                                    <div class="title">Part:</div>
+                                    <div class="text">
+                                      <a href="javascript:">{{itemInfo.part}}</a>
+                                    </div>
+                                </li>
+                                  <li>
                                     <div class="title">Movie:</div>
                                     <div class="text"><a href="javascript:">{{jsonData.vdTypeName}}</a></div>
                                   </li>
@@ -54,6 +59,7 @@
                                         <a href="javascript:">{{jsonData.remark}}</a>
                                       </div>
                                   </li>
+
                                   <li>
                                       <div class="title">Create At:</div>
                                       <div class="text">
@@ -77,55 +83,15 @@
   <!-- /Content Tile -->
 
   <div class="row">
-    <div class="row col-md-12">
-      <div>
-        <button (click)="addMovieSource()" class="btn btn-sm btn-primary float-left" type="button">
-          <i class="fa fa-plus-circle"></i>
-          {{'video.label.addMovie' | translate}}
-        </button>
-        <button  [disabled] = "disabled" class="btn btn-sm btn-primary float-left left-12" type="button">
-          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-          {{'common.button.edit' | translate}}
-        </button>
-        <button  [disabled] = "disabled" class="btn btn-sm btn-primary float-left left-12" type="button">
-          <i class="fa fa-trash-o" aria-hidden="true"></i>
-          {{'common.button.delete' | translate}}
-        </button>
+    <div class="col-md-12 col-lg-6 col-xl-7 d-flex">
+      <div class="card flex-fill" style="height: 460px;">
+          <div class="card-body">
+              <h4 class="card-title">Video Pre-Veiw</h4>
 
-        <div style="width: 300px;" class="float-right">
-          <input type="text" class="form-control form-control-sm" [(ngModel)]="search" (focus)="onFocusEvent($event)" (input)="searchChange($event)" placeholder="{{'common.label.searchNameThere' | translate}} ...">
-          <!-- <div class="dropdown-menu"  style="position: absolute; width: 300px;" [ngClass]="{'show': onFocusInt}">
-            <a  href="javascript:" class="dropdown-item" *ngFor="let item of lstSearch" (click)="searchHistoryClick(item)">
-              <i class="fa fa-history" aria-hidden="true"></i>
-              <span style= "margin-left: 10px;">{{item?.search}}</span>
-            </a>
-          </div> -->
+              <video type="video/mp4" [src]="videoSrc" controls controlsList="nodownload" style="width: 100%;"></video>
+
+          </div>
       </div>
-        <label class="col-form-label float-right" style="width: 80px;">{{'common.label.search' | translate}} :</label>
-      </div>
-    </div>
-
-    <div class="row col-md-12">
-      <ag-grid-angular
-      #agGrid
-      style="width: 100%; height: 500px;"
-      id="myGrid"
-      class="ag-theme-alpine"
-      [modules]="modules"
-      [columnDefs]="columnDefs"
-      [frameworkComponents]="frameworkComponents"
-      [defaultColDef]="defaultColDef"
-      [rowData]="rowData"
-      [rowSelection]="rowSelection"
-      (selectionChanged)="onSelectionChanged($event)"
-      (cellDoubleClicked)="onCellDoubleClicked($event)"
-      (gridReady)="onGridReady($event)"
-      [isRowSelectable]="isRowSelectable"
-      [pagination]="pagination"
-      [paginationPageSize]="paginationPageSize"
-      ></ag-grid-angular>
-    </div>
-
   </div>
-
+  </div>
 </div>

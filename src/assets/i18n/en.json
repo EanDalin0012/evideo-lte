@@ -140,7 +140,10 @@
       "subMovieType":"Sub Movie Type",
       "runSchedule":"Show Video To Client On Date",
       "deleteMovie":"Delete Movie",
-      "editMovie":"Edit Movie"
+      "editMovie":"Edit Movie",
+      "lstMovie":"Lst Movie",
+      "movies":"Movies",
+      "part":"Part"
     },
     "message": {
       "titleRequired":"*Title is required",
@@ -155,6 +158,24 @@
     "holder": {
       "enterSubMovieType":"Enter sub movie type",
       "enterTitle":"Enter title"
+    }
+  },
+  "videoSource": {
+    "label": {
+      "addNewMovieSource":"Add New Movie Source",
+      "movieSource":"Movie Source",
+      "addMovieSource":"Add Movie Source",
+      "part":"Part",
+      "videoIsEnd":"Video Is End",
+      "videoEnableOn":"Video Enable On"
+    },
+    "message": {
+      "partRequired":"*Part is required",
+      "videoSourceRequired":"*Video Source is required"
+    },
+    "holder": {
+      "enterPart":"Enter part",
+      "selectDate":"Select Date"
     }
   },
   "serverResponseCode":{

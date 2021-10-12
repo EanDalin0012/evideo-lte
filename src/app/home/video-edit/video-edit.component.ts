@@ -66,7 +66,9 @@ export class VideoEditComponent implements OnInit, OnDestroy {
     const url = (window.location.href).split('/');
     this.dataService.visitParamRouterChange(url[4]);
   }
+
   ngOnDestroy(): void {
+    Utils.removeSecureStorage(LOCAL_STORAGE.VdSourceEdit);
   }
 
   ngOnInit() {

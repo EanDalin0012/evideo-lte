@@ -120,18 +120,15 @@ export class SlidebarComponent implements OnInit {
     // });
 
     this.dataService.visitSourceParamRoutorChangeData.subscribe(message => {
-      let account_type = Utils.getSecureStorage(LOCAL_STORAGE.AccountTypeCode);
+      // let account_type = Utils.getSecureStorage(LOCAL_STORAGE.AccountTypeCode);
       let msg = '';
       if (message !== '') {
         msg = message;
-      } else {
-        this.accountType = account_type;
-        msg = account_type;
       }
       this.activeSidebar(msg);
     });
 
-    this.accountInfo = Utils.getSecureStorage(LOCAL_STORAGE.Account_Info);
+    // this.accountInfo = Utils.getSecureStorage(LOCAL_STORAGE.Account_Info);
 
   }
 
@@ -142,7 +139,7 @@ export class SlidebarComponent implements OnInit {
   routerAccount() {
     this.urlComplete.mainUrl = 'acc';
     this.urlComplete.subUrl = this.accountInfo.accountType;
-    Utils.setSecureStorage(LOCAL_STORAGE.AccountTypeCode, this.accountInfo.accountType);
+    // Utils.setSecureStorage(LOCAL_STORAGE.AccountTypeCode, this.accountInfo.accountType);
     this.dataService.visitParamRouterChange('acc');
     this.onNavigateRoutor('/acc/');
   }

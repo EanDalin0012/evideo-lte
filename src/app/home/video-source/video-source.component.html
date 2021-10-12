@@ -11,10 +11,6 @@
                 <li class="breadcrumb-item active">Movies Source</li>
             </ul>
         </div>
-        <!-- <div class="col-auto float-right ml-auto">
-            <a  class="btn add-btn" data-toggle="modal" data-target="#add_holiday"><i
-                    class="fa fa-plus"></i> Add Movie</a>
-        </div> -->
     </div>
   </div>
 <!-- /Page Header -->
@@ -83,7 +79,7 @@
   <div class="row">
     <div class="row col-md-12">
       <div>
-        <button class="btn btn-sm btn-primary float-left" type="button">
+        <button (click)="addMovieSource()" class="btn btn-sm btn-primary float-left" type="button">
           <i class="fa fa-plus-circle"></i>
           {{'video.label.addMovie' | translate}}
         </button>
@@ -96,7 +92,7 @@
           {{'common.button.delete' | translate}}
         </button>
 
-        <div style="width: 300px;" class="float-right">
+        <div style="width: 300px; height: 190px;" class="float-right">
           <input type="text" class="form-control form-control-sm" [(ngModel)]="search" (focus)="onFocusEvent($event)" (input)="searchChange($event)" placeholder="{{'common.label.searchNameThere' | translate}} ...">
           <!-- <div class="dropdown-menu"  style="position: absolute; width: 300px;" [ngClass]="{'show': onFocusInt}">
             <a  href="javascript:" class="dropdown-item" *ngFor="let item of lstSearch" (click)="searchHistoryClick(item)">
@@ -122,6 +118,7 @@
       [rowData]="rowData"
       [rowSelection]="rowSelection"
       (selectionChanged)="onSelectionChanged($event)"
+      (cellDoubleClicked)="onCellDoubleClicked($event)"
       (gridReady)="onGridReady($event)"
       [isRowSelectable]="isRowSelectable"
       [pagination]="pagination"

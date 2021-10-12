@@ -12,17 +12,14 @@ export enum AES_INFO {
 }
 
 export enum LOCAL_STORAGE {
-  DEVICE_INFO     = 'deviceInfo',
-  MOVEI_Edit     = 'Movei-edit',
-  Setting_Movie_Add     = 'Setting-Movie-Add',
+  DEVICE_INFO               = 'deviceInfo',
+  MOVEI_Edit                  = 'Movei-edit',
+  Setting_Movie_Add           = 'Setting-Movie-Add',
   Setting_Movie_Type_Edit     = 'Setting-Movie-Type-Edit',
-  VdSource    = 'vd-source',
+  VdSource        = 'vd-source',
   VdSourceEdit    = 'vd-source-edit',
-  ToAddMovieSource    = 'ToAddMovieSource',
-  Account_Info     = 'AccountInfo',
-  SubAccountSenair = "Sub-Account-Senair",
-  SubAccountMaster = "Sub-Account-Master",
-  SubAccountAgent = "Sub-Account-Agent",
+  videoSourceAdd  = 'videoSourceAdd',
+  videoSourceEdit  = 'videoSourceEdit',
   NekWorkIP       = 'NekWorkIP',
   CONTENTS_VERSION= 'contentsVersion',
   PRE_TRANSACTION = 'preTransaction',
@@ -34,7 +31,6 @@ export enum LOCAL_STORAGE {
   LAST_EVENT_TIME = 'lastEventTime',
   LAST_TIME_CHECK_NOTIFICATION = 'theLastTimeCheckNotification',
   Authorization   = 'Authorization',
-  AccountTypeCode = 'AccountTypeCode',
   SearchHistoryVideo = 'SearchHistoryVideo'
 }
 

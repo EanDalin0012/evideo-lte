@@ -44,7 +44,7 @@ export class VideoSourceEditComponent implements OnInit {
     this.dataService.visitParamRouterChange(url[3]);
   }
   ngOnDestroy(): void {
-    Utils.removeSecureStorage(LOCAL_STORAGE.ToAddMovieSource);
+    Utils.removeSecureStorage(LOCAL_STORAGE.videoSourceEdit);
   }
 
   ngOnInit() {
@@ -77,7 +77,7 @@ export class VideoSourceEditComponent implements OnInit {
       }
     ];
 
-    const data = Utils.getSecureStorage(LOCAL_STORAGE.ToAddMovieSource);
+    const data = Utils.getSecureStorage(LOCAL_STORAGE.videoSourceEdit);
     const decryptString = EncryptionUtil.decrypt(data);
     this.jsonData = JSON.parse(decryptString);
     console.log('decyptionString', decryptString);

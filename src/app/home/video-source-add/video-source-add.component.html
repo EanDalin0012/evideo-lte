@@ -7,10 +7,10 @@
         <div class="page-header">
           <div class="row align-items-center">
               <div class="col">
-                  <h3 class="page-title">Add New Movie Source</h3>
+                  <h3 class="page-title">{{'videoSource.label.addNewMovieSource' | translate}}</h3>
                   <ul class="breadcrumb">
-                      <li class="breadcrumb-item"><a routerLink = '/home/vd-source'>Movie Source</a></li>
-                      <li class="breadcrumb-item active">Add Movie Source</li>
+                      <li class="breadcrumb-item"><a routerLink = '/home/vd-source'>{{'videoSource.label.movieSource' | translate}}</a></li>
+                      <li class="breadcrumb-item active">{{'videoSource.label.addMovieSource' | translate}}</li>
                   </ul>
               </div>
           </div>
@@ -23,51 +23,70 @@
             <div class="row">
               <div class="col-sm-6">
                   <div class="form-group">
-                      <label>Title<span class="text-danger">*</span></label>
-                      <input class="form-control" type="text" value="Dreamguy's Technologies"
-                          [class.invalid]="form.get('title').invalid && form.get('title').touched"
-                          formControlName="title">
-                      <div *ngIf="submitted && f.stateMovie.errors">
-                          <small class="text-danger"> *Company name is required</small>
+                      <label>{{'video.label.title' | translate}}<span class="text-danger">*</span></label>
+                      <input #title class="form-control form-control-sm" type="text" formControlName="title">
+                      <div *ngIf="submitted && f.title.errors">
+                          <small class="text-danger">{{'video.message.titleRequired' | translate}}</small>
                       </div>
                   </div>
               </div>
               <div class="col-sm-6">
                   <div class="form-group">
-                      <label>Part<span class="text-danger">*</span></label>
-                      <input class="form-control" type="text" placeholder="Enter part"
-                          formControlName="part">
-                      <div *ngIf="submitted && f.state.errors">
-                          <small class="text-danger"> *Contact person is required</small>
+                      <label>{{'videoSource.label.part' | translate}}<span class="text-danger">*</span></label>
+                      <input #part formControlName="part" class="form-control form-control-sm" type="text" placeholder="{{'videoSource.holder.enterPart' | translate}}">
+                      <div *ngIf="submitted && f.part.errors">
+                          <small class="text-danger">{{'videoSource.message.partRequired' | translate}}</small>
                       </div>
                   </div>
               </div>
             </div>
 
-              <div class="row">
-                  <div class="col-sm-12">
-                      <div class="form-group">
-                          <label>Remark</label>
-                          <input class="form-control " placeholder="Enter remark"
-                              type="text" formControlName="remark">
-                          <div *ngIf="submitted && f.remark.errors">
-                              <small class="text-danger"> *Address is required</small>
-                          </div>
-                      </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group cal-icon">
+                        <label>{{'video.label.runSchedule' | translate}}</label>
+                        <input class="form-control datetimepicker form-control-sm" type="text" bsDatepicker type="text"
+                                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                                        placeholder="{{'videoSource.holder.selectDate' | translate}}"
+                                        formControlName="onSchedule">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="d-block">{{'videoSource.label.videoIsEnd' | translate}}</label>
+                    <div class="status-toggle">
+                      <input formControlName="isEnd" type="checkbox" id="unit_calculation" class="check">
+                      <label for="unit_calculation" class="checktoggle">checkbox</label>
+                  </div>
                   </div>
 
               </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                    <label>{{'common.label.remark' | translate}}</label>
+                    <input class="form-control form-control-sm" type="text" formControlName="remark" placeholder="{{'common.holder.enterRemark' | translate}}">
+                </div>
+            </div>
+          </div>
+
 
               <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group">
                         <label>Video</label>
 
-                        <input type="file" formControlName="fileSource" accept="video/mp4,video/x-m4v,video/*" (change)="selectFile($event)" class="form-control"/>
+                        <input type="file"  #fileSource formControlName="fileSource" accept="video/mp4,video/x-m4v,video/*" (change)="selectFile($event)" class="form-control"/>
 
 <!--
                         <img [src]="imageSrc"  style="height: 300px; width:500px"> -->
-                        <video [src]="url" *ngIf="format==='video' && url" height="200" controls></video> <br/>
+                        <ng-container *ngIf="format==='video' && url">
+                          <video [src]="url"  height="200" controls></video>
+                        </ng-container>
+
+                         <br/>
 
                         <div *ngIf="currentFile" class="progress my-3">
                           <div
@@ -83,7 +102,7 @@
                         </div>
 
                         <div *ngIf="submitted && f.fileSource.errors">
-                        <small class="text-danger"> *Light logo is required</small>
+                        <small class="text-danger">{{'videoSource.message.videoSourceRequired' | translate}}</small>
                     </div>
 
                     </div>
@@ -93,7 +112,7 @@
               <div class="submit-section">
                 <button (click)="save()" class="btn btn-sm btn-primary float-right" type="button" data-toggle="modal" data-target="#add_custom_policy">
                   <i class="fa fa-floppy-o"></i>
-                  Save
+                  {{'common.button.save' | translate}}
                 </button>
               </div>
           </form>

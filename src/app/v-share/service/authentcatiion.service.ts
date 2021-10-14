@@ -187,7 +187,6 @@ export class AuthentcatiionService {
         this.httpClient.get(uri, {headers}).subscribe(rest => {
           const result = rest as any;
           if(result.body && result.body.responseCode === '200') {
-            localStorage.clear();
             this.router.navigate(["/login"]);
             resolve(result.body);
           } else {

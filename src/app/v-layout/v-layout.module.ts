@@ -4,6 +4,7 @@ import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { SlidebarComponent } from './slidebar/slidebar.component';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { VShareModule } from '../v-share/v-share.module';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
   ],
   imports: [
     CommonModule,
-    PerfectScrollbarModule
+    PerfectScrollbarModule,
+    VShareModule
   ],
   exports: [
     FooterComponent,

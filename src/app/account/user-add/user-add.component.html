@@ -1,40 +1,249 @@
 <!-- Page Content -->
 <div class="content container-fluid">
-  <!-- Page Header -->
-  <div class="page-header">
-    <div class="row align-items-center">
-        <div class="col">
-            <h3 class="page-title">Movie</h3>
-            <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:">Setting</a></li>
-                <li class="breadcrumb-item active">Movies</li>
-            </ul>
-        </div>
-        <div class="col-auto float-right ml-auto">
-          <button  class="btn btn-sm btn-primary float-right" type="button" data-toggle="modal" data-target="#add_custom_policy">
-            <i class="fa fa-plus-circle"></i>
-            Add Movie-Type
-          </button>
-        </div>
-    </div>
-  </div>
+  <div class="row">
+      <div class="col-md-8 offset-md-2">
 
-  <!-- /Page Header -->
-  <table datatable [dtOptions]="dtOptions" class="row-border hover">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Title</th>
-        <th>Body</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let post of posts">
-        <td>{{ post.id }}</td>
-        <td>{{ post.title }}</td>
-        <td>{{ post.body }}</td>
-      </tr>
-    </tbody>
-  </table>
+        <!-- Page Header -->
+        <div class="page-header">
+          <div class="row align-items-center">
+              <div class="col">
+                  <h3 class="page-title">{{'users.label.user' | translate}}</h3>
+                  <ul class="breadcrumb">
+                      <li class="breadcrumb-item"><a routerLink = '/account'>{{'users.label.user' | translate}}</a></li>
+                      <li class="breadcrumb-item active">{{'users.label.addNewUser' | translate}}</li>
+                  </ul>
+              </div>
+          </div>
+        </div>
+        <!-- /Page Header -->
 
+          <form [formGroup]="form">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group">
+                      <label>{{'users.label.nserName' | translate}}<span class="text-danger">*</span></label>
+                      <input #title class="form-control form-control-sm" type="text" formControlName="title" placeholder="{{'users.holder.enterUserName' | translate}}">
+                      <div *ngIf="submitted && f.title.errors">
+                          <small class="text-danger">{{'users.message.userNameRequired' | translate}}</small>
+                      </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>{{'users.label.password' | translate}}<span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="text" formControlName="remark" placeholder="{{'users.holder.enterPassword' | translate}}">
+                        <div *ngIf="submitted && f.stateMovie.errors">
+                            <small class="text-danger">{{'users.message.passwordRequired' | translate}}</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>{{'users.label.confirmPassword' | translate}}<span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="text" formControlName="remark" placeholder="{{'users.holder.enterConfirmPassword' | translate}}">
+                        <div *ngIf="submitted && f.state.errors">
+                            <small class="text-danger">{{'users.message.confirmPasswordRequired' | translate}}</small>
+                        </div>
+                    </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group cal-icon">
+                        <label>{{'users.label.dateBirth' | translate}}<span class="text-danger">*</span></label>
+                        <input class="form-control datetimepicker form-control-sm" type="text" bsDatepicker type="text"
+                                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                                        placeholder="{{'users.holder.selectDate' | translate}}"
+                                        formControlName="onSchedule">
+                        <div *ngIf="submitted && f.stateMovie.errors">
+                            <small class="text-danger">{{'users.message.dateBirthRequired' | translate}}</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>{{'users.label.phoneNumber' | translate}}<span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="text" formControlName="remark" placeholder="{{'users.holder.enterPhoneNumber' | translate}}">
+                        <div *ngIf="submitted && f.state.errors">
+                            <small class="text-danger">{{'users.message.phoneNumberRequired' | translate}}</small>
+                        </div>
+                    </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label>{{'users.label.role' | translate}}</label>
+                        <select #stateMovie class="form-control form-control-sm select"
+                              formControlName="stateMovie">
+                              <option *ngFor="let state of lstMovies" [ngValue]="state">
+                                {{ state.name }}
+                              </option>
+                          </select>
+                          <div *ngIf="submitted && f.stateMovie.errors">
+                              <small class="text-danger">{{'video.message.movieRequired' | translate}}</small>
+                          </div>
+                    </div>
+                </div>
+            </div>
+
+              <div class="table-responsive m-t-15">
+                <table class="table table-striped custom-table">
+                    <thead>
+                        <tr>
+                            <th>Module Permission</th>
+                            <th class="text-center">Read</th>
+                            <th class="text-center">Write</th>
+                            <th class="text-center">Create</th>
+                            <th class="text-center">Delete</th>
+                            <th class="text-center">Import</th>
+                            <th class="text-center">Export</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Employee</td>
+                            <td class="text-center">
+                                <input checked="" type="checkbox">
+                            </td>
+                            <td class="text-center">
+                                <input checked="" type="checkbox">
+                            </td>
+                            <td class="text-center">
+                                <input checked="" type="checkbox">
+                            </td>
+                            <td class="text-center">
+                                <input checked="" type="checkbox">
+                            </td>
+                            <td class="text-center">
+                                <input checked="" type="checkbox">
+                            </td>
+                            <td class="text-center">
+                                <input checked="" type="checkbox">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Holidays</td>
+                            <td class="text-center">
+                                <input checked="" type="checkbox">
+                            </td>
+                            <td class="text-center">
+                                <input checked="" type="checkbox">
+                            </td>
+                            <td class="text-center">
+                                <input checked="" type="checkbox">
+                            </td>
+                            <td class="text-center">
+                                <input checked="" type="checkbox">
+                            </td>
+                            <td class="text-center">
+                                <input checked="" type="checkbox">
+                            </td>
+                            <td class="text-center">
+                                <input checked="" type="checkbox">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Leaves</td>
+                            <td class="text-center">
+                                <input checked="" type="checkbox">
+                            </td>
+                            <td class="text-center">
+                                <input checked="" type="checkbox">
+                            </td>
+                            <td class="text-center">
+                                <input checked="" type="checkbox">
+                            </td>
+                            <td class="text-center">
+                                <input checked="" type="checkbox">
+                            </td>
+                            <td class="text-center">
+                                <input checked="" type="checkbox">
+                            </td>
+                            <td class="text-center">
+                                <input checked="" type="checkbox">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Events</td>
+                            <td class="text-center">
+                                <input checked="" type="checkbox">
+                            </td>
+                            <td class="text-center">
+                                <input checked="" type="checkbox">
+                            </td>
+                            <td class="text-center">
+                                <input checked="" type="checkbox">
+                            </td>
+                            <td class="text-center">
+                                <input checked="" type="checkbox">
+                            </td>
+                            <td class="text-center">
+                                <input checked="" type="checkbox">
+                            </td>
+                            <td class="text-center">
+                                <input checked="" type="checkbox">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+              </div>
+
+
+              <div class="row">
+                  <div class="col-sm-12">
+                      <div class="form-group">
+                          <label>{{'common.label.remark' | translate}}</label>
+                          <input class="form-control form-control-sm" type="text" formControlName="remark" placeholder="{{'common.holder.enterRemark' | translate}}">
+                      </div>
+                  </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label>{{'users.label.profile' | translate}}</label>
+
+                        <input #fileSource type="file" formControlName="fileSource"  accept="image/png, image/jpeg" (change)="selectFile($event)" class="form-control form-control-sm" placeholder="select file"/>
+
+                        <div class="back" [ngStyle]="{'background-image': 'url(' + imageSrc + ')'}" *ngIf="imageSrc">
+
+                        </div>
+
+                        <div *ngIf="currentFile" class="progress my-3">
+                          <div
+                            class="progress-bar progress-bar-info progress-bar-striped"
+                            role="progressbar"
+                            attr.aria-valuenow="{{ progress }}"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                            [ngStyle]="{ width: progress + '%' }"
+                          >
+                            {{ progress }}%
+                          </div>
+                        </div>
+
+                        <div *ngIf="submitted && f.fileSource.errors">
+                        <small class="text-danger"> {{'video.message.imageRequired' | translate}}</small>
+                    </div>
+
+                    </div>
+                </div>
+            </div>
+
+              <div class="submit-section">
+                <button (click)="save()" class="btn btn-sm btn-primary float-right" type="button">
+                  <i class="fa fa-floppy-o"></i>
+                  {{'common.button.save' | translate}}
+                </button>
+              </div>
+          </form>
+      </div>
   </div>
+</div>
+<!-- /Page Content -->

@@ -1,23 +1,39 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { ColDef, Module } from 'ag-grid-community';
-import { ToastrService } from 'ngx-toastr';
+import {  Component, OnInit, ElementRef } from '@angular/core';
+import { ViewChild } from "@angular/core";
+import { ToastrService } from "ngx-toastr";
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { DataService } from '../../v-share/service/data.service';
 import { Router } from '@angular/router';
 import { HTTPService } from '../../v-share/service/http.service';
 import { TranslateService } from '@ngx-translate/core';
-import { MyImgComponent } from '../my-img/my-img.component';
+declare const $: any;
 import { AllCommunityModules } from '@ag-grid-community/all-modules';
+import { ColDef } from 'ag-grid-community';
+import { HTTPResponseCode } from '../../v-share/constants/common.const';
+import { StatusYNComponent } from '../../v-share/component/status-yn/status-yn.component';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
+  // Add Modal
+  submitted: boolean = false;
+  public form: any;
+  @ViewChild("movieType") inputMovieType: any;
+
+  // Edit Modal
+  editSubmitted: boolean = false;
+  public formEdit: any;
+  @ViewChild("editMovieType") inputEditMovieType: any;
+
+  selectedJson: any;
+
   lstMovies: any[] = [];
+  disabled = true;
+
   pagination = true;
-  paginationPageSize = 10;
+  paginationPageSize = 20;
   gridApi:any;
   gridColumnApi :any;
   public modules: any[] = AllCommunityModules;
@@ -25,42 +41,68 @@ export class UserComponent implements OnInit {
   defaultColDef: any;
   columnDefs: ColDef[] = [];
   rowData: any;
+  rowSelection: any;
+  isRowSelectable: any;
 
-constructor(
+  constructor(
+    private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private dataService: DataService,
     private router: Router,
     private hTTPService: HTTPService,
-    private translate: TranslateService,
-   private http: HttpClient) {
+    private translate: TranslateService
+  ) {
 
-}
-  ngOnInit(): void {
+    const url = (window.location.href).split('/');
+    this.dataService.visitParamRouterChange(url[3]);
+
+    this.form as FormGroup;
+    this.formEdit as FormGroup;
+    this.inputMovieType as ElementRef;
+    this.inputEditMovieType as ElementRef;
+
+    this.form = this.formBuilder.group({
+      movieType: ['', [Validators.required]],
+      remark: ['', [Validators.required]]
+    });
+
+    this.formEdit = this.formBuilder.group({
+      editMovieType: ['', [Validators.required]],
+      editRemark: ['', [Validators.required]]
+    });
+
+  }
+
+  checked = false;
+
+  ngOnInit() {
+
+    this.inquiry();
+
     this.columnDefs = [
-      { field: 'athlete' },
-      { field: 'year' },
       {
-        field: 'gold',
-        cellRenderer: 'medalCellRenderer',
+        headerName: '#',
+        field: 'id', minWidth: 50, width: 50},
+      {
+        headerName: this.translate.instant('common.label.name'),
+        field: 'name'
       },
       {
-        field: 'silver',
-        cellRenderer: 'medalCellRenderer',
+        headerName: this.translate.instant('common.label.remark'),
+        field: 'remark',
       },
       {
-        field: 'bronze',
-        cellRenderer: 'medalCellRenderer',
-      },
-      {
-        field: 'total',
-        minWidth: 175,
-        cellRenderer: 'totalValueRenderer',
-      },
+        headerName: this.translate.instant('common.label.settingClientVideoMenu'),
+        field: 'status',
+        cellRenderer: 'statusYN',
+        cellClass: 'text-center'
+      }
     ];
+
     this.frameworkComponents = {
-      medalCellRenderer: MyImgComponent,
-      totalValueRenderer: MyImgComponent,
+      statusYN: StatusYNComponent
     };
+
     this.defaultColDef = {
       editable: false,
       sortable: true,
@@ -69,57 +111,195 @@ constructor(
       filter: true,
       resizable: true,
     };
-    this.inquiry();
 
-  }
+    this.rowSelection = 'multiple';
+    this.isRowSelectable = function (rowNode: any) {
+      return rowNode.data;
+    };
 
-  inquiry() {
-
-    const api = '/api/movie-type/v0/read';
-    this.hTTPService.Get(api).then(response => {
-      console.log(response);
-
-      if (response) {
-        this.lstMovies = response;
-        this.rowData = this.lstMovies;
-        // this.setColumns(this.columnDefs);
-      }
-    });
-  }
-
-  setColumns(columns: any[]) {
-    this.columnDefs = [];
-    columns.forEach((column: any) => {
-      console.log('columns', column);
-
-      let definition: ColDef = { headerName: column, field: column, width: 120 };
-      if (column === 'image') {
-        console.log('ddd');
-
-        definition.cellRendererFramework = MyImgComponent;
-        definition.cellRendererParams = {
-          inRouterLink: column,
-        };
-      }
-      // else if (column.endsWith('Date')) {
-      //   definition.valueFormatter = (data) => this.dateFormatter.transform(data.value, 'shortDate');
-      // } else if (column === 'price') {
-      //   definition.valueFormatter = (data) => this.numberFormatter.transform(data.value, '1.2-2');
-      //   definition.type = 'numericColumn';
-      // }
-      this.columnDefs.push(definition);
-    });
   }
 
   onGridReady(params:any) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
+    this.inquiry();
+  }
 
-    this.http
-      .get('https://www.ag-grid.com/example-assets/olympic-winners.json')
-      .subscribe((data) => {
-        this.rowData = data;
+  onSelectionChanged(event: any) {
+    var selectedRows = this.gridApi.getSelectedRows();
+    if(selectedRows) {
+      this.disabled = false;
+    }
+  }
+
+  getSelectedRowData(note:string) {
+    let selectedNodes = this.gridApi.getSelectedNodes();
+    let selectedData = selectedNodes.map((node: { data: any; }) => node.data);
+    this.selectedJson = selectedData[0];
+    if(note === 'edit') {
+      this.formEdit.patchValue({
+        editMovieType: this.selectedJson.name,
+        editRemark: this.selectedJson.remark
       });
+      $("#edit_movie_type").modal("show");
+    } else if (note === 'delete') {
+      $("#delele").modal("show");
+    }
+    return selectedData;
+  }
+
+  onBtnExport() {
+    this.gridApi.exportDataAsCsv();
+  }
+
+  new() {
+    this.router.navigate(['/account/user-add']);
+  }
+
+  save() {
+    this.submitted = true;
+    if(this.f.movieType.errors) {
+      this.inputMovieType.nativeElement.focus();
+    } else {
+      const data = this.form.getRawValue();
+      const api = '/api/movie-type/v0/create';
+      const jsonData = {
+        name: data.movieType,
+        remark: data.remark
+      };
+      this.hTTPService.Post(api, jsonData).then(response => {
+        if(response.result.responseCode === HTTPResponseCode.Success) {
+          this.inquiry();
+          this.toastr.info(this.translate.instant('movie.message.added'), this.translate.instant('common.label.success'),{
+            timeOut: 5000,
+          });
+          this.form = this.formBuilder.group({
+            movieType: '',
+            remark: ''
+          });
+          $("#add_movie_type").modal("hide");
+        } else {
+          this.showErrMsg(response.result.responseMessage);
+        }
+      });
+    }
+  }
+
+  update() {
+    this.editSubmitted = true;
+    if(this.fEdit.editMovieType.errors) {
+      this.inputEditMovieType.nativeElement.focus();
+    } else if(!this.selectedJson.id) {
+      this.showErrMsg('unSelectRow');
+    } else {
+      const data = this.formEdit.getRawValue();
+      const api = '/api/movie-type/v0/update';
+      const jsonData = {
+        id: this.selectedJson.id,
+        name: data.editMovieType,
+        remark: data.editRemark
+      };
+      this.hTTPService.Post(api, jsonData).then(response => {
+        if(response.result.responseCode === HTTPResponseCode.Success) {
+          this.inquiry();
+          this.disabled = true;
+          $("#edit_movie_type").modal("hide");
+          this.toastr.info(this.translate.instant('movie.message.udpated'), this.translate.instant('common.label.success'),{
+            timeOut: 5000,
+          });
+          this.formEdit = this.formBuilder.group({
+            editMovieType: '',
+            editRemark: ''
+          });
+
+        } else {
+          this.showErrMsg(response.result.responseMessage);
+        }
+      });
+    }
+  }
+
+  delete() {
+    if (this.selectedJson.id) {
+      const api = '/api/movie-type/v0/delete';
+      const jsonData = {
+        id: this.selectedJson.id
+      };
+      this.hTTPService.Post(api, jsonData).then(response => {
+        if(response.result.responseCode === HTTPResponseCode.Success) {
+          this.inquiry();
+          this.disabled = true;
+          $("#delele").modal("hide");
+          this.toastr.info(this.translate.instant('movie.message.deleted'), this.translate.instant('common.label.success'),{
+            timeOut: 5000,
+          });
+        } else {
+          this.showErrMsg(response.result.responseMessage);
+        }
+      });
+    } else {
+      this.showErrMsg('Invalid_Vd_ID');
+    }
+
+  }
+
+  // Get Movie Type  Api Call
+  inquiry() {
+    const api = '/api/movie-type/v0/read';
+    this.hTTPService.Get(api).then(response => {
+      if(response.result.responseCode !== HTTPResponseCode.Success) {
+        this.showErrMsg(response.result.responseMessage);
+     }else {
+        this.lstMovies = response.body;
+        this.rowData =this.lstMovies;
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+  }
+
+  searchChange(event:any): void {
+    if (event) {
+     const search = this.lstMovies.filter( data => data.name.toLowerCase().includes(event.target.value));
+     this.rowData = search;
+    }
+  }
+
+  showErrMsg(msgKey: string, value?: any){
+    let message = '';
+    switch(msgKey) {
+      case 'Invalid_Name':
+        message = this.translate.instant('movie.message.movieTypeRequired');
+        break;
+      case 'Invalid_Vd_Id':
+        message = this.translate.instant('serverResponseCode.label.inValidMovieTypeIdWithValue', {value: value});
+        break;
+
+      case 'Invalid_Vd_ID':
+        message = this.translate.instant('serverResponseCode.label.inValidMovieTypeId');
+        break;
+      case 'unSelectRow':
+        message = this.translate.instant('common.message.unSelectRow');
+        break;
+      case '500':
+        message = this.translate.instant('serverResponseCode.label.serverError');
+        break;
+      default:
+        message = this.translate.instant('serverResponseCode.label.unknown');
+        break;
+    }
+    this.toastr.error(message, this.translate.instant('common.label.error'),{
+      timeOut: 5000,
+    });
+  }
+
+  get f(): { [key: string]: AbstractControl } {
+    return this.form.controls;
+  }
+
+  get fEdit(): { [key: string]: AbstractControl } {
+    return this.formEdit.controls;
   }
 
 }

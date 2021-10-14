@@ -175,6 +175,12 @@
       "selectDate":"ជ្រើសរើសកាលបរិច្ឆេទ"
     }
   },
+  "videoPreView": {
+    "label": {
+      "preViewVideo":"មើលវីដេអូជាមុន",
+      "moviesSource":"ប្រភពភាពយន្ត"
+    }
+  },
   "serverResponseCode":{
     "label": {
       "unknown":"កំហុសមិនស្គាល់",

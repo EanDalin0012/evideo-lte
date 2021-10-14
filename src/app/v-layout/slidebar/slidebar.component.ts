@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountTypeCode, LOCAL_STORAGE } from '../../v-share/constants/common.const';
+import { AccountTypeCode } from '../../v-share/constants/common.const';
 import { AccountType } from '../../v-share/model/account-type';
 import { Account } from '../../v-share/model/account';
 import { UrlComplete } from '../../v-share/model/url-complete';
@@ -7,7 +7,6 @@ import { Member } from '../../v-share/model/member';
 import { Group } from '../../v-share/model/group';
 import { Router } from '@angular/router';
 import { DataService } from '../../v-share/service/data.service';
-import { Utils } from '../../v-share/util/utils.static';
 import * as $ from 'jquery';
 
 @Component({
@@ -195,6 +194,19 @@ export class SlidebarComponent implements OnInit {
         this.urlComplete.mainUrl = 'home';
         this.urlComplete.subUrl = 'vd-edit';
         break;
+      case 'account':
+        this.urlComplete.mainUrl = 'account';
+        this.urlComplete.subUrl = 'account';
+        break;
+      case 'user-add':
+        this.urlComplete.mainUrl = 'account';
+        this.urlComplete.subUrl = 'user-add';
+        break;
+      case 'user-edit':
+        this.urlComplete.mainUrl = 'account';
+        this.urlComplete.subUrl = 'user-edit';
+        break;
+
       default:
         this.urlComplete.mainUrl = '';
         this.urlComplete.subUrl = msg;

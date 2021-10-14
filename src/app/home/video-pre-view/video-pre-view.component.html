@@ -4,10 +4,10 @@
 <div class="page-header">
   <div class="row align-items-center">
       <div class="col">
-          <h3 class="page-title">Lst Movie Source</h3>
+          <h3 class="page-title">{{'videoPreView.label.preViewVideo' | translate}}</h3>
           <ul class="breadcrumb">
-              <li class="breadcrumb-item"><a routerLink="/home/vd-source">Movies</a></li>
-              <li class="breadcrumb-item active">Movies Source</li>
+              <li class="breadcrumb-item"><a routerLink="/home/vd-source">{{'videoPreView.label.moviesSource' | translate}}</a></li>
+              <li class="breadcrumb-item active">{{'videoPreView.label.moviesSource' | translate}}</li>
           </ul>
       </div>
   </div>
@@ -30,40 +30,33 @@
                           <div class="col-md-7">
                               <ul class="personal-info vd-source">
                                   <li>
-                                      <div class="title">ID:</div>
+                                      <div class="title">{{'common.label.id' | translate}}:</div>
                                       <div class="text title"><a>{{jsonData.id}}</a></div>
                                   </li>
                                   <li>
-                                      <div class="title">Title:</div>
+                                      <div class="title">{{'video.label.title' | translate}}:</div>
                                       <div class="text"><a>{{jsonData.vdName}}</a></div>
                                   </li>
                                   <li>
-                                    <div class="title">Part:</div>
+                                    <div class="title">{{'videoSource.label.part' | translate}}:</div>
                                     <div class="text">
                                       <a href="javascript:">{{itemInfo.part}}</a>
                                     </div>
                                 </li>
                                   <li>
-                                    <div class="title">Movie:</div>
+                                    <div class="title">{{'movie.label.movieType' | translate}}:</div>
                                     <div class="text"><a href="javascript:">{{jsonData.vdTypeName}}</a></div>
                                   </li>
                                   <li>
-                                    <div class="title">Type:</div>
+                                    <div class="title">{{'video.label.subMovieType' | translate}}:</div>
                                     <div class="text">
                                       <a href="javascript:">{{jsonData.vdSubTypeName}}</a>
                                     </div>
                                   </li>
                                   <li>
-                                      <div class="title">Rmark:</div>
+                                      <div class="title">{{'common.label.remark' | translate}}:</div>
                                       <div class="text" *ngIf = "jsonData.remark">
                                         <a href="javascript:">{{jsonData.remark}}</a>
-                                      </div>
-                                  </li>
-
-                                  <li>
-                                      <div class="title">Create At:</div>
-                                      <div class="text">
-                                        <a href="javascript:">{{jsonData.vdTypeName}}</a>
                                       </div>
                                   </li>
                               </ul>
@@ -86,7 +79,7 @@
     <div class="col-md-12 col-lg-6 col-xl-7 d-flex">
       <div class="card flex-fill" style="height: 460px;">
           <div class="card-body">
-              <h4 class="card-title">Video Pre-Veiw</h4>
+              <h4 class="card-title">{{'videoPreView.label.preViewVideo' | translate}}</h4>
 
               <video type="video/mp4" [src]="videoSrc" controls controlsList="nodownload" style="width: 100%;"></video>
 

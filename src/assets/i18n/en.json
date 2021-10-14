@@ -185,6 +185,45 @@
       "selectDate":"Select Date"
     }
   },
+  "videoPreView": {
+    "label": {
+      "preViewVideo":"Pre-View Video",
+      "moviesSource":"Movies Source"
+    }
+  },
+  "slidebar": {
+    "label": {
+      "user": "Users"
+    }
+  },
+  "users": {
+    "label": {
+      "user": "Users",
+      "addNewUser":"Add New User",
+      "nserName":"User Name",
+      "password":"Password",
+      "confirmPassword":"Confirm Password",
+      "dateBirth":"Date of Birth",
+      "phoneNumber":"Phone Number",
+      "profile":"Profile",
+      "role":"Role"
+    },
+    "message": {
+      "userNameRequired":"*User Name is required",
+      "passwordRequired":"*Password is required",
+      "confirmPasswordRequired":"*Confirm Password is required",
+      "phoneNumberRequired":"*Phone number is required",
+      "dateBirthRequired":"*Date of birth is required"
+    },
+    "holder": {
+      "enterUserName":"Enter user name",
+      "enterPassword":"Enter password",
+      "enterConfirmPassword":"Enter confirm Password",
+      "chooseDateOfBirth":"*Date of birth is required",
+      "enterPhoneNumber":"Enter phone number",
+      "selectDate":"Select Date"
+    }
+  },
   "serverResponseCode":{
     "label": {
       "unknown":"Unknown Error.",

@@ -10,7 +10,8 @@ const routes: Routes = [
     component : VAccountComponent,
     children: [
       {path: '', component: UserComponent},
-      {path: 'add', component: UserAddComponent},
+      {path: 'user-add', component: UserAddComponent},
+      {path: 'user-edit', component: UserAddComponent},
     ]
   },
   // { path: '',   component : UserComponent }

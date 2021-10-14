@@ -8,45 +8,19 @@
                       <span>Main</span>
                   </li>
 
-                  <!-- <li [ngClass]="{ 'active' : urlComplete.subUrl === 'my-account' && urlComplete.mainUrl === 'my-account' }">
-                    <a href="javascript:" (click)="onNavigateRoutor('/acc/my-account/')">
-                      <i class="la la-files-o"></i>
-                      <span>My Account</span>
-                    </a>
-                  </li> -->
-
                   <li [ngClass]="{ 'active' : urlComplete.mainUrl === 'home' }">
                     <a href="javascript:" (click)="onNavigateRoutor('/home')" [ngClass]="{ 'active' : urlComplete.subUrl === 'home' ||  urlComplete.subUrl === 'vd-add' || urlComplete.subUrl === 'vd-edit'}">
                       <i class="la la-files-o"></i>
-                      <span>Lst Movie</span>
+                      <span>{{'video.label.lstMovie' | translate}}</span>
                     </a>
                   </li>
 
-                  <!-- <li class="submenu" [ngClass]="{ 'active' : urlComplete.mainUrl === 'acc'}">
-                    <a href="javascript:" [ngClass]="{ 'subdrop' : urlComplete.mainUrl === 'acc' }">
-                        <i class="la la-dashboard"></i>
-                        <span>Account</span>
-                        <span class="menu-arrow"></span>
+                  <li [ngClass]="{ 'active' : urlComplete.mainUrl === 'account' }">
+                    <a href="javascript:" (click)="onNavigateRoutor('/account')" [ngClass]="{ 'active' : urlComplete.subUrl === 'account' ||  urlComplete.subUrl === 'user-add' || urlComplete.subUrl === 'user-edit'}">
+                      <i class="la la-user-plus"></i>
+                      <span>{{'slidebar.label.user' | translate}}</span>
                     </a>
-                    <ul style="display: none;"
-                        [ngStyle]="{ 'display' : urlComplete.mainUrl === 'acc' ? 'block' : 'none' }">
-
-                        <li (click)="routerAccount()">
-                          <a [ngClass]="{ 'active' : urlComplete.subUrl ===  accountInfo.accountType }" href="javascript:">{{accountInfo.accountType | accountTypeCode}}</a>
-                        </li>
-                    </ul>
-                  </li> -->
-
-                  <li [ngClass]="{ 'active' : urlComplete.subUrl === 'clientspage' || urlComplete.subUrl === 'clientslist' }">
-                      <a routerLink="/clients/clientspage" ><i
-                              class="la la-users"></i> <span>Clients</span></a>
                   </li>
-
-                  <li [ngClass]="{'active' : urlComplete.subUrl === 'leadscontent'}">
-                      <a routerLink="/leads/leadscontent"  ><i
-                              class="la la-user-secret"></i> <span>Leads</span></a>
-                  </li>
-
 
                   <li class="submenu" [ngClass]="{ 'active' : urlComplete.mainUrl === 'reports' }">
                       <a href="javascript:" [ngClass]="{ 'subdrop' : urlComplete.mainUrl === 'reports' }"><i class="la la-pie-chart"></i> <span> Reports </span> <span

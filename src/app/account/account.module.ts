@@ -9,6 +9,7 @@ import { VShareModule } from '../v-share/v-share.module';
 import { DataTablesModule } from 'angular-datatables';
 import { AgGridModule } from 'ag-grid-angular';
 import { MyImgComponent } from './my-img/my-img.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 @NgModule({
   declarations: [
     VAccountComponent,
@@ -21,10 +22,12 @@ import { MyImgComponent } from './my-img/my-img.component';
     CommonModule,
     AccountRoutingModule,
     VShareModule,
-    AgGridModule.withComponents([
-      MyImgComponent,
-      UserComponent
-    ]),
+    DataTablesModule,
+    BsDatepickerModule,
+    BsDatepickerModule.forRoot(),
+    AgGridModule.withComponents([]),
+  ],
+  exports: [
     DataTablesModule
   ]
 })

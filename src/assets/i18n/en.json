@@ -170,13 +170,15 @@
       "videoIsEnd":"Video Is End",
       "videoEnableOn":"Video Enable On",
       "lstMovieSource":"Lst Movie Source",
-      "video":"Video"
+      "video":"Video",
+      "searchPart":"Search by part"
     },
     "message": {
       "partRequired":"*Part is required",
       "videoSourceRequired":"*Video Source is required",
       "added":"Video Source is added.",
-      "udpated":"Video Source is updated."
+      "udpated":"Video Source is updated.",
+      "qDelete":"តើអ្នកចង់លុបភាគ {{part}} ?"
     },
     "holder": {
       "enterPart":"Enter part",

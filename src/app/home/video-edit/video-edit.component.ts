@@ -107,9 +107,8 @@ export class VideoEditComponent implements OnInit, OnDestroy {
   }
 
   update() {
-    this.submitted = true;
-    console.log('isSelectedFile', this.isSelectedFile);
 
+    this.submitted = true;
     if(this.f.title.errors) {
       this.inputTitle.nativeElement.focus();
     } else if(this.f.stateMovie.errors) {
@@ -126,6 +125,7 @@ export class VideoEditComponent implements OnInit, OnDestroy {
           subVdTypeId: data.state.id,
           vdName: data.title,
           remark: data.remark,
+          resourceId: this.jsonData.resourceId,
           isSelectedFile: this.isSelectedFile,
           fileInfo: {
             fileBits: this.imageSrc,
@@ -141,7 +141,7 @@ export class VideoEditComponent implements OnInit, OnDestroy {
           vdName: data.title,
           remark: data.remark,
           isSelectedFile: this.isSelectedFile,
-          sourceId: this.jsonData.resourceId
+          resourceId: this.jsonData.resourceId
         };
       }
 

@@ -80,7 +80,6 @@ export class VideoSourceEditComponent implements OnInit, OnDestroy {
     const dataEdit = Utils.getSecureStorage(LOCAL_STORAGE.videoSourceEdit);
     const decryptStringEdit = EncryptionUtil.decrypt(dataEdit);
     this.jsonDataEdit = JSON.parse(decryptStringEdit);
-    console.log(this.jsonDataEdit);
 
     this.form.patchValue({
       title: this.jsonData.vdName,
@@ -116,8 +115,6 @@ export class VideoSourceEditComponent implements OnInit, OnDestroy {
   }
 
   update() {
-    console.log(this.jsonDataEdit.sourceVdId);
-
     this.submitted = true;
     if(this.f.title.errors) {
       this.inputTitle.nativeElement.focus();
@@ -127,8 +124,6 @@ export class VideoSourceEditComponent implements OnInit, OnDestroy {
       this.inputFileSource.nativeElement.focus();
     } else {
       const data = this.form.getRawValue();
-
-
 
       let onSchedule = '';
       if(data.onSchedule !== '') {
@@ -173,9 +168,6 @@ export class VideoSourceEditComponent implements OnInit, OnDestroy {
           }
         };
       }
-
-      console.log(jsonData);
-      // return;
 
       const api = '/api/videoSource/v0/update';
       this.hTTPService.Post(api, jsonData).then(response => {

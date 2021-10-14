@@ -129,6 +129,8 @@ export class VideoSourceComponent implements OnInit, OnDestroy {
       }else {
         this.lstVideoSource = response.body;
         this.rowData =this.lstVideoSource;
+        console.log(this.lstVideoSource);
+
       }
     });
   }
@@ -164,13 +166,44 @@ export class VideoSourceComponent implements OnInit, OnDestroy {
       // const decryptSearch = EncryptionUtil.decrypt(data);
       // this.lstSearch = JSON.parse(decryptSearch);
       // console.log(this.lstSearch);
+    }
   }
-}
 
+  deleteShow() {
+    let selectedNodes = this.gridApi.getSelectedNodes();
+    let selectedData = selectedNodes.map((node: { data: any; }) => node.data);
+    this.selectedJson = selectedData[0];
+    console.log('selectedJson', this.selectedJson);
+    $("#delele").modal("show");
+  }
+
+  delete() {
+    if (this.selectedJson.id) {
+      const api = '/api/videoSource/v0/delete';
+      const jsonData = {
+        id: this.selectedJson.id
+      };
+      this.hTTPService.Post(api, jsonData).then(response => {
+        if(response.result.responseCode === HTTPResponseCode.Success) {
+          this.inquiry();
+          this.disabled = true;
+          $("#delele").modal("hide");
+          this.toastr.info(this.translate.instant('movie.message.deleted'), this.translate.instant('common.label.success'),{
+            timeOut: 5000,
+          });
+        } else {
+          this.showErrMsg(response.result.responseMessage);
+        }
+      });
+    } else {
+      this.showErrMsg('Invalid_Vd_ID');
+    }
+
+  }
 
   searchChange(event:any): void {
     if (event) {
-     const search = this.lstVideoSource.filter( data => data.vdName.toLowerCase().includes(event.target.value));
+     const search = this.lstVideoSource.filter( data => data.part.toString().includes(event.target.value));
      this.rowData = search;
     }
   }

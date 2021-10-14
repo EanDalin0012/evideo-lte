@@ -143,51 +143,52 @@
       "movieRequired":"*តម្រូវឱ្យមានប្រភេទភាពយន្ត។",
       "typeRequired":"*តម្រូវឱ្យមានប្រភេទភាពយន្តរង។",
       "imageRequired":"*រូបភាពត្រូវបានទាមទារ។",
-      "added":"New movie is added.",
-      "udpated":"New movie is updated.",
-      "qDelete":"Do you want delete item name {{name}} ?",
-      "deleted":"Movie is deleted."
+      "added":"ខ្សែភាពយន្តថ្មីត្រូវបានបន្ថែម។",
+      "udpated":"ភាពយន្តថ្មីត្រូវបានធ្វើបច្ចុប្បន្នភាព។",
+      "qDelete":"តើអ្នកចង់លុបឈ្មោះធាតុ {{name}} ?",
+      "deleted":"ភាពយន្តត្រូវបានលុបចោល។"
     },
     "holder": {
-      "enterSubMovieType":"Enter sub movie type",
-      "enterTitle":"Enter title"
+      "enterSubMovieType":"បញ្ចូលប្រភេទភាពយន្តរង",
+      "enterTitle":"បញ្ចូលចំណងជើង"
     }
   },
   "videoSource": {
     "label": {
-      "addNewMovieSource":"Add New Movie Source",
-      "movieSource":"Movie Source",
-      "addMovieSource":"Add Movie Source",
-      "part":"Part",
-      "videoIsEnd":"Video Is End",
-      "videoEnableOn":"Video Enable On",
-      "lstMovieSource":"Lst Movie Source",
-      "video":"Video"
+      "addNewMovieSource":"បន្ថែមប្រភពភាពយន្តថ្មី",
+      "movieSource":"ប្រភពភាពយន្ត",
+      "addMovieSource":"បន្ថែមប្រភពភាពយន្ត",
+      "part":"ភាគ",
+      "videoIsEnd":"វីដេអូចប់",
+      "videoEnableOn":"បើកដំណើរការវីដេអូតាមកាលបរិច្ឆេទ",
+      "lstMovieSource":"បញ្ជីរាយប្រភពភាពយន្ត",
+      "video":"វីដេអូ",
+      "searchPart":"ស្វែងរកតាមភាគ"
     },
     "message": {
-      "partRequired":"*Part is required",
-      "videoSourceRequired":"*Video Source is required"
+      "partRequired":"*ផ្នែកត្រូវតែមាន",
+      "videoSourceRequired":"*ត្រូវការប្រភពវីដេអូ"
     },
     "holder": {
-      "enterPart":"Enter part",
-      "selectDate":"Select Date"
+      "enterPart":"បញ្ចូលភាគ",
+      "selectDate":"ជ្រើសរើសកាលបរិច្ឆេទ"
     }
   },
   "serverResponseCode":{
     "label": {
-      "unknown":"Unknown Error.",
-      "serverError":"Server Error.",
-      "apiNotFound":"Api Not Found.",
-      "sessionExpired":"Session Expired.",
-      "inValidMovieTypeIdWithValue":"Invalid Movie Type Id : {{value}}.",
-      "inValidMovieTypeId":"Invalid Movie Type Id.",
-      "userNotFound":"User Name Not Found.",
-      "accountLocked":"User is locked.",
-      "userDisabled":"user is disabled.",
-      "userExpired":"User is expired login.",
-      "invalidPassword":"Enter wrong password",
-      "inValidVdId":"Invalid Movie Type Id.",
-      "errorConectionRefused":"Error conection refused."
+      "unknown":"កំហុសមិនស្គាល់",
+      "serverError":"កំហុសម៉ាស៊ីនមេ",
+      "apiNotFound":"រកមិនឃើញAPI",
+      "sessionExpired":"សម័យកាល​បាន​ផុតកំណត់។",
+      "inValidMovieTypeIdWithValue":"លេខសម្គាល់ប្រភេទភាពយន្តមិនត្រឹមត្រូវ : {{value}}.",
+      "inValidMovieTypeId":"លេខសម្គាល់ប្រភេទភាពយន្តមិនត្រឹមត្រូវ",
+      "userNotFound":"រកមិនឃើញឈ្មោះអ្នកប្រើ។",
+      "accountLocked":"អ្នកប្រើប្រាស់ត្រូវបានចាក់សោ។",
+      "userDisabled":"អ្នកប្រើត្រូវបានបិទ។",
+      "userExpired":"អ្នកប្រើផុតកំណត់ចូល។",
+      "invalidPassword":"បញ្ចូលពាក្យសម្ងាត់ខុស",
+      "inValidVdId":"លេខសម្គាល់ប្រភេទភាពយន្តមិនត្រឹមត្រូវ",
+      "errorConectionRefused":"បានបដិសេធការតភ្ជាប់កំហុស។"
     }
   }
 }

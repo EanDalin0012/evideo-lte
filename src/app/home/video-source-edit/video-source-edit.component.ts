@@ -1,22 +1,29 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { FileUploadService } from '../../v-share/service/file-upload.service';
-import { HttpEventType, HttpResponse } from '@angular/common/http';
-import { MyLogUtil } from '../../v-share/util/my-log-util';
 import { Utils } from '../../v-share/util/utils.static';
-import { LOCAL_STORAGE } from '../../v-share/constants/common.const';
+import { LOCAL_STORAGE, HTTPResponseCode } from '../../v-share/constants/common.const';
 import { EncryptionUtil } from '../../v-share/util/encryption-util';
-import { Router } from '@angular/router';
 import { DataService } from '../../v-share/service/data.service';
+import * as moment from 'moment';
+import { HTTPService } from '../../v-share/service/http.service';
+import { TranslateService } from '@ngx-translate/core';
+import { GeneratePasswordUtils } from '../../v-share/util/generate-password-util';
+import { environment } from '../../../environments/environment.prod';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-video-source-edit',
   templateUrl: './video-source-edit.component.html',
   styleUrls: ['./video-source-edit.component.css']
 })
-export class VideoSourceEditComponent implements OnInit {
+export class VideoSourceEditComponent implements OnInit, OnDestroy {
+
+
+  @ViewChild("title") inputTitle: any;
+  @ViewChild("part") inputPart: any;
+  @ViewChild("state") inputState: any;
+  @ViewChild("fileSource") inputFileSource: any;
 
   submitted = false;
   selectedFiles?: FileList;
@@ -24,99 +31,75 @@ export class VideoSourceEditComponent implements OnInit {
   progress = 0;
   message = '';
   imageSrc: string = '';
-  fileInfos?: Observable<any>;
+  fileName: string = '';
 
-  movies: any[] = [];
   jsonData: any;
+  jsonDataEdit: any;
+
   public form: any;
   url: any;
   format: string = '';
+  part: number = 0;
+
+  selectVd = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
-    private uploadService: FileUploadService,
-    private router: Router,
     private dataService: DataService,
+    private hTTPService: HTTPService,
+    private translate: TranslateService,
+    private router: Router,
   ) {
     this.form as FormGroup;
     const url = (window.location.href).split('/');
     this.dataService.visitParamRouterChange(url[3]);
   }
+
   ngOnDestroy(): void {
+    // Utils.removeSecureStorage(LOCAL_STORAGE.videoSourceAdd);
     Utils.removeSecureStorage(LOCAL_STORAGE.videoSourceEdit);
   }
 
   ngOnInit() {
+
     this.form = this.formBuilder.group({
       title: [{value: '', disabled: true}, Validators.required],
       part: ['', [Validators.required]],
       remark: ['', [Validators.required]],
+      onSchedule: ['', [Validators.required]],
+      isEnd:[false, [Validators.required]],
       fileSource: new FormControl('', [Validators.required]),
     });
-    this.movies = [
-      {
-        id: 1,
-        value: 'Khmer',
-        code: 'kh'
-      },
-      {
-        id: 2,
-        value: 'Thai',
-        code: 'thai'
-      },
-      {
-        id: 3,
-        value: 'Koran',
-        code: 'koran'
-      },
-      {
-        id: 4,
-        value: 'Chiness',
-        code: 'ch'
-      }
-    ];
 
-    const data = Utils.getSecureStorage(LOCAL_STORAGE.videoSourceEdit);
+    const data = Utils.getSecureStorage(LOCAL_STORAGE.videoSourceAdd);
     const decryptString = EncryptionUtil.decrypt(data);
     this.jsonData = JSON.parse(decryptString);
-    console.log('decyptionString', decryptString);
+    // this.inquiryPart(this.jsonData.id);
+
+    const dataEdit = Utils.getSecureStorage(LOCAL_STORAGE.videoSourceEdit);
+    const decryptStringEdit = EncryptionUtil.decrypt(dataEdit);
+    this.jsonDataEdit = JSON.parse(decryptStringEdit);
+    console.log(this.jsonDataEdit);
 
     this.form.patchValue({
-      state: this.movies[0],
-      title: this.jsonData.title
+      title: this.jsonData.vdName,
+      part: this.jsonDataEdit.part,
+      onSchedule: this.jsonDataEdit.scheduleEnable,
+      isEnd: this.jsonDataEdit.isEnd === 'Y' ? true : false,
+      remark: this.jsonDataEdit.remark ? this.jsonDataEdit.remark : ''
     });
+    this.url = environment.bizServer.server+"/unsecur/api/resource/vd/v0/vdSource/"+this.jsonDataEdit.sourceVdId;
   }
 
   get f(): { [key: string]: AbstractControl } {
     return this.form.controls;
   }
 
-  submitCompany() {
-    const data = this.form.getRawValue();
-    MyLogUtil.log('data', data);
-    // this.toastr.success("Company Settings is added", "Success",{
-    //   timeOut: 9000,
-    // });
-    // this.toastr.error("Company Settings is added", "Success",{
-    //   timeOut: 3000,
-    // });
-
-    this.toastr.info("Company Settings is added", "Success",{
-      timeOut: 3000,
-    });
-
-    if (this.form.valid) {
-      this.toastr.success("Company Settings is added", "Success");
-    }
-  }
-
   selectFile(event: any): void {
     const file = event.target.files && event.target.files[0];
     this.currentFile = event.target.files[0];
-    console.log(this.currentFile);
-    console.log(this.currentFile?.name.split('.'));
-
+    this.fileName = this.currentFile?.name ? this.currentFile?.name : '';
     if (file) {
       var reader = new FileReader();
       reader.readAsDataURL(file);
@@ -128,51 +111,111 @@ export class VideoSourceEditComponent implements OnInit {
       reader.onload = (event) => {
         this.url = (<FileReader>event.target).result;
       }
+      this.selectVd = true;
     }
   }
 
-  upload(): void {
-    this.progress = 0;
+  update() {
+    console.log(this.jsonDataEdit.sourceVdId);
 
-    if (this.selectedFiles) {
-      const file: File | null = this.selectedFiles.item(0);
+    this.submitted = true;
+    if(this.f.title.errors) {
+      this.inputTitle.nativeElement.focus();
+    } else if(this.f.part.errors) {
+      this.inputPart.nativeElement.focus();
+    } else if(this.selectVd && this.f.fileSource.errors) {
+      this.inputFileSource.nativeElement.focus();
+    } else {
+      const data = this.form.getRawValue();
 
-      if (file) {
-        this.currentFile = file;
 
-        this.uploadService.upload(this.currentFile).subscribe(
-          (event: any) => {
-            if (event.type === HttpEventType.UploadProgress) {
-              this.progress = Math.round(100 * event.loaded / event.total);
-            } else if (event instanceof HttpResponse) {
-              this.message = event.body.message;
-              this.fileInfos = this.uploadService.getFiles();
-            }
-          },
-          (err: any) => {
-            console.log(err);
-            this.progress = 0;
 
-            if (err.error && err.error.message) {
-              this.message = err.error.message;
-            } else {
-              this.message = 'Could not upload the file!';
-            }
-
-            this.currentFile = undefined;
-          });
-
+      let onSchedule = '';
+      if(data.onSchedule !== '') {
+        const format = 'YYYY-MM-DD';
+        onSchedule = moment(data.onSchedule).format(format).toString();
       }
 
-      this.selectedFiles = undefined;
+      let fileName = this.fileName.split('.')[0].replace(/[^a-zA-Z ]/g, "");
+      if(fileName === '') {
+        fileName = GeneratePasswordUtils.generate(8);
+      }
+
+      let jsonData = {};
+
+      jsonData  = {
+        id: this.jsonDataEdit.id,
+        isEnd: data.isEnd === true ? 'Y': 'N',
+        vdId: this.jsonData.id,
+        vdName: this.jsonData.vdName,
+        videoSourcePart: data.part,
+        videoSourceOnSchedule: onSchedule,
+        remark: data.remark,
+        sourceVdId: this.jsonDataEdit.sourceVdId,
+        selectVd: this.selectVd
+      };
+
+      if(this.selectVd === true) {
+        jsonData = {
+          id: this.jsonDataEdit.id,
+          isEnd: data.isEnd === true ? 'Y': 'N',
+          vdId: this.jsonData.id,
+          vdName: this.jsonData.vdName,
+          videoSourcePart: data.part,
+          videoSourceOnSchedule: onSchedule,
+          remark: data.remark,
+          sourceVdId: this.jsonDataEdit.sourceVdId,
+          selectVd: this.selectVd,
+          fileInfo: {
+            fileBits: this.url,
+            fileName: fileName,
+            fileExtension: this.fileName.split('.')[1],
+          }
+        };
+      }
+
+      console.log(jsonData);
+      // return;
+
+      const api = '/api/videoSource/v0/update';
+      this.hTTPService.Post(api, jsonData).then(response => {
+        if(response.result.responseCode === HTTPResponseCode.Success) {
+          this.router.navigate(['/home/vd-source']);
+          this.toastr.info(this.translate.instant('videoSource.message.udpated'), this.translate.instant('common.label.success'),{
+            timeOut: 5000,
+          });
+        } else {
+          this.showErrMsg(response.result.responseMessage);
+        }
+      });
     }
   }
 
-  save() {
-    console.log('url', this.url);
-    const data = this.form.getRawValue();
-    MyLogUtil.log('data', data);
+  showErrMsg(msgKey: string, value?: any){
+    let message = '';
+    switch(msgKey) {
+      case 'invalidVdId':
+        message = this.translate.instant('video.label.movieRequired');
+        break;
+        case 'invalidVideoSourcePart':
+          message = this.translate.instant('videoSource.message.partRequired');
+          break;
+      case 'invalidVdName':
+        message = this.translate.instant('video.label.titleRequired');
+        break;
+      case 'invalidFileImage':
+        message = this.translate.instant('video.label.imageRequired');
+        break;
+      case '500':
+        message = this.translate.instant('serverResponseCode.label.serverError');
+        break;
+      default:
+        message = this.translate.instant('serverResponseCode.label.unknown');
+        break;
+    }
+    this.toastr.error(message, this.translate.instant('common.label.error'),{
+      timeOut: 5000,
+    });
   }
-
 
 }

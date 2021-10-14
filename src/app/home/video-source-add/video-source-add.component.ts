@@ -8,6 +8,7 @@ import { DataService } from '../../v-share/service/data.service';
 import * as moment from 'moment';
 import { HTTPService } from '../../v-share/service/http.service';
 import { TranslateService } from '@ngx-translate/core';
+import { GeneratePasswordUtils } from '../../v-share/util/generate-password-util';
 @Component({
   selector: 'app-video-source-add',
   templateUrl: './video-source-add.component.html',
@@ -135,6 +136,10 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
         onSchedule = moment(data.onSchedule).format(format).toString();
       }
 
+      let fileName = this.fileName.split('.')[0].replace(/[^a-zA-Z ]/g, "");
+      if(fileName === '') {
+        fileName = GeneratePasswordUtils.generate(8);
+      }
       const jsonData = {
         isEnd: endYn,
         vdId: this.jsonData.id,
@@ -144,7 +149,7 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
         remark: data.remark,
         fileInfo: {
           fileBits: this.url,
-          fileName: this.fileName.split('.')[0],
+          fileName: fileName,
           fileExtension: this.fileName.split('.')[1],
         }
       };
@@ -161,7 +166,7 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
             fileSource: '',
           });
           this.inquiryPart(this.jsonData.id);
-          this.toastr.info(this.translate.instant('video.message.added'), this.translate.instant('common.label.success'),{
+          this.toastr.info(this.translate.instant('videoSource.message.added'), this.translate.instant('common.label.success'),{
             timeOut: 5000,
           });
         } else {

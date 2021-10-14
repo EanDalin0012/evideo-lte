@@ -76,12 +76,10 @@
               <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group">
-                        <label>Video</label>
+                        <label>{{'videoSource.label.video' | translate}}</label>
 
                         <input type="file"  #fileSource formControlName="fileSource" accept="video/mp4,video/x-m4v,video/*" (change)="selectFile($event)" class="form-control"/>
 
-<!--
-                        <img [src]="imageSrc"  style="height: 300px; width:500px"> -->
                         <ng-container *ngIf="format==='video' && url">
                           <video [src]="url"  height="200" controls></video>
                         </ng-container>

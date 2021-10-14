@@ -28,7 +28,8 @@
       "search":"Search",
       "settingClientVideoMenu":"Setting Client Video Menu",
       "loading":"Loading",
-      "pleaseWait":"Please wait"
+      "pleaseWait":"Please wait",
+      "id":"ID"
     },
     "button": {
       "back": "Back",
@@ -167,11 +168,15 @@
       "addMovieSource":"Add Movie Source",
       "part":"Part",
       "videoIsEnd":"Video Is End",
-      "videoEnableOn":"Video Enable On"
+      "videoEnableOn":"Video Enable On",
+      "lstMovieSource":"Lst Movie Source",
+      "video":"Video"
     },
     "message": {
       "partRequired":"*Part is required",
-      "videoSourceRequired":"*Video Source is required"
+      "videoSourceRequired":"*Video Source is required",
+      "added":"Video Source is added.",
+      "udpated":"Video Source is updated."
     },
     "holder": {
       "enterPart":"Enter part",

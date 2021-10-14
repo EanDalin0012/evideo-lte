@@ -39,6 +39,7 @@ export class VideoSourceComponent implements OnInit, OnDestroy {
 
   lstVideoSource: any[] = [];
   jsonData:any;
+  selectedJson: any;
 
   constructor(
     private toastr: ToastrService,
@@ -57,7 +58,6 @@ export class VideoSourceComponent implements OnInit, OnDestroy {
     const data = Utils.getSecureStorage(LOCAL_STORAGE.VdSource);
     const decryptString = EncryptionUtil.decrypt(data);
     this.jsonData = JSON.parse(decryptString);
-    console.log(this.jsonData);
 
     this.src = this.baseUrl+"/unsecur/api/image/reader/v0/read/"+this.jsonData.resourceId;
 
@@ -142,7 +142,6 @@ export class VideoSourceComponent implements OnInit, OnDestroy {
 
   onCellDoubleClicked(event:any) {
     if(event) {
-      console.log(this.lstVideoSource[event.rowIndex]);
       const dataInfo = {
         jsonData: this.jsonData,
         itemInfo: this.lstVideoSource[event.rowIndex]
@@ -177,11 +176,24 @@ export class VideoSourceComponent implements OnInit, OnDestroy {
   }
 
   addMovieSource() {
-    console.log(this.jsonData);
     const jsonString = JSON.stringify(this.jsonData);
     const item = EncryptionUtil.encrypt(jsonString).toString();
     Utils.setSecureStorage(LOCAL_STORAGE.videoSourceAdd, item);
     this.router.navigate(['/home/vd-source-add']);
+  }
+
+  edit() {
+    let selectedNodes = this.gridApi.getSelectedNodes();
+    let selectedData = selectedNodes.map((node: { data: any; }) => node.data);
+    this.selectedJson = selectedData[0];
+    const jsonString = JSON.stringify(this.selectedJson);
+    const encryptString = EncryptionUtil.encrypt(jsonString.toString()).toString();
+    Utils.setSecureStorage(LOCAL_STORAGE.videoSourceEdit, encryptString);
+
+    const jsonStringAdd = JSON.stringify(this.jsonData);
+    const item = EncryptionUtil.encrypt(jsonStringAdd).toString();
+    Utils.setSecureStorage(LOCAL_STORAGE.videoSourceAdd, item);
+    this.router.navigate(['home/vd-source-edit']);
   }
 
   showErrMsg(msgKey: string, value?: any){

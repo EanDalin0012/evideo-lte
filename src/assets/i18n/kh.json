@@ -1,84 +1,77 @@
 {
   "common": {
     "label": {
-      "sort": "Sort",
-      "all": "All",
-      "no": "No",
-      "items": "{{value}} Item(s)",
-      "add_New": "Add New",
-      "register": "Register",
-      "remark":"Remark",
-      "amount":"Amount",
-      "active":"Active",
-      "inactive":"Inactive",
-      "otherStatus":"Other Status",
-      "status":"Status",
-      "details":"Details",
-      "fileName":"File Name {{value}}",
-      "fileSize":"File Size {{value}}",
-      "secondary":"Secondary",
-      "primary":"Primary",
-      "updatePassword":"Update Password",
-      "searchBy":"Search by",
-      "setting":"Setting",
-      "success":"Success",
-      "error":"Error",
-      "name":"Name",
-      "searchNameThere":"Search name there",
-      "search":"Search",
-      "settingClientVideoMenu":"Setting Client Video Menu",
-      "loading":"Loading",
-      "pleaseWait":"Please wait"
+      "sort": "តម្រៀប",
+      "all": "ទាំងអស់",
+      "no": "ទេ",
+      "items": "{{value}} ធាតុ",
+      "add_New": "បន្ថែម​ថ្មី",
+      "register": "ចុះឈ្មោះ",
+      "remark":"សម្គាល់",
+      "status":"ស្ថានភាព",
+      "fileName":"ឈ្មោះ​ឯកសារ {{value}}",
+      "fileSize":"ទំហំ​ឯកសារ {{value}}",
+      "updatePassword":"ធ្វើឱ្យទាន់សម័យពាក្យសម្ងាត់",
+      "searchBy":"ស្វែងរកតាមពាក្យគន្លឹះ",
+      "setting":"ការកំណត់",
+      "success":"ជោគជ័យ",
+      "error":"កំហុស",
+      "name":"ឈ្មោះ",
+      "searchNameThere":"ស្វែងរកឈ្មោះនៅទីនោះ",
+      "search":"ស្វែងរក",
+      "settingClientVideoMenu":"ការកំណត់ម៉ឺនុយវីដេអូអតិថិជន",
+      "loading":"កំពុងផ្ទុក",
+      "pleaseWait":"សូមរង់ចាំ",
+      "id":"លេខសម្គាល់"
     },
     "button": {
-      "back": "Back",
-      "close": "Close",
-      "register": "Register",
-      "save": "Save",
-      "edit": "Edit",
-      "update": "Update",
-      "confirme": "Confirme",
-      "yes": "Yes",
-      "no": "No",
-      "delete": "Delete",
-      "add_New": "Add New",
-      "export_PDF": "Export to PDF",
-      "export_Excel": "Export to Excel",
-      "add_Img": "add img",
-      "upload":"Upload",
-      "remove":"Remove",
-      "logout":"Logout",
-      "profile":"Profile",
-      "login":"Login",
-      "next":"Next",
-      "previous":"Previous",
-      "action":"Action"
+      "back": "ត្រឡប់មកវិញ",
+      "close": "បិទ",
+      "register": "ចុះឈ្មោះ",
+      "save": "រក្សាទុក",
+      "edit": "កែសម្រួល",
+      "update": "បច្ចុប្បន្នភាព",
+      "confirme": "បញ្ជាក់",
+      "yes": "បាទ",
+      "no": "ទេ",
+      "delete": "លុប",
+      "add_New": "បន្ថែម​ថ្មី",
+      "export_PDF": "នាំចេញទៅជា PDF",
+      "export_Excel": "នាំចេញទៅជា Excel",
+      "add_Img": "បន្ថែម img",
+      "upload":"ផ្ទុកឡើង",
+      "remove":"យកចេញ",
+      "logout":"ចេញ",
+      "profile":"ប្រវត្តិរូប",
+      "login":"ចូល",
+      "next":"បន្ទាប់",
+      "previous":"ទំព័រ​មុន",
+      "action":"សកម្មភាព"
     },
     "holder": {
-      "enterRemark": "Enter remark",
-      "enterAmount": "Enter amount"
+      "enterRemark": "បញ្ចូលការកត់សម្គាល់"
     },
     "message": {
-      "unSelectRow":"Please row on grid.",
-      "noAccess": "You do not have menu permissions.",
-      "notLogin": "Connection is lost, Please log in.",
-      "reqFail": "Your request failed. please try again later"
+      "unSelectRow":"សូមដាក់ជួរនៅលើ grid.",
+      "noAccess": "អ្នកមិនមានសិទ្ធិម៉ឺនុយទេ។",
+      "notLogin": "ការតភ្ជាប់ត្រូវបានបាត់បង់សូមចូលម្តងទៀត",
+      "reqFail": "សំណើរបស់អ្នកបានបរាជ័យ សូម​ព្យាយាម​ម្តង​ទៀត​នៅ​ពេល​ក្រោយ។"
     }
   },
   "login":{
     "label": {
-      "userName":"User Name",
-      "password":"Password",
-      "login":"Login",
-      "accessToOurSystem":"Access to our System"
+      "userName":"ឈ្មោះ​អ្នកប្រើប្រាស់",
+      "password":"ពាក្យសម្ងាត់",
+      "login":"ចូល",
+      "accessToOurSystem":"ចូលប្រើប្រព័ន្ធរបស់យើង។"
     },
     "holder": {
-      "enterUserName":"Enter user name",
-      "enterPassword":"Enter password"
+      "enterUserName":"បញ្ចូលឈ្មោះអ្នកប្រើ",
+      "enterPassword":"បញ្ចូលពាក្យសម្ងាត់"
     },
     "message": {
-      "userNameRequired":"*User name is required",
-      "passwordRequired":"*Password is required"
+      "userNameRequired":"*ឈ្មោះអ្នកប្រើត្រូវតែមាន។",
+      "passwordRequired":"*ឈ្មោះពាក្យសម្ងាត់ត្រូវតែមាន។"
     }
   },
   "movie": {
@@ -87,69 +80,69 @@
       "addNewMovieType":"បន្ថែមប្រភេទភាពយន្តថ្មី",
       "addMovieType":"បន្ថែមប្រភេទភាពយន្ត",
       "movie":"ភាពយន្ត",
-      "lstMovieType":"Lst Movie Type",
-      "updateMovieType":"Update Movie Type",
-      "deleteMovieType":"Delete Movie Type"
+      "lstMovieType":"បញ្ជីប្រភេទភាពយន្ត",
+      "updateMovieType":"ធ្វើបច្ចុប្បន្នភាពប្រភេទភាពយន្ត",
+      "deleteMovieType":"លុបប្រភេទភាពយន្ត"
     },
     "holder": {
-      "enterMovieType":"Enter movie type"
+      "enterMovieType":"បញ្ចូលប្រភេទភាពយន្ត"
     },
     "message": {
-      "movieTypeRequired":"*Movie type is required",
-      "deleted":"Movie Type Deleted",
-      "added":"Movie type is added",
-      "udpated":"Movie type is updated",
-      "qDelete":"Do you want to delete item name {{name}} ?"
+      "movieTypeRequired":"*ប្រភេទភាពយន្តត្រូវតែមាន។",
+      "deleted":"បានលុបប្រភេទភាពយន្ត។",
+      "added":"ប្រភេទភាពយន្តត្រូវបានបន្ថែម។",
+      "udpated":"ប្រភេទភាពយន្តត្រូវបានធ្វើបច្ចុប្បន្នភាព។",
+      "qDelete":"តើអ្នកចង់លុបឈ្មោះធាតុ {{name}} ?"
     }
   },
   "movieType": {
     "label": {
-      "lstSubMovieType":"Lst Sub Movie Type",
-      "addNewSubMovieType":"Add New Sub Movie Type",
-      "addSubMovieType":"Add Sub Movie Type",
-      "subMovieType":"Sub Movie Type",
-      "updateSubMovieType":"Update Sub Movie Type",
-      "deleteSunMovieType":"Delete Sub Movie Type"
+      "lstSubMovieType":"បញ្ជីប្រភេទភាពយន្តរង។",
+      "addNewSubMovieType":"បន្ថែមប្រភេទភាពយន្តរងថ្មី។",
+      "addSubMovieType":"បន្ថែមប្រភេទភាពយន្តរងថ្មី។",
+      "subMovieType":"បន្ថែមប្រភេទភាពយន្តរង",
+      "updateSubMovieType":"ធ្វើបច្ចុប្បន្នភាពប្រភេទភាពយន្តរង។",
+      "deleteSunMovieType":"លុបប្រភេទភាពយន្តរង។"
     },
     "holder": {
-      "enterSubMovieType":"Enter sub movie type"
+      "enterSubMovieType":"បញ្ចូលប្រភេទភាពយន្តរង។"
     },
     "message": {
-      "subMovieTypeRequired":"*Sub Movie type is required",
-      "deleted":"Sub Movie Type Deleted",
-      "added":"Sub Movie Type is added",
-      "udpated":"Movie type is updated",
-      "qDelete":"Do you want delete item name {{name}} ?"
+      "subMovieTypeRequired":"*តម្រូវឱ្យមានប្រភេទភាពយន្តរង។",
+      "deleted":"បានលុបប្រភេទភាពយន្តរង។",
+      "added":"ប្រភេទភាពយន្តរងត្រូវបានបន្ថែម។",
+      "udpated":"ប្រភេទភាពយន្តត្រូវបានធ្វើបច្ចុប្បន្នភាព។",
+      "qDelete":"តើអ្នកចង់លុបឈ្មោះធាតុ {{name}} ?"
     }
   },
   "clientVdSetting": {
     "label": {},
     "message": {
-      "settingClientVideoMenuUpdate":"Setting Client Video Menu Updated to {{value}}"
+      "settingClientVideoMenuUpdate":"ធ្វើបច្ចុប្បន្នភាពម៉ឺនុយវីដេអូអតិថិជន {{value}}"
     }
   },
   "video": {
     "label": {
       "title":"ចំណងជើង",
       "movie":"ភាពយន្ត",
-      "image":"Image",
-      "type":"Type",
+      "image":"រូបភាព",
+      "type":"ប្រភេទ",
       "addNewMovie":"បន្ថែមភាពយន្តថ្មី",
       "addMovie":"បន្ថែមភាពយន្ត",
-      "movieType":"Movie Type",
-      "subMovieType":"Sub Movie Type",
-      "runSchedule":"Show Video To Client On Date",
-      "deleteMovie":"Delete Movie",
-      "editMovie":"Edit Movie",
+      "movieType":"ប្រភេទភាពយន្ត",
+      "subMovieType":"ប្រភេទភាពយន្តរង",
+      "runSchedule":"បង្ហាញវីដេអូដល់អតិថិជនតាមកាលបរិច្ឆេទ",
+      "deleteMovie":"លុបភាពយន្ត",
+      "editMovie":"កែសម្រួលភាពយន្ត",
       "lstMovie":"បញ្ជីភាពយន្ត",
       "movies":"ភាពយន្ត",
-      "part":"Part"
+      "part":"ភាគ"
     },
     "message": {
-      "titleRequired":"*Title is required",
-      "movieRequired":"*Movie Type is required",
-      "typeRequired":"*Sub movie type is required",
-      "imageRequired":"*Image is required",
+      "titleRequired":"*ចំណងជើងត្រូវមាន។",
+      "movieRequired":"*តម្រូវឱ្យមានប្រភេទភាពយន្ត។",
+      "typeRequired":"*តម្រូវឱ្យមានប្រភេទភាពយន្តរង។",
+      "imageRequired":"*រូបភាពត្រូវបានទាមទារ។",
       "added":"New movie is added.",
       "udpated":"New movie is updated.",
       "qDelete":"Do you want delete item name {{name}} ?",
@@ -167,7 +160,9 @@
       "addMovieSource":"Add Movie Source",
       "part":"Part",
       "videoIsEnd":"Video Is End",
-      "videoEnableOn":"Video Enable On"
+      "videoEnableOn":"Video Enable On",
+      "lstMovieSource":"Lst Movie Source",
+      "video":"Video"
     },
     "message": {
       "partRequired":"*Part is required",

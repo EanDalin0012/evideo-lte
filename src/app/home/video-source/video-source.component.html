@@ -5,10 +5,10 @@
   <div class="page-header">
     <div class="row align-items-center">
         <div class="col">
-            <h3 class="page-title">Lst Movie Source</h3>
+            <h3 class="page-title">{{'videoSource.label.lstMovieSource' | translate}}</h3>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a routerLink="/home">Movies</a></li>
-                <li class="breadcrumb-item active">Movies Source</li>
+                <li class="breadcrumb-item"><a routerLink="/home">{{'movie.label.movie' | translate}}</a></li>
+                <li class="breadcrumb-item active">{{'videoSource.label.movieSource' | translate}}</li>
             </ul>
         </div>
     </div>
@@ -31,44 +31,33 @@
                           <div class="col-md-7">
                               <ul class="personal-info vd-source">
                                   <li>
-                                      <div class="title">ID:</div>
+                                      <div class="title">{{'common.label.id' | translate}}:</div>
                                       <div class="text title"><a>{{jsonData.id}}</a></div>
                                   </li>
                                   <li>
-                                      <div class="title">Title:</div>
+                                      <div class="title">{{'video.label.title' | translate}}:</div>
                                       <div class="text"><a>{{jsonData.vdName}}</a></div>
                                   </li>
                                   <li>
-                                    <div class="title">Movie:</div>
+                                    <div class="title">{{'movie.label.movieType' | translate}}:</div>
                                     <div class="text"><a href="javascript:">{{jsonData.vdTypeName}}</a></div>
                                   </li>
                                   <li>
-                                    <div class="title">Type:</div>
+                                    <div class="title">{{'video.label.subMovieType' | translate}}:</div>
                                     <div class="text">
                                       <a href="javascript:">{{jsonData.vdSubTypeName}}</a>
                                     </div>
                                   </li>
                                   <li>
-                                      <div class="title">Rmark:</div>
+                                      <div class="title">{{'common.label.remark' | translate}}:</div>
                                       <div class="text" *ngIf = "jsonData.remark">
                                         <a href="javascript:">{{jsonData.remark}}</a>
-                                      </div>
-                                  </li>
-                                  <li>
-                                      <div class="title">Create At:</div>
-                                      <div class="text">
-                                        <a href="javascript:">{{jsonData.vdTypeName}}</a>
                                       </div>
                                   </li>
                               </ul>
                           </div>
                       </div>
                   </div>
-                  <!-- <div class="pro-edit">
-                    <a data-target="#profile_info" data-toggle="modal" class="edit-icon">
-                      <i class="fa fa-pencil"></i>
-                    </a>
-                  </div> -->
               </div>
           </div>
       </div>
@@ -83,7 +72,7 @@
           <i class="fa fa-plus-circle"></i>
           {{'video.label.addMovie' | translate}}
         </button>
-        <button  [disabled] = "disabled" class="btn btn-sm btn-primary float-left left-12" type="button">
+        <button (click)="edit()" [disabled] = "disabled" class="btn btn-sm btn-primary float-left left-12" type="button">
           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
           {{'common.button.edit' | translate}}
         </button>
@@ -94,12 +83,6 @@
 
         <div style="width: 300px;" class="float-right">
           <input type="text" class="form-control form-control-sm" [(ngModel)]="search" (focus)="onFocusEvent($event)" (input)="searchChange($event)" placeholder="{{'common.label.searchNameThere' | translate}} ...">
-          <!-- <div class="dropdown-menu"  style="position: absolute; width: 300px;" [ngClass]="{'show': onFocusInt}">
-            <a  href="javascript:" class="dropdown-item" *ngFor="let item of lstSearch" (click)="searchHistoryClick(item)">
-              <i class="fa fa-history" aria-hidden="true"></i>
-              <span style= "margin-left: 10px;">{{item?.search}}</span>
-            </a>
-          </div> -->
       </div>
         <label class="col-form-label float-right" style="width: 80px;">{{'common.label.search' | translate}} :</label>
       </div>

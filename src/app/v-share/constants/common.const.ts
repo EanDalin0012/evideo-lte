@@ -21,6 +21,8 @@ export enum LOCAL_STORAGE {
   VdSourceEdit    = 'vd-source-edit',
   videoSourceAdd  = 'videoSourceAdd',
   videoSourceEdit  = 'videoSourceEdit',
+
+
   NekWorkIP       = 'NekWorkIP',
   CONTENTS_VERSION= 'contentsVersion',
   PRE_TRANSACTION = 'preTransaction',

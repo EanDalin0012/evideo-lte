@@ -240,8 +240,6 @@ onCellDoubleClicked(event:any) {
     const encryptString = EncryptionUtil.encrypt(jsonString.toString()).toString();
     Utils.setSecureStorage(LOCAL_STORAGE.VdSourceEdit, encryptString);
     this.router.navigate(['home/vd-edit']);
-
-
   }
 
   deleteShow() {

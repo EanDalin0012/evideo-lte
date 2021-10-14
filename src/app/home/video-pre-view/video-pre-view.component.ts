@@ -29,9 +29,6 @@ export class VideoPreViewComponent implements OnInit,OnDestroy {
     const dataInfo = JSON.parse(decryptString);
     this.jsonData = dataInfo.jsonData;
     this.itemInfo = dataInfo.itemInfo;
-    console.log('jsonData', this.jsonData);
-    console.log('itemInfo', this.itemInfo);
-
     this.src = this.baseUrl+"/unsecur/api/image/reader/v0/read/"+this.jsonData.resourceId;
     this.videoSrc = this.baseUrl+"/unsecur/api/resource/vd/v0/vdSource/"+this.itemInfo.sourceVdId;
   }

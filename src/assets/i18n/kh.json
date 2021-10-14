@@ -167,7 +167,8 @@
     },
     "message": {
       "partRequired":"*ផ្នែកត្រូវតែមាន",
-      "videoSourceRequired":"*ត្រូវការប្រភពវីដេអូ"
+      "videoSourceRequired":"*ត្រូវការប្រភពវីដេអូ",
+      "qDelete":"តើអ្នកចង់លុបភាគ {{part}} ?"
     },
     "holder": {
       "enterPart":"បញ្ចូលភាគ",

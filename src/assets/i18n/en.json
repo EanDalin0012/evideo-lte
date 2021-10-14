@@ -178,7 +178,7 @@
       "videoSourceRequired":"*Video Source is required",
       "added":"Video Source is added.",
       "udpated":"Video Source is updated.",
-      "qDelete":"តើអ្នកចង់លុបភាគ {{part}} ?"
+      "qDelete":"Do you want delete part {{part}} ?"
     },
     "holder": {
       "enterPart":"Enter part",

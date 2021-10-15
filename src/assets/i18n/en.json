@@ -199,6 +199,7 @@
   "users": {
     "label": {
       "user": "Users",
+      "lstUser": "Lst User",
       "addNewUser":"Add New User",
       "nserName":"User Name",
       "password":"Password",

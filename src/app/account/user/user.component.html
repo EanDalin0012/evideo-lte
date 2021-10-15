@@ -5,10 +5,10 @@
   <div class="page-header">
     <div class="row align-items-center">
         <div class="col">
-            <h3 class="page-title">{{'movie.label.lstMovieType' | translate}}</h3>
+            <h3 class="page-title">{{'users.label.user' | translate}}</h3>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:">{{'common.label.setting' | translate}}</a></li>
-                <li class="breadcrumb-item active">{{'movie.label.lstMovieType' | translate}}</li>
+                <li class="breadcrumb-item"><a href="javascript:">{{'users.label.user' | translate}}</a></li>
+                <li class="breadcrumb-item active">{{'users.label.lstUser' | translate}}</li>
             </ul>
         </div>
     </div>
@@ -20,7 +20,7 @@
     <div>
       <button (click)="new()" class="btn btn-sm btn-primary float-left" type="button">
         <i class="fa fa-plus-circle"></i>
-        {{'movie.label.addMovieType' | translate}}
+        {{'users.label.addNewUser' | translate}}
       </button>
       <button (click)="getSelectedRowData('edit')"  [disabled] = "disabled" class="btn btn-sm btn-primary float-left left-12" type="button">
         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>

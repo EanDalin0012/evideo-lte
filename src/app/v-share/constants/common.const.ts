@@ -11,6 +11,42 @@ export enum AES_INFO {
   STORE = "AES_INFO"
 }
 
+export enum AuthorizationModule {
+  // 1
+  User_Create   = 1,
+  User_Read     = 2,
+  User_Write    = 3,
+  User_Update   = 4,
+// 2
+  Movie_Update  = 5,
+  Movie_Read    = 6,
+  Movie_Write   = 7,
+  Movie_Create  = 8,
+// 3
+  Movie_Source_Read   = 9,
+  Movie_Source_Write  = 10,
+  Movie_Source_Create = 11,
+  Movie_Source_Update = 12,
+// 4
+  Setting_Movie_Type_Read   = 13,
+  Setting_Movie_Type_Write  = 14,
+  Setting_Movie_Type_Create = 15,
+  Setting_Movie_Type_Update = 16,
+// 5
+  Setting_Sub_Movie_Type_Read   = 17,
+  Setting_Sub_Movie_Type_Write  = 18,
+  Setting_Sub_Movie_Type_Create = 19,
+  Setting_Sub_Movie_Type_Update = 20,
+// 6
+  Setting_Client_Setting_Read   = 21,
+  Setting_Client_Setting_Write  =  22,
+  Setting_Client_Setting_Create = 23,
+  Setting_Client_Setting_Update = 24
+
+}
+
+
+
 export enum LOCAL_STORAGE {
   DEVICE_INFO               = 'deviceInfo',
   MOVEI_Edit                  = 'Movei-edit',

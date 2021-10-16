@@ -22,7 +22,7 @@
                 <div class="col-sm-12">
                   <div class="form-group">
                       <label>{{'users.label.nserName' | translate}}<span class="text-danger">*</span></label>
-                      <input #title class="form-control form-control-sm" type="text" formControlName="title" placeholder="{{'users.holder.enterUserName' | translate}}">
+                      <input #userName class="form-control form-control-sm" type="text" formControlName="userName" placeholder="{{'users.holder.enterUserName' | translate}}">
                       <div *ngIf="submitted && f.title.errors">
                           <small class="text-danger">{{'users.message.userNameRequired' | translate}}</small>
                       </div>
@@ -34,7 +34,7 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label>{{'users.label.password' | translate}}<span class="text-danger">*</span></label>
-                        <input class="form-control form-control-sm" type="text" formControlName="remark" placeholder="{{'users.holder.enterPassword' | translate}}">
+                        <input #password class="form-control form-control-sm" type="text" formControlName="password" placeholder="{{'users.holder.enterPassword' | translate}}">
                         <div *ngIf="submitted && f.stateMovie.errors">
                             <small class="text-danger">{{'users.message.passwordRequired' | translate}}</small>
                         </div>
@@ -43,7 +43,7 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label>{{'users.label.confirmPassword' | translate}}<span class="text-danger">*</span></label>
-                        <input class="form-control form-control-sm" type="text" formControlName="remark" placeholder="{{'users.holder.enterConfirmPassword' | translate}}">
+                        <input #confirmPassword class="form-control form-control-sm" type="text" formControlName="confirmPassword" placeholder="{{'users.holder.enterConfirmPassword' | translate}}">
                         <div *ngIf="submitted && f.state.errors">
                             <small class="text-danger">{{'users.message.confirmPasswordRequired' | translate}}</small>
                         </div>
@@ -55,10 +55,10 @@
                 <div class="col-sm-6">
                     <div class="form-group cal-icon">
                         <label>{{'users.label.dateBirth' | translate}}<span class="text-danger">*</span></label>
-                        <input class="form-control datetimepicker form-control-sm" type="text" bsDatepicker type="text"
+                        <input #dateBirth class="form-control datetimepicker form-control-sm" type="text" bsDatepicker type="text"
                                         [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
                                         placeholder="{{'users.holder.selectDate' | translate}}"
-                                        formControlName="onSchedule">
+                                        formControlName="dateBirth">
                         <div *ngIf="submitted && f.stateMovie.errors">
                             <small class="text-danger">{{'users.message.dateBirthRequired' | translate}}</small>
                         </div>
@@ -67,7 +67,7 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label>{{'users.label.phoneNumber' | translate}}<span class="text-danger">*</span></label>
-                        <input class="form-control form-control-sm" type="text" formControlName="remark" placeholder="{{'users.holder.enterPhoneNumber' | translate}}">
+                        <input #phoneNumber class="form-control form-control-sm" type="text" formControlName="phoneNumber" placeholder="{{'users.holder.enterPhoneNumber' | translate}}">
                         <div *ngIf="submitted && f.state.errors">
                             <small class="text-danger">{{'users.message.phoneNumberRequired' | translate}}</small>
                         </div>
@@ -80,7 +80,7 @@
                     <div class="form-group">
                         <label>{{'users.label.role' | translate}}</label>
                         <select #stateMovie class="form-control form-control-sm select"
-                              formControlName="stateMovie">
+                              formControlName="roleState">
                               <option *ngFor="let state of lstMovies" [ngValue]="state">
                                 {{ state.name }}
                               </option>
@@ -98,7 +98,6 @@
                         <tr>
                             <th>Module Permission</th>
                             <th class="text-center">Read</th>
-                            <th class="text-center">Write</th>
                             <th class="text-center">Create</th>
                             <th class="text-center">Edit</th>
                             <th class="text-center">Delete</th>
@@ -107,114 +106,103 @@
                     <tbody>
                         <tr>
                             <td>Users</td>
+
                             <td class="text-center">
-                                <input checked="" type="checkbox">
+                                <input formControlName="checkUserRead" value="1" type="checkbox">
                             </td>
                             <td class="text-center">
-                                <input checked="" type="checkbox">
+                                <input formControlName="checkUserCreate" type="checkbox">
                             </td>
                             <td class="text-center">
-                                <input checked="" type="checkbox">
+                                <input formControlName="checkUserEdit" type="checkbox">
                             </td>
                             <td class="text-center">
-                                <input checked="" type="checkbox">
-                            </td>
-                            <td class="text-center">
-                                <input checked="" type="checkbox">
+                                <input formControlName="checkUserDelete" type="checkbox">
                             </td>
 
                         </tr>
                         <tr>
                             <td>Movie</td>
-                            <td class="text-center">
-                                <input checked="" type="checkbox">
-                            </td>
-                            <td class="text-center">
-                                <input checked="" type="checkbox">
-                            </td>
-                            <td class="text-center">
-                                <input checked="" type="checkbox">
-                            </td>
-                            <td class="text-center">
-                                <input checked="" type="checkbox">
-                            </td>
-                            <td class="text-center">
-                                <input checked="" type="checkbox">
-                            </td>
+
+                          <td class="text-center">
+                              <input formControlName="checkMovieRead" value="1" type="checkbox">
+                          </td>
+                          <td class="text-center">
+                              <input formControlName="checkMovieCreate" type="checkbox">
+                          </td>
+                          <td class="text-center">
+                              <input formControlName="checkMovieEdit" type="checkbox">
+                          </td>
+                          <td class="text-center">
+                              <input formControlName="checkMovieDelete" type="checkbox">
+                          </td>
+
                         </tr>
                         <tr>
                           <td>Movie Source</td>
+
                           <td class="text-center">
-                              <input checked="" type="checkbox">
+                              <input formControlName="checkMovieSourceRead" value="1" type="checkbox">
                           </td>
                           <td class="text-center">
-                              <input checked="" type="checkbox">
+                              <input formControlName="checkMovieSourceCreate" type="checkbox">
                           </td>
                           <td class="text-center">
-                              <input checked="" type="checkbox">
+                              <input formControlName="checkMovieSourceEdit" type="checkbox">
                           </td>
                           <td class="text-center">
-                              <input checked="" type="checkbox">
-                          </td>
-                          <td class="text-center">
-                              <input checked="" type="checkbox">
+                              <input formControlName="checkMovieSourceDelete" type="checkbox">
                           </td>
 
                       </tr>
                         <tr>
-                            <td>Setting Movie</td>
+                            <td>Setting Movie Type</td>
+
                             <td class="text-center">
-                                <input checked="" type="checkbox">
+                              <input formControlName="checkSettingMovieTypeRead" value="1" type="checkbox">
                             </td>
                             <td class="text-center">
-                                <input checked="" type="checkbox">
+                                <input formControlName="checkSettingMovieTypeCreate" type="checkbox">
                             </td>
                             <td class="text-center">
-                                <input checked="" type="checkbox">
+                                <input formControlName="checkSettingMovieTypeEdit" type="checkbox">
                             </td>
                             <td class="text-center">
-                                <input checked="" type="checkbox">
-                            </td>
-                            <td class="text-center">
-                                <input checked="" type="checkbox">
+                                <input formControlName="checkSettingMovieTypeDelete" type="checkbox">
                             </td>
 
                         </tr>
                         <tr>
-                            <td>Setting Movie Type</td>
+                            <td>Setting Movie Sub Type</td>
+
                             <td class="text-center">
-                                <input checked="" type="checkbox">
+                              <input formControlName="checkSettingMovieSubTypeRead" value="1" type="checkbox">
                             </td>
                             <td class="text-center">
-                                <input checked="" type="checkbox">
+                                <input formControlName="checkSettingMovieSubTypeCreate" type="checkbox">
                             </td>
                             <td class="text-center">
-                                <input checked="" type="checkbox">
+                                <input formControlName="checkSettingMovieSubTypeEdit" type="checkbox">
                             </td>
                             <td class="text-center">
-                                <input checked="" type="checkbox">
-                            </td>
-                            <td class="text-center">
-                                <input checked="" type="checkbox">
+                                <input formControlName="checkSettingMovieSubTypeDelete" type="checkbox">
                             </td>
 
                         </tr>
                         <tr>
                             <td>Setting Clent-Setting</td>
+
                             <td class="text-center">
-                                <input checked="" type="checkbox">
+                              <input formControlName="checkSettingClentSettingRead" value="1" type="checkbox">
                             </td>
                             <td class="text-center">
-                                <input checked="" type="checkbox">
+                                <input formControlName="checkSettingClentSettingCreate" type="checkbox">
                             </td>
                             <td class="text-center">
-                                <input checked="" type="checkbox">
+                                <input formControlName="checkSettingClentSettingEdit" type="checkbox">
                             </td>
                             <td class="text-center">
-                                <input checked="" type="checkbox">
-                            </td>
-                            <td class="text-center">
-                                <input checked="" type="checkbox">
+                                <input formControlName="checkSettingClentSettingDelete" type="checkbox">
                             </td>
 
                         </tr>

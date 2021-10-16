@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators, AbstractControl } from
 import { ToastrService } from 'ngx-toastr';
 import { DataService } from '../../v-share/service/data.service';
 import { HTTPService } from '../../v-share/service/http.service';
-import { HTTPResponseCode } from '../../v-share/constants/common.const';
+import { HTTPResponseCode, AuthorizationModule } from '../../v-share/constants/common.const';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -14,10 +14,13 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class UserAddComponent implements OnInit {
 
-  @ViewChild("title") inputTitle: any;
-  @ViewChild("stateMovie") inputStateMovie: any;
-  @ViewChild("state") inputState: any;
-  @ViewChild("fileSource") inputFileSource: any;
+  @ViewChild("userName") inputUserName: any;
+  @ViewChild("password") inputPassword: any;
+  @ViewChild("confirmPassword") inputConfirmPassword: any;
+  @ViewChild("dateBirth") inputDateBirth: any;
+  @ViewChild("phoneNumber") inputPhoneNumber: any;
+  @ViewChild("roleState") inputRoleState: any;
+
 
   submitted = false;
   selectedFiles?: FileList;
@@ -32,6 +35,8 @@ export class UserAddComponent implements OnInit {
 
   lstMovies: any[] = [];
   lstSubMovieType: any[] = [];
+
+  authorizationModule = AuthorizationModule;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -51,13 +56,47 @@ export class UserAddComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this.form = this.formBuilder.group({
-      title: ['', [Validators.required]],
-      stateMovie: ['', [Validators.required]],
-      state: ['', [Validators.required]],
+      userName: ['', [Validators.required]],
+      password: ['', [Validators.required]],
+      confirmPassword: ['', [Validators.required]],
+      dateBirth: ['', [Validators.required]],
+      phoneNumber: ['', [Validators.required]],
+      roleState: ['', [Validators.required]],
+
+      checkUserRead: [false, [Validators.required]],
+      checkUserCreate: [false, [Validators.required]],
+      checkUserEdit: [false, [Validators.required]],
+      checkUserDelete: [false, [Validators.required]],
+
+      checkMovieRead: [false, [Validators.required]],
+      checkMovieCreate: [false, [Validators.required]],
+      checkMovieEdit: [false, [Validators.required]],
+      checkMovieDelete: [false, [Validators.required]],
+
+      checkMovieSourceRead: [false, [Validators.required]],
+      checkMovieSourceCreate: [false, [Validators.required]],
+      checkMovieSourceEdit: [false, [Validators.required]],
+      checkMovieSourceDelete: [false, [Validators.required]],
+
+      checkSettingMovieTypeRead: [false, [Validators.required]],
+      checkSettingMovieTypeCreate: [false, [Validators.required]],
+      checkSettingMovieTypeEdit: [false, [Validators.required]],
+      checkSettingMovieTypeDelete: [false, [Validators.required]],
+
+      checkSettingMovieSubTypeRead: [false, [Validators.required]],
+      checkSettingMovieSubTypeCreate: [false, [Validators.required]],
+      checkSettingMovieSubTypeEdit: [false, [Validators.required]],
+      checkSettingMovieSubTypeDelete: [false, [Validators.required]],
+
+      checkSettingClentSettingRead: [false, [Validators.required]],
+      checkSettingClentSettingCreate: [false, [Validators.required]],
+      checkSettingClentSettingEdit: [false, [Validators.required]],
+      checkSettingClentSettingDelete: [false, [Validators.required]],
+
       remark: ['', [Validators.required]],
-      onSchedule: ['', [Validators.required]],
-      fileSource: new FormControl('', [Validators.required]),
+      fileSource: new FormControl('', [Validators.required])
     });
 
     // this.inquiry();
@@ -83,22 +122,40 @@ export class UserAddComponent implements OnInit {
   }
 
   save() {
+    const data1 = this.form.getRawValue();
+
+    console.log(data1);
+
+
     this.submitted = true;
-    if(this.f.title.errors) {
-      this.inputTitle.nativeElement.focus();
-    } else if(this.f.stateMovie.errors) {
-      this.inputStateMovie.nativeElement.focus();
-    } else if (this.f.state.errors) {
-      this.inputState.nativeElement.focus();
-    } else if (this.f.fileSource.errors) {
-      this.inputFileSource.nativeElement.focus();
+    if(this.f.userName.errors) {
+      this.inputUserName.nativeElement.focus();
+    } else if(this.f.password.errors) {
+      this.inputPassword.nativeElement.focus();
+    } else if (this.f.confirmPassword.errors) {
+      this.inputConfirmPassword.nativeElement.focus();
+    } else if (this.f.dateBirth.errors) {
+      this.inputDateBirth.nativeElement.focus();
+    } else if (this.f.phoneNumber.errors) {
+      this.inputPhoneNumber.nativeElement.focus();
+    } else if (this.f.roleState.errors) {
+      this.inputRoleState.nativeElement.focus();
     } else {
       const data = this.form.getRawValue();
 
       const jsonData = {
-        vdId: data.stateMovie.id,
-        subVdTypeId: data.state.id,
-        vdName: data.title,
+        userName: data.userName,
+        password: data.password,
+        confirmPassword: data.confirmPassword,
+        dateBirth: data.dateBirth,
+        phoneNumber: data.phoneNumber,
+        roleState: data.roleState.id,
+
+        userReadId: data.checkUserRead ? AuthorizationModule.Movie_Read: 0,
+        userCreateId: data.checkUserCreate ? AuthorizationModule.User_Create: 0,
+        userEditId: data.checkUserEdit ? AuthorizationModule.User_Update: 0,
+        userDeleteId: data.checkUserEdit ? AuthorizationModule.User_Create: 0,
+
         remark: data.remark,
         fileInfo: {
           fileBits: this.imageSrc,
@@ -107,6 +164,7 @@ export class UserAddComponent implements OnInit {
         }
 
       };
+      return;
       const api = '/api/video/v0/create';
       this.hTTPService.Post(api, jsonData).then(response => {
         if(response.result.responseCode === HTTPResponseCode.Success) {

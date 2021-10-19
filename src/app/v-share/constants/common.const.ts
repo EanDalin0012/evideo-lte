@@ -4,7 +4,9 @@ export enum MODAL_STORE_KEY {
 }
 export enum HTTPResponseCode {
   Success = "200",
-  NotFound = "404"
+  NotFound = "404",
+  Found = "302",
+  Forbidden = "403"
 }
 
 export enum AES_INFO {
@@ -13,35 +15,38 @@ export enum AES_INFO {
 
 export enum AuthorizationModule {
   // 1
-  User_Create   = 1,
-  User_Read     = 2,
-  User_Write    = 3,
-  User_Update   = 4,
+  User_Read     = 1,
+  User_Create   = 2,
+  User_Update   = 3,
+  User_Delete   = 4,
 // 2
-  Movie_Update  = 5,
-  Movie_Read    = 6,
-  Movie_Write   = 7,
-  Movie_Create  = 8,
+  Movie_Read     = 5,
+  Movie_Create   = 6,
+  Movie_Update   = 7,
+  Movie_Delete   = 8,
 // 3
-  Movie_Source_Read   = 9,
-  Movie_Source_Write  = 10,
-  Movie_Source_Create = 11,
-  Movie_Source_Update = 12,
+  Movie_Source_Read     = 9,
+  Movie_Source_Create   = 10,
+  Movie_Source_Update   = 11,
+  Movie_Source_Delete   = 12,
 // 4
-  Setting_Movie_Type_Read   = 13,
-  Setting_Movie_Type_Write  = 14,
-  Setting_Movie_Type_Create = 15,
-  Setting_Movie_Type_Update = 16,
+
+  Setting_Movie_Type_Read     = 13,
+  Setting_Movie_Type_Create   = 14,
+  Setting_Movie_Type_Update   = 15,
+  Setting_Movie_Type_Delete   = 16,
+
 // 5
-  Setting_Sub_Movie_Type_Read   = 17,
-  Setting_Sub_Movie_Type_Write  = 18,
-  Setting_Sub_Movie_Type_Create = 19,
-  Setting_Sub_Movie_Type_Update = 20,
+  Setting_Sub_Movie_Type_Read     = 17,
+  Setting_Sub_Movie_Type_Create   = 18,
+  Setting_Sub_Movie_Type_Update   = 19,
+  Setting_Sub_Movie_Type_Delete   = 20,
+
 // 6
-  Setting_Client_Setting_Read   = 21,
-  Setting_Client_Setting_Write  =  22,
-  Setting_Client_Setting_Create = 23,
-  Setting_Client_Setting_Update = 24
+  Setting_Client_Setting_Read     = 21,
+  Setting_Client_Setting_Create   = 22,
+  Setting_Client_Setting_Update   = 23,
+  Setting_Client_Setting_Delete   = 24,
 
 }
 

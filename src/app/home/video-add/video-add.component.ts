@@ -155,16 +155,16 @@ export class VideoAddComponent implements OnInit, OnDestroy {
       let message = '';
       switch(msgKey) {
         case 'invalidVdId':
-          message = this.translate.instant('video.label.movieRequired');
+          message = this.translate.instant('video.message.movieRequired');
           break;
         case 'invalidSubVdTypeId':
-            message = this.translate.instant('video.label.typeRequired');
+            message = this.translate.instant('video.message.typeRequired');
             break;
         case 'invalidVdName':
-          message = this.translate.instant('video.label.titleRequired');
+          message = this.translate.instant('video.message.titleRequired');
           break;
         case 'invalidFileImage':
-          message = this.translate.instant('video.label.imageRequired');
+          message = this.translate.instant('video.message.imageRequired');
           break;
         case '500':
           message = this.translate.instant('serverResponseCode.label.serverError');

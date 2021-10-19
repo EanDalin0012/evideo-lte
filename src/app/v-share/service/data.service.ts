@@ -6,6 +6,9 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class DataService {
 
+  private messageSourcePermissionModule = new BehaviorSubject('default message');
+  currentMessagePermissionModule = this.messageSourcePermissionModule.asObservable();
+
   private messageSource = new BehaviorSubject('default message');
   currentMessage = this.messageSource.asObservable();
 
@@ -31,6 +34,11 @@ export class DataService {
 
   private chageProfile =  new BehaviorSubject<any>('');
   chageProfileData = this.chageProfile.asObservable();
+
+  sendMessagePermissionModule(message: string) {
+    this.messageSourcePermissionModule.next(message);
+  }
+
 
   sendMessageNotification(message: string) {
     this.messageSourceNotification.next(message);

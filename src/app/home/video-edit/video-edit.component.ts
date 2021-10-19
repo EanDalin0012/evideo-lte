@@ -123,7 +123,7 @@ export class VideoEditComponent implements OnInit, OnDestroy {
           id: this.jsonData.id,
           vdId: data.stateMovie.id,
           subVdTypeId: data.state.id,
-          vdName: data.title,
+          vdName: '',
           remark: data.remark,
           resourceId: this.jsonData.resourceId,
           isSelectedFile: this.isSelectedFile,
@@ -203,16 +203,16 @@ export class VideoEditComponent implements OnInit, OnDestroy {
       let message = '';
       switch(msgKey) {
         case 'invalidVdId':
-          message = this.translate.instant('video.label.movieRequired');
+          message = this.translate.instant('video.message.movieRequired');
           break;
         case 'invalidSubVdTypeId':
-            message = this.translate.instant('video.label.typeRequired');
+            message = this.translate.instant('video.message.typeRequired');
             break;
         case 'invalidVdName':
-          message = this.translate.instant('video.label.titleRequired');
+          message = this.translate.instant('video.message.titleRequired');
           break;
         case 'invalidFileImage':
-          message = this.translate.instant('video.label.imageRequired');
+          message = this.translate.instant('video.message.imageRequired');
           break;
         case '500':
           message = this.translate.instant('serverResponseCode.label.serverError');

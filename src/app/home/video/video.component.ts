@@ -131,7 +131,9 @@ export class VideoComponent implements OnInit {
   inquiry() {
     const api = '/api/video/v0/read';
     this.hTTPService.Get(api).then(response => {
-      if(response.result.responseCode !== HTTPResponseCode.Success) {
+      console.log(response);
+
+      if(response.result.responseCode !== HTTPResponseCode.Success && response.result.responseCode !== HTTPResponseCode.Forbidden) {
         this.showErrMsg(response.result.responseMessage);
      }else {
         this.lstMovies = response.body;
@@ -150,8 +152,6 @@ export class VideoComponent implements OnInit {
   }
 
   searchChange(event:any): void {
-    console.log('event',event);
-
     if (event) {
      const search = this.lstMovies.filter( data => data.vdName.toLowerCase().includes(event.target.value));
      this.rowData = search;

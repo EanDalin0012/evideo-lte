@@ -58,12 +58,12 @@ export function createTranslateLoader(http: HttpClient) {
     BrowserAnimationsModule
   ],
   providers: [
-    AllModulesService,
+    // AllModulesService,
     AuthGuard,
-    {
-      provide: PERFECT_SCROLLBAR_CONFIG,
-      useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
-    },
+    // {
+    //   provide: PERFECT_SCROLLBAR_CONFIG,
+    //   useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
+    // },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

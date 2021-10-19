@@ -10,6 +10,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { AgGridModule } from 'ag-grid-angular';
 import { MyImgComponent } from './my-img/my-img.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import {NgxMaskModule} from 'ngx-mask'
 @NgModule({
   declarations: [
     VAccountComponent,
@@ -25,6 +26,10 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     DataTablesModule,
     BsDatepickerModule,
     BsDatepickerModule.forRoot(),
+    NgxMaskModule.forRoot({
+      showMaskTyped : false,
+      // clearIfNotMatch : true
+    }),
     AgGridModule.withComponents([]),
   ],
   exports: [

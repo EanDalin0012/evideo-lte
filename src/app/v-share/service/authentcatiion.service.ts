@@ -4,13 +4,14 @@ import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { HTTPService } from './http.service';
 import { environment } from 'src/environments/environment';
-import { LOCAL_STORAGE } from '../constants/common.const';
+import { LOCAL_STORAGE, HTTPResponseCode } from '../constants/common.const';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Utils } from '../util/utils.static';
 import * as moment from 'moment';
 import { EncryptionUtil } from '../util/encryption-util';
 import { MyLogUtil } from '../util/my-log-util';
 import { AuthService } from './auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class AuthentcatiionService {
     private httpClient: HttpClient,
     private translate: TranslateService,
     private router: Router,
-    private httpService: HTTPService,
+    private toastr: ToastrService,
     private deviceService: DeviceDetectorService,
     private authService: AuthService
   ) {
@@ -33,12 +34,16 @@ export class AuthentcatiionService {
     return new Promise((resovle) => {
       this.authService.setLastEventTime();
       this.accessTokenRequest(auth, basicAuth).then(response => {
+        console.log('accessTokenRequest',response);
+
         if(response?.header?.result== false) {
           resovle(response.header);
         }
         if (response.access_token) {
           Utils.setSecureStorage(LOCAL_STORAGE.Authorization, response);
           this.loadUserByUserName(auth.user_name, response.access_token).then((result) => {
+            console.log('loadUserByUserName',result);
+
             if (result) {
               Utils.setSecureStorage(LOCAL_STORAGE.USER_INFO, result);
               resovle(result);
@@ -76,25 +81,16 @@ export class AuthentcatiionService {
           $('body').addClass('loaded');
           $('div.loading').addClass('none');
           const responseData = res as any;
-          if(responseData.result && responseData.result.responseCode !== '200') {
-          //   this.modalService.alert(
-          //     this.translate.instant('ServerResponseCode.Label.'+responseData.result.responseMessage),
-          //    {
-          //    modalClass: 'open-alert',
-          //    btnText: this.translate.instant('Common.Button.Confirme'),
-          //    callback: res => {
-          //      Utils.removeSecureStorage(LOCAL_STORAGE.Authorization);
-          //      Utils.removeSecureStorage(LOCAL_STORAGE.USER_INFO);
-          //      this.router.navigate(['/login']);
-          //    }
-          //  });
+          console.log('responseData', responseData);
+
+          if(responseData.result && responseData.result.responseCode !== HTTPResponseCode.Success) {
+            this.showErrMsg(responseData.result.responseMessage);
           } else if (responseData.body !== null ) {
             resolve(responseData.body);
           }
       }, error => {
         console.log('error', error);
       });
-
     });
   }
 
@@ -220,6 +216,24 @@ export class AuthentcatiionService {
         // throw new Error("'lastEventTime' is not defined.");
         return false;
       }
+    }
+
+    showErrMsg(msgKey: string, value?: any){
+      let message = '';
+      switch(msgKey) {
+        case 'invalidUserName':
+          message = this.translate.instant('serverResponseCode.label.serverError');
+          break;
+        case '500':
+          message = this.translate.instant('serverResponseCode.label.serverError');
+          break;
+        default:
+          message = this.translate.instant('serverResponseCode.label.unknown');
+          break;
+      }
+      this.toastr.error(message, this.translate.instant('common.label.error'),{
+        timeOut: 5000,
+      });
     }
 
 }

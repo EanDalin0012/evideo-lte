@@ -6,6 +6,7 @@ import { BlankLayoutComponent } from './v-layout/blank-layout/blank-layout.compo
 import { Error404Component } from './errorpages/error404/error404.component';
 import { Error500Component } from './errorpages/error500/error500.component';
 import { AuthGuard } from './v-share/guard/guard.guard';
+import { Error403Component } from './errorpages/error403/error403.component';
 
 const routes: Routes = [
   {
@@ -37,6 +38,7 @@ const routes: Routes = [
   },
   // { path: 'announce/4error', component: Error4Component },
   { path: 'error500', component: Error500Component },
+  { path: 'error403', component: Error403Component },
   { path: '**', component: Error404Component },
   {
     path: '',

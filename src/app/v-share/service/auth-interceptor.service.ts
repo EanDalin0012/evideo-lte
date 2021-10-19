@@ -108,6 +108,8 @@ export class AuthInterceptor implements HttpInterceptor {
       })
     )
     .catch((error: HttpErrorResponse) => {
+      console.log('error',error);
+      alert();
       // intercept the respons error and displace it to the console
       // console.log('Error Occurred');
       // console.log('Error Occurred => ' + JSON.stringify(error));
@@ -129,7 +131,8 @@ export class AuthInterceptor implements HttpInterceptor {
       } else {
         httpErrorCode = '999999';
       }
-      MyLogUtil.log('error', error);
+
+
       if(error.status === 0) {
         this.showErrMsg('ERR_CONNECTION_REFUSED');
       }

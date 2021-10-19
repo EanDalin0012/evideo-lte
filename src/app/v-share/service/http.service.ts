@@ -1,6 +1,6 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Utils } from '../util/utils.static';
-import { LOCAL_STORAGE, AESINFO } from '../constants/common.const';
+import { LOCAL_STORAGE, AESINFO, HTTPResponseCode } from '../constants/common.const';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
@@ -9,6 +9,7 @@ import * as moment from 'moment';
 import * as $ from 'jquery';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from './auth.service';
+import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,8 @@ export class HTTPService {
     private translate: TranslateService,
     private toastr: ToastrService,
     private authService: AuthService,
-    private zone: NgZone
+    private zone: NgZone,
+    private dataService: DataService,
   ) {
     this.baseUrl = environment.bizServer.server;
   }
@@ -143,6 +145,10 @@ export class HTTPService {
         const result = rest as any;
         const responseData = result; //JSON.parse(result);
         // const decryptData = JSON.parse(this.cryptoService.decrypt(String(rawData)));
+        if(responseData.result.responseCode === HTTPResponseCode.Forbidden) {
+          this.dataService.sendMessagePermissionModule(api);
+          this.router.navigate(['/error403']);
+        }
         if (!responseData) {
           //this.showErrMsg(responseData.result.message);
           reject();
@@ -150,7 +156,7 @@ export class HTTPService {
           resolve(responseData);
         }
 
-      });
+      }, error => console.log('oops', error));
     });
   }
 

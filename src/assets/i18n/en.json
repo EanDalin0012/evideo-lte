@@ -201,27 +201,36 @@
       "user": "Users",
       "lstUser": "Lst User",
       "addNewUser":"Add New User",
-      "nserName":"User Name",
+      "userName":"User Name",
       "password":"Password",
       "confirmPassword":"Confirm Password",
       "dateBirth":"Date of Birth",
       "phoneNumber":"Phone Number",
       "profile":"Profile",
-      "role":"Role"
+      "role":"Role",
+      "fullName":"Full Name",
+      "gender":"Gender",
+      "address":"Address"
     },
     "message": {
       "userNameRequired":"*User Name is required",
       "passwordRequired":"*Password is required",
       "confirmPasswordRequired":"*Confirm Password is required",
       "phoneNumberRequired":"*Phone number is required",
-      "dateBirthRequired":"*Date of birth is required"
+      "dateBirthRequired":"*Date of birth is required",
+      "fullNameRequired":"*Full Name is required",
+      "genderRequired":"*Gender is required",
+      "roleRequired":"*Role is required",
+      "userReadyHave":"Sorry, only letters (a-z), numbers (0-9), and periods (.) are allowed."
     },
     "holder": {
       "enterUserName":"Enter user name",
       "enterPassword":"Enter password",
       "enterConfirmPassword":"Enter confirm Password",
-      "chooseDateOfBirth":"*Date of birth is required",
+      "chooseDateOfBirth":"Date of birth is required",
       "enterPhoneNumber":"Enter phone number",
+      "enterFullName":"Enter full name",
+      "enterAddress":"Enter address",
       "selectDate":"Select Date"
     }
   },
@@ -239,7 +248,8 @@
       "userExpired":"User is expired login.",
       "invalidPassword":"Enter wrong password",
       "inValidVdId":"Invalid Movie Type Id.",
-      "errorConectionRefused":"Error conection refused."
+      "errorConectionRefused":"Error conection refused.",
+      "userReadyHave":"User name is ready have. Try other user"
     }
   }
 }

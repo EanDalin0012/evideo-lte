@@ -18,14 +18,71 @@
         <!-- /Page Header -->
 
           <form [formGroup]="form">
+
+
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                    <label>{{'users.label.fullName' | translate}}<span class="text-danger">*</span></label>
+                    <input #fullName class="form-control form-control-sm" type="text" formControlName="fullName" placeholder="{{'users.holder.enterFullName' | translate}}">
+                    <div *ngIf="submitted && f.fullName.errors">
+                        <small class="text-danger">{{'users.message.fullNameRequired' | translate}}</small>
+                    </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                  <div class="form-group">
+                      <label>{{'users.label.gender' | translate}}<span class="text-danger">*</span></label>
+                      <select #gender class="form-control form-control-sm select"
+                              formControlName="gender">
+                              <option *ngFor="let state of genders" [ngValue]="state">
+                                {{ state.name }}
+                              </option>
+                      </select>
+                      <div *ngIf="submitted && f.gender.errors">
+                        <small class="text-danger">{{'users.message.genderRequired' | translate}}</small>
+                      </div>
+                  </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-6">
+                  <div class="form-group cal-icon">
+                      <label>{{'users.label.dateBirth' | translate}}<span class="text-danger">*</span></label>
+                      <input #dateBirth class="form-control datetimepicker form-control-sm" type="text" bsDatepicker type="text"
+                                      [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                                      placeholder="{{'users.holder.selectDate' | translate}}"
+                                      formControlName="dateBirth">
+                      <div *ngIf="submitted && f.dateBirth.errors">
+                          <small class="text-danger">{{'users.message.dateBirthRequired' | translate}}</small>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-sm-6">
+                  <div class="form-group">
+                      <label>{{'users.label.phoneNumber' | translate}}<span class="text-danger">*</span></label>
+                      <input #phoneNumber (input)="phoneNumberChange($event)" mask="000-00-00-000" class="form-control form-control-sm" type="text" formControlName="phoneNumber" placeholder="{{'users.holder.enterPhoneNumber' | translate}}">
+                      <div *ngIf="submitted && phoneNumberCheck">
+                          <small class="text-danger">{{'users.message.phoneNumberRequired' | translate}}</small>
+                      </div>
+                  </div>
+              </div>
+            </div>
+
+
               <div class="row">
                 <div class="col-sm-12">
                   <div class="form-group">
-                      <label>{{'users.label.nserName' | translate}}<span class="text-danger">*</span></label>
-                      <input #userName class="form-control form-control-sm" type="text" formControlName="userName" placeholder="{{'users.holder.enterUserName' | translate}}">
-                      <div *ngIf="submitted && f.title.errors">
+                      <label>{{'users.label.userName' | translate}}<span class="text-danger">*</span></label>
+                      <input #userName class="form-control form-control-sm" type="text" (focusout)="onFocusOut($event)" formControlName="userName" placeholder="{{'users.holder.enterUserName' | translate}}">
+                      <div *ngIf="submitted && f.userName.errors">
                           <small class="text-danger">{{'users.message.userNameRequired' | translate}}</small>
                       </div>
+                      <div *ngIf="checkUserAvailable">
+                        <i class="fa fa-exclamation-circle error-con" aria-hidden="true"></i>
+                        <small class="text-danger">{{'users.message.userReadyHave' | translate}}</small>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -35,16 +92,20 @@
                     <div class="form-group">
                         <label>{{'users.label.password' | translate}}<span class="text-danger">*</span></label>
                         <input #password class="form-control form-control-sm" type="text" formControlName="password" placeholder="{{'users.holder.enterPassword' | translate}}">
-                        <div *ngIf="submitted && f.stateMovie.errors">
+                        <div *ngIf="submitted && f.password.errors">
                             <small class="text-danger">{{'users.message.passwordRequired' | translate}}</small>
                         </div>
+                        <div *ngIf="submitted && checkPw">
+                          <small class="text-danger">{{'users.message.passwordRequired' | translate}} password not mactch</small>
+                      </div>
+
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label>{{'users.label.confirmPassword' | translate}}<span class="text-danger">*</span></label>
                         <input #confirmPassword class="form-control form-control-sm" type="text" formControlName="confirmPassword" placeholder="{{'users.holder.enterConfirmPassword' | translate}}">
-                        <div *ngIf="submitted && f.state.errors">
+                        <div *ngIf="submitted && f.confirmPassword.errors">
                             <small class="text-danger">{{'users.message.confirmPasswordRequired' | translate}}</small>
                         </div>
                     </div>
@@ -53,40 +114,23 @@
 
               <div class="row">
                 <div class="col-sm-6">
-                    <div class="form-group cal-icon">
-                        <label>{{'users.label.dateBirth' | translate}}<span class="text-danger">*</span></label>
-                        <input #dateBirth class="form-control datetimepicker form-control-sm" type="text" bsDatepicker type="text"
-                                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
-                                        placeholder="{{'users.holder.selectDate' | translate}}"
-                                        formControlName="dateBirth">
-                        <div *ngIf="submitted && f.stateMovie.errors">
-                            <small class="text-danger">{{'users.message.dateBirthRequired' | translate}}</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label>{{'users.label.phoneNumber' | translate}}<span class="text-danger">*</span></label>
-                        <input #phoneNumber class="form-control form-control-sm" type="text" formControlName="phoneNumber" placeholder="{{'users.holder.enterPhoneNumber' | translate}}">
-                        <div *ngIf="submitted && f.state.errors">
-                            <small class="text-danger">{{'users.message.phoneNumberRequired' | translate}}</small>
-                        </div>
-                    </div>
-                </div>
+                  <div class="form-group">
+                      <label>{{'users.label.address' | translate}}</label>
+                      <input #address class="form-control form-control-sm" type="text" formControlName="address" placeholder="{{'users.holder.enterAddress' | translate}}">
+                  </div>
               </div>
 
-              <div class="row">
-                <div class="col-sm-12">
+                <div class="col-sm-6">
                     <div class="form-group">
                         <label>{{'users.label.role' | translate}}</label>
-                        <select #stateMovie class="form-control form-control-sm select"
+                        <select #roleState class="form-control form-control-sm select"
                               formControlName="roleState">
-                              <option *ngFor="let state of lstMovies" [ngValue]="state">
+                              <option *ngFor="let state of roles" [ngValue]="state">
                                 {{ state.name }}
                               </option>
                           </select>
-                          <div *ngIf="submitted && f.stateMovie.errors">
-                              <small class="text-danger">{{'video.message.movieRequired' | translate}}</small>
+                          <div *ngIf="submitted && f.roleState.errors">
+                              <small class="text-danger">{{'users.message.roleRequired' | translate}}</small>
                           </div>
                     </div>
                 </div>
@@ -108,16 +152,16 @@
                             <td>Users</td>
 
                             <td class="text-center">
-                                <input formControlName="checkUserRead" value="1" type="checkbox">
+                                <input  (click)="checkEvent($event, 1)" type="checkbox">
                             </td>
                             <td class="text-center">
-                                <input formControlName="checkUserCreate" type="checkbox">
+                                <input (click)="checkEvent($event, 2)" type="checkbox">
                             </td>
                             <td class="text-center">
-                                <input formControlName="checkUserEdit" type="checkbox">
+                                <input  (click)="checkEvent($event, 3)" type="checkbox">
                             </td>
                             <td class="text-center">
-                                <input formControlName="checkUserDelete" type="checkbox">
+                                <input  (click)="checkEvent($event, 4)" type="checkbox">
                             </td>
 
                         </tr>
@@ -125,16 +169,16 @@
                             <td>Movie</td>
 
                           <td class="text-center">
-                              <input formControlName="checkMovieRead" value="1" type="checkbox">
+                              <input  (click)="checkEvent($event, 5)" type="checkbox">
                           </td>
                           <td class="text-center">
-                              <input formControlName="checkMovieCreate" type="checkbox">
+                              <input  (click)="checkEvent($event, 6)" type="checkbox">
                           </td>
                           <td class="text-center">
-                              <input formControlName="checkMovieEdit" type="checkbox">
+                              <input  (click)="checkEvent($event, 7)" type="checkbox">
                           </td>
                           <td class="text-center">
-                              <input formControlName="checkMovieDelete" type="checkbox">
+                              <input  (click)="checkEvent($event, 8)" type="checkbox">
                           </td>
 
                         </tr>
@@ -142,16 +186,16 @@
                           <td>Movie Source</td>
 
                           <td class="text-center">
-                              <input formControlName="checkMovieSourceRead" value="1" type="checkbox">
+                              <input (click)="checkEvent($event, 9)" type="checkbox">
                           </td>
                           <td class="text-center">
-                              <input formControlName="checkMovieSourceCreate" type="checkbox">
+                              <input (click)="checkEvent($event, 10)" type="checkbox">
                           </td>
                           <td class="text-center">
-                              <input formControlName="checkMovieSourceEdit" type="checkbox">
+                              <input  (click)="checkEvent($event, 11)" type="checkbox">
                           </td>
                           <td class="text-center">
-                              <input formControlName="checkMovieSourceDelete" type="checkbox">
+                              <input (click)="checkEvent($event, 12)" type="checkbox">
                           </td>
 
                       </tr>
@@ -159,16 +203,16 @@
                             <td>Setting Movie Type</td>
 
                             <td class="text-center">
-                              <input formControlName="checkSettingMovieTypeRead" value="1" type="checkbox">
+                              <input (click)="checkEvent($event, 13)" type="checkbox">
                             </td>
                             <td class="text-center">
-                                <input formControlName="checkSettingMovieTypeCreate" type="checkbox">
+                                <input (click)="checkEvent($event, 14)" type="checkbox">
                             </td>
                             <td class="text-center">
-                                <input formControlName="checkSettingMovieTypeEdit" type="checkbox">
+                                <input (click)="checkEvent($event, 15)" type="checkbox">
                             </td>
                             <td class="text-center">
-                                <input formControlName="checkSettingMovieTypeDelete" type="checkbox">
+                                <input (click)="checkEvent($event, 16)" type="checkbox">
                             </td>
 
                         </tr>
@@ -176,16 +220,16 @@
                             <td>Setting Movie Sub Type</td>
 
                             <td class="text-center">
-                              <input formControlName="checkSettingMovieSubTypeRead" value="1" type="checkbox">
+                              <input (click)="checkEvent($event, 17)" type="checkbox">
                             </td>
                             <td class="text-center">
-                                <input formControlName="checkSettingMovieSubTypeCreate" type="checkbox">
+                                <input (click)="checkEvent($event, 18)" type="checkbox">
                             </td>
                             <td class="text-center">
-                                <input formControlName="checkSettingMovieSubTypeEdit" type="checkbox">
+                                <input (click)="checkEvent($event, 19)" type="checkbox">
                             </td>
                             <td class="text-center">
-                                <input formControlName="checkSettingMovieSubTypeDelete" type="checkbox">
+                                <input  (click)="checkEvent($event, 20)" type="checkbox">
                             </td>
 
                         </tr>
@@ -193,16 +237,16 @@
                             <td>Setting Clent-Setting</td>
 
                             <td class="text-center">
-                              <input formControlName="checkSettingClentSettingRead" value="1" type="checkbox">
+                              <input  (click)="checkEvent($event, 21)" type="checkbox">
                             </td>
                             <td class="text-center">
-                                <input formControlName="checkSettingClentSettingCreate" type="checkbox">
+                                <input (click)="checkEvent($event, 22)" type="checkbox">
                             </td>
                             <td class="text-center">
-                                <input formControlName="checkSettingClentSettingEdit" type="checkbox">
+                                <input (click)="checkEvent($event, 23)" type="checkbox">
                             </td>
                             <td class="text-center">
-                                <input formControlName="checkSettingClentSettingDelete" type="checkbox">
+                                <input (click)="checkEvent($event, 24)" type="checkbox">
                             </td>
 
                         </tr>
@@ -243,10 +287,6 @@
                             {{ progress }}%
                           </div>
                         </div>
-
-                        <div *ngIf="submitted && f.fileSource.errors">
-                        <small class="text-danger"> {{'video.message.imageRequired' | translate}}</small>
-                    </div>
 
                     </div>
                 </div>

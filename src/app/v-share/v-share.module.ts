@@ -15,7 +15,8 @@ import { ActionComponent } from './component/action/action.component';
 import { StatusYNComponent } from './component/status-yn/status-yn.component';
 import { SrcImgComponent } from './component/src-img/src-img.component';
 import { ArgBtnComponent } from './component/arg-btn/arg-btn.component';
-
+import { AvatarModule } from 'ngx-avatar';
+import { StatusComponent } from './component/status/status.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { ArgBtnComponent } from './component/arg-btn/arg-btn.component';
     StatusYNComponent,
     SrcImgComponent,
     ArgBtnComponent,
+    StatusComponent,
   ],
   imports: [
     CommonModule,
@@ -41,6 +43,7 @@ import { ArgBtnComponent } from './component/arg-btn/arg-btn.component';
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,
+    AvatarModule,
     // DataTablesModule,
     // Pipe
     AccountPipe,

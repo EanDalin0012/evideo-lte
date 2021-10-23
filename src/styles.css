@@ -8419,3 +8419,10 @@ input:focus {
   font-size: 13px;
   margin-right: 5px;
 }
+
+.back {
+  background-position: center;
+background-repeat: no-repeat;
+background-size: contain;
+height: 300px; width:500px
+}

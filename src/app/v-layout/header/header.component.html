@@ -135,9 +135,17 @@
 
       <li class="nav-item dropdown has-arrow main-drop">
           <a href="javascript:" class="dropdown-toggle nav-link" data-toggle="dropdown">
-              <span class="user-img"><img src="assets/img/profiles/avatar-021.jpg" alt="">
-                  <span class="status online"></span></span>
-              <span>Admin</span>
+              <span class="user-img">
+                <!-- <img [src="assets/img/profiles/avatar-021.jpg" alt=""> -->
+                <ngx-avatar
+                    name="{{userInfo.fullName}}"
+                    [src]="src"
+                    value="18%"
+                    size="35" [round]="true">
+                </ngx-avatar>
+                  <span class="status online"></span>
+              </span>
+              <span style="margin-left: 5px;">{{userInfo.fullName}}</span>
           </a>
           <div class="dropdown-menu">
               <a href="javascript:" class="dropdown-item" routerLink="/employees/employeeprofile">My Profile</a>

@@ -1,0 +1,7 @@
+<ng-container *ngIf="this.params.data?.enabled === false">
+  <span class="badge bg-inverse-danger">false</span>
+</ng-container>
+
+<ng-container *ngIf="this.params.data?.enabled === true">
+  <span class="badge bg-inverse-success">true</span>
+</ng-container>

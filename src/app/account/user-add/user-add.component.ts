@@ -7,6 +7,7 @@ import { HTTPService } from '../../v-share/service/http.service';
 import { HTTPResponseCode } from '../../v-share/constants/common.const';
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-add',
@@ -38,7 +39,7 @@ export class UserAddComponent implements OnInit {
   selectedFile = false;
   lstMovies: any[] = [];
   lstSubMovieType: any[] = [];
-  roles: any[] = [];
+  lstRole: any[] = [];
   genders: any[] = [];
 
   authorizationModule:any[] = [];
@@ -51,6 +52,7 @@ export class UserAddComponent implements OnInit {
     private dataService: DataService,
     private hTTPService: HTTPService,
     private translate: TranslateService,
+    private router: Router,
   ) {
     this.form as FormGroup;
     const url = (window.location.href).split('/');
@@ -61,17 +63,8 @@ export class UserAddComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.inquiryRoles();
     this.authorizationModule = [];
-    this.roles = [
-      {
-        id: 1,
-        name: 'Admin'
-      },
-      {
-        id: 2,
-        name: 'Client'
-      }
-    ];
     this.genders = [
       {
         id: 1,
@@ -148,8 +141,6 @@ export class UserAddComponent implements OnInit {
 
   save() {
     const data = this.form.getRawValue();
-    console.log(this.f.phoneNumber.errors);
-    console.log('data.phoneNumber', data.phoneNumber);
 
     // return;
     this.submitted = true;
@@ -185,12 +176,12 @@ export class UserAddComponent implements OnInit {
 
         let jsonData = {};
         jsonData = {
-          fullName: data.fullName,
-          gender: data.gender.name,
-          userName: data.userName,
-          password: data.password,
+          fullName: data.fullName.trim(),
+          gender: data.gender.name.trim(),
+          userName: data.userName.trim(),
+          password: data.password.trim(),
           dateBirth: onSchedule,
-          phoneNumber: data.phoneNumber,
+          phoneNumber: data.phoneNumber.trim(),
           roleId: data.roleState.id,
           authorizationModule: this.authorizationModule,
           remark: data.remark,
@@ -198,12 +189,12 @@ export class UserAddComponent implements OnInit {
         };
         if(this.selectedFile === true ) {
           jsonData = {
-            fullName: data.fullName,
-            gender: data.gender.name,
-            userName: data.userName,
-            password: data.password,
+            fullName: data.fullName.trim(),
+            gender: data.gender.name.trim(),
+            userName: data.userName.trim(),
+            password: data.password.trim(),
             dateBirth: onSchedule,
-            phoneNumber: data.phoneNumber,
+            phoneNumber: data.phoneNumber.trim(),
             roleId: data.roleState.id,
             authorizationModule: this.authorizationModule,
             remark: data.remark,
@@ -219,25 +210,26 @@ export class UserAddComponent implements OnInit {
         const api = '/api/user/v0/create';
         this.hTTPService.Post(api, jsonData).then(response => {
           if(response.result.responseCode === HTTPResponseCode.Success) {
-            this.toastr.info(this.translate.instant('video.message.added'), this.translate.instant('common.label.success'),{
+            this.toastr.info(this.translate.instant('users.message.added'), this.translate.instant('common.label.success'),{
               timeOut: 5000,
             });
-            this.submitted = false;
-            this.form = this.formBuilder.group({
-              fullName: '',
-              gender: '',
-              userName: '',
-              password: '',
-              confirmPassword: '',
-              dateBirth: '',
-              phoneNumber: '',
-              roleState: '',
-              address:'',
-              remark: '',
-              fileSource: new FormControl('', [Validators.required])
-            });
+            // this.submitted = false;
+            // this.form = this.formBuilder.group({
+            //   fullName: '',
+            //   gender: '',
+            //   userName: '',
+            //   password: '',
+            //   confirmPassword: '',
+            //   dateBirth: '',
+            //   phoneNumber: '',
+            //   roleState: '',
+            //   address:'',
+            //   remark: '',
+            //   fileSource: new FormControl('', [Validators.required])
+            // });
 
-            this.imageSrc = '';
+            // this.imageSrc = '';
+            this.router.navigate(['/account']);
           } else {
             this.showErrMsg(response.result.responseMessage);
           }
@@ -262,14 +254,14 @@ export class UserAddComponent implements OnInit {
       });
     }
 
-  // Get Employee  Api Call
-  inquirySubMovieType() {
-    const api = '/api/sub-movie-type/v0/read';
+  // Get Role  Api Call
+  inquiryRoles() {
+    const api = '/api/role/v0/read';
     this.hTTPService.Get(api).then(response => {
       if(response.result.responseCode !== HTTPResponseCode.Success) {
         this.showErrMsg(response.result.responseMessage);
       } else {
-        this.lstSubMovieType = response.body;
+        this.lstRole = response.body;
       }
     });
   }

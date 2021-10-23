@@ -22,18 +22,28 @@
         <i class="fa fa-plus-circle"></i>
         {{'users.label.addNewUser' | translate}}
       </button>
-      <button (click)="getSelectedRowData('edit')"  [disabled] = "disabled" class="btn btn-sm btn-primary float-left left-12" type="button">
+      <button (click)="edit1()"  [disabled] = "disabled" class="btn btn-sm btn-primary float-left left-12" type="button">
         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
         {{'common.button.edit' | translate}}
       </button>
-      <button (click)="getSelectedRowData('delete')"  [disabled] = "disabled" class="btn btn-sm btn-primary float-left left-12" type="button">
+      <button (click)="deleteShow()" [disabled] = "disabled" class="btn btn-sm btn-primary float-left left-12" type="button">
         <i class="fa fa-trash-o" aria-hidden="true"></i>
         {{'common.button.delete' | translate}}
       </button>
 
+      <button (click)="resetPW()" [disabled] = "disabled" class="btn btn-sm btn-primary float-left left-12" type="button">
+        <i class="fa fa-trash-o" aria-hidden="true"></i>
+       {{'users.label.resetPassword' | translate}}
+      </button>
+
+      <button (click)="disableUser()" [disabled] = "disabled" class="btn btn-sm btn-primary float-left left-12" type="button">
+        <i class="fa fa-trash-o" aria-hidden="true"></i>
+        {{btnEnableTxt}}
+      </button>
+
       <div style="width: 300px;" class="float-right">
         <input type="text" class="form-control form-control-sm" (input)="searchChange($event)" placeholder="{{'common.label.searchNameThere' | translate}} ...">
-    </div>
+      </div>
       <label class="col-form-label float-right" style="width: 80px;">{{'common.label.search' | translate}} :</label>
 
     </div>
@@ -63,108 +73,6 @@
 
 </div>
 
-
-<!-- Add Modal -->
-<div id="add_movie_type" class="modal custom-modal fade" role="dialog">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title">{{'movie.label.addMovieType' | translate}}</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-              </button>
-          </div>
-          <div class="modal-body">
-
-            <form [formGroup]="form">
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="form-group">
-                      <label> {{'movie.label.movieType' | translate}}<span class="text-danger">*</span></label>
-                      <input #movieType class="form-control form-control-sm" type="text" formControlName="movieType" placeholder="{{'movie.holder.enterMovieType'|translate}}">
-
-                      <div *ngIf="submitted && f.movieType.errors">
-                          <small class="text-danger"> {{'movie.message.movieTypeRequired' | translate}}</small>
-                      </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                  <div class="col-sm-12">
-                      <div class="form-group">
-                          <label>{{'common.label.remark' | translate}}</label>
-                          <input class="form-control form-control-sm" type="text" formControlName="remark" placeholder="{{'common.holder.enterRemark' | translate}}">
-                      </div>
-                  </div>
-              </div>
-
-              <div class="submit-section">
-                <button (click)="save()" class="btn btn-sm btn-primary float-right">
-                  <i class="fa fa-floppy-o"></i>
-                  {{'common.button.save' | translate}}
-                </button>
-              </div>
-          </form>
-
-          </div>
-      </div>
-  </div>
-</div>
-<!-- /Add Modal -->
-
-
-<!-- Edit Modal -->
-<div id="edit_movie_type" class="modal custom-modal fade" role="dialog">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title">{{'movie.label.updateMovieType' | translate}}</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-              </button>
-          </div>
-          <div class="modal-body">
-
-            <form [formGroup]="formEdit">
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="form-group">
-                      <label> {{'movie.label.movieType' | translate}}<span class="text-danger">*</span></label>
-                      <input #editMovieType class="form-control form-control-sm" type="text" formControlName="editMovieType" placeholder="{{'movie.holder.enterMovieType'|translate}}">
-
-                      <div *ngIf="editSubmitted && fEdit.editMovieType.errors">
-                          <small class="text-danger"> {{'movie.message.movieTypeRequired' | translate}}</small>
-                      </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                  <div class="col-sm-12">
-                      <div class="form-group">
-                          <label>{{'common.label.remark' | translate}}</label>
-                          <input class="form-control form-control-sm" type="text" formControlName="editRemark" placeholder="{{'common.holder.enterRemark' | translate}}">
-                      </div>
-                  </div>
-              </div>
-
-              <div class="submit-section">
-                <button (click)="update()" class="btn btn-sm btn-primary float-right">
-                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                  {{'common.button.update' | translate}}
-                </button>
-              </div>
-          </form>
-
-          </div>
-      </div>
-  </div>
-</div>
-<!-- /Edit Modal -->
-
-
-
 <!-- Delete Modal -->
 <div id="delele" class="modal custom-modal fade" role="dialog">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -176,10 +84,10 @@
               </button>
           </div>
           <div class="modal-body">
-            <h3 class="page-title">{{'movie.message.qDelete' | translate:{'name': selectedJson?.name} }}</h3>
+            <h3 class="page-title">{{'users.message.qDelete' | translate:{'name': selectedJson?.userName} }}</h3>
 
             <div style="margin-top: 25px;">
-              <button (click)="delete()" class="btn btn-sm btn-primary float-right" type="button" style="margin-left: 15px;">
+              <button (click)="onDelete()" class="btn btn-sm btn-dark float-right" type="button" style="margin-left: 15px;">
                 <i class="fa fa-check-circle" aria-hidden="true"></i>
                 {{'common.button.yes' | translate}}
               </button>
@@ -194,5 +102,94 @@
   </div>
 </div>
 <!-- /Delete Modal -->
+
+<!-- Diable Modal -->
+<div id="disableUser" class="modal custom-modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+            <span>{{enable}}</span>
+              <h5 class="modal-title" *ngIf = "enable === true">{{'users.label.enableUser' | translate}}</h5>
+              <h5 class="modal-title" *ngIf = "enable === false">{{'users.label.disableUser' | translate}}</h5>
+
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+            <h3 class="page-title">{{'users.message.qDisableUser' | translate:{'name': selectedJson?.userName} }}</h3>
+
+            <div style="margin-top: 25px;">
+              <button (click)="onDiable()" class="btn btn-sm btn-dark float-right" type="button" style="margin-left: 15px;">
+                <i class="fa fa-check-circle" aria-hidden="true"></i>
+                {{'common.button.yes' | translate}}
+              </button>
+              <button class="btn btn-sm btn-primary float-right" data-dismiss="modal" aria-label="Close" type="button" >
+                <i class="fa fa-times-circle" aria-hidden="true"></i>
+                {{'common.button.no' | translate}}
+              </button>
+            </div>
+
+          </div>
+      </div>
+  </div>
+</div>
+<!-- /Diable Modal -->
+
+<!-- ResetPassword Modal -->
+<div id="resetPW" class="modal custom-modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">{{'users.label.resetPasswordUser' | translate:{'userName': selectedJson?.userName} }}</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+
+            <form [formGroup]="form">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group">
+                      <label> {{'users.label.password' | translate}}<span class="text-danger">*</span></label>
+                      <input #password class="form-control form-control-sm" type="text" formControlName="password" placeholder="{{'users.holder.enterPassword'|translate}}">
+
+                      <div *ngIf="submitted && f.password.errors">
+                          <small class="text-danger"> {{'users.message.passwordRequired' | translate}}</small>
+                      </div>
+                      <div *ngIf="submitted && checkPw">
+                        <i class="fa fa-exclamation-circle error-con" aria-hidden="true"></i>
+                        <small class="text-danger">{{'users.message.userReadyHave' | translate}}</small>
+                      </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                  <div class="col-sm-12">
+                      <div class="form-group">
+                          <label>{{'users.label.confirmPassword' | translate}} <span class="text-danger">*</span></label>
+                          <input #confirmPassword class="form-control form-control-sm" type="text" formControlName="confirmPassword" placeholder="{{'users.holder.enterConfirmPassword' | translate}}">
+                          <div *ngIf="submitted && f.confirmPassword.errors">
+                            <small class="text-danger"> {{'users.message.confirmPasswordRequired' | translate}}</small>
+                        </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="submit-section">
+                <button (click)="onResetPW()" class="btn btn-sm btn-dark float-right">
+                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                  {{'users.label.resetPassword' | translate}}
+                </button>
+              </div>
+          </form>
+
+          </div>
+      </div>
+  </div>
+</div>
+<!-- /ResetPassword Modal -->
 
 </div>

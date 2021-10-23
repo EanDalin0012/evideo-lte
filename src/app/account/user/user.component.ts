@@ -9,8 +9,13 @@ import { TranslateService } from '@ngx-translate/core';
 declare const $: any;
 import { AllCommunityModules } from '@ag-grid-community/all-modules';
 import { ColDef } from 'ag-grid-community';
-import { HTTPResponseCode } from '../../v-share/constants/common.const';
+import { HTTPResponseCode, LOCAL_STORAGE } from '../../v-share/constants/common.const';
 import { StatusYNComponent } from '../../v-share/component/status-yn/status-yn.component';
+import { SrcImgComponent } from '../../v-share/component/src-img/src-img.component';
+import { EncryptionUtil } from '../../v-share/util/encryption-util';
+import { Utils } from '../../v-share/util/utils.static';
+import { Title } from '@angular/platform-browser';
+import { StatusComponent } from '../../v-share/component/status/status.component';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -20,16 +25,13 @@ export class UserComponent implements OnInit {
   // Add Modal
   submitted: boolean = false;
   public form: any;
-  @ViewChild("movieType") inputMovieType: any;
+  @ViewChild("password") inputPassword: any;
+  @ViewChild("confirmPassword") inputConfirmPassword: any;
 
-  // Edit Modal
-  editSubmitted: boolean = false;
-  public formEdit: any;
-  @ViewChild("editMovieType") inputEditMovieType: any;
 
   selectedJson: any;
 
-  lstMovies: any[] = [];
+  lstUser: any[] = [];
   disabled = true;
 
   pagination = true;
@@ -43,6 +45,9 @@ export class UserComponent implements OnInit {
   rowData: any;
   rowSelection: any;
   isRowSelectable: any;
+  btnEnableTxt:string = '';
+  enable = false;
+  checkPw = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -50,25 +55,18 @@ export class UserComponent implements OnInit {
     private dataService: DataService,
     private router: Router,
     private hTTPService: HTTPService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private titleService: Title,
   ) {
-
+    this.titleService.setTitle( "Users" );
     const url = (window.location.href).split('/');
     this.dataService.visitParamRouterChange(url[3]);
 
     this.form as FormGroup;
-    this.formEdit as FormGroup;
-    this.inputMovieType as ElementRef;
-    this.inputEditMovieType as ElementRef;
 
     this.form = this.formBuilder.group({
-      movieType: ['', [Validators.required]],
-      remark: ['', [Validators.required]]
-    });
-
-    this.formEdit = this.formBuilder.group({
-      editMovieType: ['', [Validators.required]],
-      editRemark: ['', [Validators.required]]
+      password: ['', [Validators.required]],
+      confirmPassword: ['', [Validators.required]]
     });
 
   }
@@ -76,31 +74,57 @@ export class UserComponent implements OnInit {
   checked = false;
 
   ngOnInit() {
-
+    this.btnEnableTxt = this.translate.instant('users.label.disableUser');
     this.inquiry();
 
     this.columnDefs = [
       {
         headerName: '#',
-        field: 'id', minWidth: 50, width: 50},
+        field: 'id', minWidth: 50, width: 50
+      },
       {
-        headerName: this.translate.instant('common.label.name'),
-        field: 'name'
+        headerName: this.translate.instant('video.label.image'),
+        field: 'status',
+        cellRenderer: 'srcImg',
+        cellClass: 'text-center',
+        sortable: false,
+        filter: false,
+      },
+      {
+        headerName: this.translate.instant('users.label.userName'),
+        field: 'userName'
+      },
+      {
+        headerName: this.translate.instant('users.label.enable'),
+        field: 'enabled',
+        cellRenderer: 'status'
+      },
+      {
+        headerName: this.translate.instant('users.label.fullName'),
+        field: 'fullName'
+      },
+      {
+        headerName: this.translate.instant('users.label.dateBirth'),
+        field: 'dateBirth'
+      },
+      {
+        headerName: this.translate.instant('users.label.gender'),
+        field: 'gender'
+      },
+      {
+        headerName: this.translate.instant('users.label.phoneNumber'),
+        field: 'phoneNumber'
       },
       {
         headerName: this.translate.instant('common.label.remark'),
         field: 'remark',
-      },
-      {
-        headerName: this.translate.instant('common.label.settingClientVideoMenu'),
-        field: 'status',
-        cellRenderer: 'statusYN',
-        cellClass: 'text-center'
       }
     ];
 
     this.frameworkComponents = {
-      statusYN: StatusYNComponent
+      statusYN: StatusYNComponent,
+      srcImg: SrcImgComponent,
+      status: StatusComponent
     };
 
     this.defaultColDef = {
@@ -126,27 +150,139 @@ export class UserComponent implements OnInit {
   }
 
   onSelectionChanged(event: any) {
-    var selectedRows = this.gridApi.getSelectedRows();
+    const selectedRows = this.gridApi.getSelectedRows();
+    this.selectedJson = selectedRows[0];
+    console.log(this.selectedJson);
+    if(this.selectedJson.enabled === false) {
+      this.btnEnableTxt = this.translate.instant('users.label.enableUser');
+      this.enable = true;
+    } else {
+      this.btnEnableTxt = this.translate.instant('users.label.disableUser');
+      this.enable = false;
+    }
     if(selectedRows) {
       this.disabled = false;
     }
   }
 
-  getSelectedRowData(note:string) {
-    let selectedNodes = this.gridApi.getSelectedNodes();
-    let selectedData = selectedNodes.map((node: { data: any; }) => node.data);
-    this.selectedJson = selectedData[0];
-    if(note === 'edit') {
-      this.formEdit.patchValue({
-        editMovieType: this.selectedJson.name,
-        editRemark: this.selectedJson.remark
-      });
-      $("#edit_movie_type").modal("show");
-    } else if (note === 'delete') {
+  deleteShow() {
+    if(this.selectedJson) {
       $("#delele").modal("show");
     }
-    return selectedData;
   }
+
+  onDelete() {
+    const api = '/api/user/v0/delete';
+      const jsonData = {
+        userId: this.selectedJson.id
+      };
+
+      this.hTTPService.Post(api, jsonData).then(response => {
+
+        if(response.result.responseCode === HTTPResponseCode.Success) {
+          this.inquiry();
+          $("#delele").modal("hide");
+          this.toastr.info(this.translate.instant('users.message.deleted'), this.translate.instant('common.label.success'),{
+            timeOut: 5000,
+          });
+
+        } else {
+          this.showErrMsg(response.result.responseMessage);
+        }
+      });
+  }
+
+  onDiable() {
+    const api = '/api/user/v0/enableStatus';
+      const jsonData = {
+        userId: this.selectedJson.id,
+        enable: this.enable
+      };
+
+      this.hTTPService.Post(api, jsonData).then(response => {
+        if(response.result.responseCode === HTTPResponseCode.Success) {
+          this.inquiry();
+          $("#disableUser").modal("hide");
+          if(this.enable === true) {
+            this.toastr.info(this.translate.instant('users.message.enabledUser'), this.translate.instant('common.label.success'),{
+              timeOut: 5000,
+            });
+          } else {
+            this.toastr.info(this.translate.instant('users.message.disabledUser'), this.translate.instant('common.label.success'),{
+              timeOut: 5000,
+            });
+          }
+
+
+        } else {
+          this.showErrMsg(response.result.responseMessage);
+        }
+      });
+  }
+
+  disableUser() {
+    if(this.selectedJson) {
+      $("#disableUser").modal("show");
+    }
+  }
+
+  resetPW() {
+    if(this.selectedJson) {
+      $("#resetPW").modal("show");
+    }
+  }
+
+  onResetPW() {
+    this.submitted = true;
+    if(this.f.password.errors) {
+      this.inputPassword.nativeElement.focus();
+    } else if(this.f.confirmPassword.errors) {
+      this.inputConfirmPassword.nativeElement.focus();
+    } else {
+      const api = '/api/user/v0/changePassword';
+      const data = this.form.getRawValue();
+      const password = data.password;
+      const confirmPassword = data.confirmPassword;
+      if(password !== confirmPassword) {
+        this.checkPw = true;
+        this.inputPassword.nativeElement.focus();
+      }
+      const jsonData = {
+        userId: this.selectedJson.id,
+        password: password
+      };
+
+      this.hTTPService.Post(api, jsonData).then(response => {
+        if(response.result.responseCode === HTTPResponseCode.Success) {
+          this.inquiry();
+          $("#resetPW").modal("hide");
+          this.toastr.info(this.translate.instant('users.message.userChangePassword'), this.translate.instant('common.label.success'),{
+            timeOut: 5000,
+          });
+        } else {
+          this.showErrMsg(response.result.responseMessage);
+        }
+      });
+    }
+  }
+
+  // getSelectedRowData(note:string) {
+  //   let selectedNodes = this.gridApi.getSelectedNodes();
+  //   let selectedData = selectedNodes.map((node: { data: any; }) => node.data);
+  //   this.selectedJson = selectedData[0];
+  //   console.log(this.selectedJson);
+
+  //   if(note === 'edit') {
+  //     this.formEdit.patchValue({
+  //       editMovieType: this.selectedJson.name,
+  //       editRemark: this.selectedJson.remark
+  //     });
+  //     $("#edit_movie_type").modal("show");
+  //   } else if (note === 'delete') {
+  //     $("#delele").modal("show");
+  //   }
+  //   return selectedData;
+  // }
 
   onBtnExport() {
     this.gridApi.exportDataAsCsv();
@@ -156,10 +292,21 @@ export class UserComponent implements OnInit {
     this.router.navigate(['/account/user-add']);
   }
 
+  edit1() {
+    console.log(this.selectedJson);
+
+    const jsonString = JSON.stringify(this.selectedJson);
+    const encryptString = EncryptionUtil.encrypt(jsonString.toString()).toString();
+    console.log('encryptString',encryptString);
+
+    Utils.setSecureStorage(LOCAL_STORAGE.UserEdit, encryptString);
+    this.router.navigate(['account/user-edit']);
+  }
+
   save() {
     this.submitted = true;
     if(this.f.movieType.errors) {
-      this.inputMovieType.nativeElement.focus();
+      this.inputPassword.nativeElement.focus();
     } else {
       const data = this.form.getRawValue();
       const api = '/api/movie-type/v0/create';
@@ -178,40 +325,6 @@ export class UserComponent implements OnInit {
             remark: ''
           });
           $("#add_movie_type").modal("hide");
-        } else {
-          this.showErrMsg(response.result.responseMessage);
-        }
-      });
-    }
-  }
-
-  update() {
-    this.editSubmitted = true;
-    if(this.fEdit.editMovieType.errors) {
-      this.inputEditMovieType.nativeElement.focus();
-    } else if(!this.selectedJson.id) {
-      this.showErrMsg('unSelectRow');
-    } else {
-      const data = this.formEdit.getRawValue();
-      const api = '/api/movie-type/v0/update';
-      const jsonData = {
-        id: this.selectedJson.id,
-        name: data.editMovieType,
-        remark: data.editRemark
-      };
-      this.hTTPService.Post(api, jsonData).then(response => {
-        if(response.result.responseCode === HTTPResponseCode.Success) {
-          this.inquiry();
-          this.disabled = true;
-          $("#edit_movie_type").modal("hide");
-          this.toastr.info(this.translate.instant('movie.message.udpated'), this.translate.instant('common.label.success'),{
-            timeOut: 5000,
-          });
-          this.formEdit = this.formBuilder.group({
-            editMovieType: '',
-            editRemark: ''
-          });
-
         } else {
           this.showErrMsg(response.result.responseMessage);
         }
@@ -245,13 +358,15 @@ export class UserComponent implements OnInit {
 
   // Get Movie Type  Api Call
   inquiry() {
-    const api = '/api/movie-type/v0/read';
+    const api = '/api/user/v0/read';
     this.hTTPService.Get(api).then(response => {
       if(response.result.responseCode !== HTTPResponseCode.Success) {
         this.showErrMsg(response.result.responseMessage);
      }else {
-        this.lstMovies = response.body;
-        this.rowData =this.lstMovies;
+        this.lstUser = response.body;
+        console.log(response.body);
+
+        this.rowData =this.lstUser;
       }
     });
   }
@@ -261,7 +376,7 @@ export class UserComponent implements OnInit {
 
   searchChange(event:any): void {
     if (event) {
-     const search = this.lstMovies.filter( data => data.name.toLowerCase().includes(event.target.value));
+     const search = this.lstUser.filter( data => data.userName.toLowerCase().includes(event.target.value));
      this.rowData = search;
     }
   }
@@ -269,15 +384,11 @@ export class UserComponent implements OnInit {
   showErrMsg(msgKey: string, value?: any){
     let message = '';
     switch(msgKey) {
-      case 'Invalid_Name':
-        message = this.translate.instant('movie.message.movieTypeRequired');
+      case 'invalidUserId':
+        message = this.translate.instant('users.message.invalidUserId');
         break;
-      case 'Invalid_Vd_Id':
-        message = this.translate.instant('serverResponseCode.label.inValidMovieTypeIdWithValue', {value: value});
-        break;
-
-      case 'Invalid_Vd_ID':
-        message = this.translate.instant('serverResponseCode.label.inValidMovieTypeId');
+      case 'invalidPassword':
+        message = this.translate.instant('users.message.passwordRequired');
         break;
       case 'unSelectRow':
         message = this.translate.instant('common.message.unSelectRow');
@@ -296,10 +407,6 @@ export class UserComponent implements OnInit {
 
   get f(): { [key: string]: AbstractControl } {
     return this.form.controls;
-  }
-
-  get fEdit(): { [key: string]: AbstractControl } {
-    return this.formEdit.controls;
   }
 
 }

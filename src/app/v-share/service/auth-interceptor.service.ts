@@ -108,8 +108,6 @@ export class AuthInterceptor implements HttpInterceptor {
       })
     )
     .catch((error: HttpErrorResponse) => {
-      console.log('error',error);
-      alert();
       // intercept the respons error and displace it to the console
       // console.log('Error Occurred');
       // console.log('Error Occurred => ' + JSON.stringify(error));
@@ -182,7 +180,7 @@ export class AuthInterceptor implements HttpInterceptor {
         } }));
       }
 
-      if (error.status == 400) {
+      if (error.status === 400 || error.status === 500) {
         this.zone.run(() =>  this.router.navigate(['/login'],{ replaceUrl: true }));
         this.showErrMsg(error.error.error_description);
         return Observable.of(new HttpResponse({body:{
@@ -196,6 +194,7 @@ export class AuthInterceptor implements HttpInterceptor {
           }
         } }));
       }
+
 
       // if (error.status >= 400 && error.status < 500) {
       //   this.zone.run(() =>  this.router.navigate(['announce/4error']));
@@ -274,7 +273,6 @@ export class AuthInterceptor implements HttpInterceptor {
         //   }
         // });
       } else {
-        alert(message[msgKey],);
         this.zone.run(() =>  this.router.navigate(['/login'], { replaceUrl: true }));
         // this.modal.alert(
         //   message[msgKey],

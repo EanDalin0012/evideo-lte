@@ -74,7 +74,6 @@ export class AuthentcatiionService {
       $('div.loading').removeClass('none');
       $('body').removeClass('loaded');
 
-
       this.httpClient.post(uri, JSON.stringify(userInfo), {
         headers: new HttpHeaders(httpOptionsObj)
       }).subscribe( res => {

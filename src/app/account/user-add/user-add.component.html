@@ -96,8 +96,8 @@
                             <small class="text-danger">{{'users.message.passwordRequired' | translate}}</small>
                         </div>
                         <div *ngIf="submitted && checkPw">
-                          <small class="text-danger">{{'users.message.passwordRequired' | translate}} password not mactch</small>
-                      </div>
+                          <small class="text-danger">password not mactch</small>
+                        </div>
 
                     </div>
                 </div>
@@ -125,7 +125,7 @@
                         <label>{{'users.label.role' | translate}}</label>
                         <select #roleState class="form-control form-control-sm select"
                               formControlName="roleState">
-                              <option *ngFor="let state of roles" [ngValue]="state">
+                              <option *ngFor="let state of lstRole" [ngValue]="state">
                                 {{ state.name }}
                               </option>
                           </select>

@@ -210,7 +210,12 @@
       "role":"Role",
       "fullName":"Full Name",
       "gender":"Gender",
-      "address":"Address"
+      "address":"Address",
+      "disableUser":"Disable User",
+      "resetPasswordUser":"Reset password of user {{userName}}",
+      "resetPassword": "Reset Password",
+      "enable":"Enable",
+      "enableUser":"Enable User"
     },
     "message": {
       "userNameRequired":"*User Name is required",
@@ -221,7 +226,16 @@
       "fullNameRequired":"*Full Name is required",
       "genderRequired":"*Gender is required",
       "roleRequired":"*Role is required",
-      "userReadyHave":"Sorry, only letters (a-z), numbers (0-9), and periods (.) are allowed."
+      "userReadyHave":"Sorry, only letters (a-z), numbers (0-9), and periods (.) are allowed.",
+      "added":"User added.",
+      "udpated":"User updated.",
+      "qDelete":"Do you want delete user {{name}} ?",
+      "qDisableUser":"Do you want disable user {{name}} ?",
+      "deleted":"User is deleted.",
+      "enabledUser":"User enabled",
+      "disabledUser":"User disabled",
+      "userChangePassword":"User changed password",
+      "invalidUserId":"Invalid User Id"
     },
     "holder": {
       "enterUserName":"Enter user name",

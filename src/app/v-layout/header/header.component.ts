@@ -34,17 +34,18 @@ export class HeaderComponent implements OnInit {
   notifications: any;
   messagesData: MessagesData[] = [];
   flags = 'assets/img/flags/us.png';
-  userInfo = {
-    id: 0,
-    dateBirth: '',
-    firstName: '',
-    gender: '',
-    lastName: '',
-    phoneNumber: '',
-    userName: '',
-    resourceID: 0
-  };
+  // userInfo = {
+  //   id: 0,
+  //   dateBirth: '',
+  //   firstName: '',
+  //   gender: '',
+  //   lastName: '',
+  //   phoneNumber: '',
+  //   userName: '',
+  //   resourceID: 0
+  // };
 
+  userInfo:any;
   constructor(
     private translate: TranslateService,
     private router: Router,
@@ -58,10 +59,11 @@ export class HeaderComponent implements OnInit {
     }
 
   ngOnInit() {
+
       this.dataService.chageProfileData.subscribe(message => {
         if(message) {
           this.userInfo = message;
-          this.src = this.baseUrl + '/api/image/reader/v0/read/1';
+
         }
       });
 
@@ -151,7 +153,7 @@ export class HeaderComponent implements OnInit {
       },
     ];
     this.userInfo = Utils.getSecureStorage(LOCAL_STORAGE.USER_INFO);
-    this.src = this.baseUrl + '/api/image/reader/v0/read/1';
+    this.src = this.baseUrl + '/unsecur/api/image/reader/v0/read/'+this.userInfo?.resourceId;
     // this.imageName = this.userInfo.firstName + ' ' + this.userInfo.lastName;
   }
 

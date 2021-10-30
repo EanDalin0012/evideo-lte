@@ -73,52 +73,41 @@
           </div>
 
 
-              <div class="row">
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label>{{'videoSource.label.video' | translate}}</label>
+            <!-- <div class="row">
+              <div class="col-sm-12">
+                  <div class="form-group">
+                      <label>{{'videoSource.label.video' | translate}}</label>
 
-                        <input type="file"  formControlName="fileSource" accept="video/*" (change)="onSelectFile($event)" class="form-control"/>
+                      <input type="file"  formControlName="fileSource" accept="video/*" (change)="onSelectFile($event)" class="form-control"/>
 
-                        <ng-container *ngIf="format==='video' && url">
-                          <video [src]="url"  height="200" controls></video>
-                        </ng-container>
+                      <ng-container *ngIf="format==='video' && url">
+                        <video [src]="url"  height="200" controls></video>
+                      </ng-container>
 
-                         <br/>
+                        <br/>
 
-                        <div *ngIf="currentFile" class="progress my-3">
-                          <div
-                            class="progress-bar progress-bar-info progress-bar-striped"
-                            role="progressbar"
-                            attr.aria-valuenow="{{ progress }}"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                            [ngStyle]="{ width: progress + '%' }"
-                          >
-                            {{ progress }}%
-                          </div>
+                      <div *ngIf="currentFile" class="progress my-3">
+                        <div
+                          class="progress-bar progress-bar-info progress-bar-striped"
+                          role="progressbar"
+                          attr.aria-valuenow="{{ progress }}"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                          [ngStyle]="{ width: progress + '%' }"
+                        >
+                          {{ progress }}%
                         </div>
+                      </div>
 
-                        <div *ngIf="submitted && f.fileSource.errors">
-                        <small class="text-danger">{{'videoSource.message.videoSourceRequired' | translate}}</small>
-                    </div>
+                      <div *ngIf="submitted && f.fileSource.errors">
+                      <small class="text-danger">{{'videoSource.message.videoSourceRequired' | translate}}</small>
+                  </div>
 
-                    </div>
-                </div>
-            </div>
-
-            <div *ngIf="currentFile" class="progress">
-              <div
-                class="progress-bar progress-bar-info progress-bar-striped"
-                role="progressbar"
-                attr.aria-valuenow="{{ progress }}"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                [ngStyle]="{ width: progress + '%' }"
-              >
-                {{ progress }}%
+                  </div>
               </div>
-            </div>
+            </div> -->
+
+
 
             <div class="row">
               <div class="col-8">
@@ -132,6 +121,19 @@
                       Upload file
                   </button>
               </div>
+          </div>
+
+          <div *ngIf="currentFile" class="progress">
+            <div
+              class="progress-bar progress-bar-info progress-bar-striped"
+              role="progressbar"
+              attr.aria-valuenow="{{ progress }}"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              [ngStyle]="{ width: progress + '%' }"
+            >
+              {{ progress }}%
+            </div>
           </div>
 
           <div *ngIf="message" class="alert alert-success" role="alert">{{ message }}</div>

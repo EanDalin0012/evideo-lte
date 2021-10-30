@@ -33,6 +33,7 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
   progress = 0;
   message = '';
   errorMsg = '';
+  videoSourceId: number = 0;
 
   submitted = false;
   // selectedFiles?: FileList;
@@ -223,6 +224,9 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
 
   selectFile(event: any): void {
     this.selectedFiles = event.target.files;
+    this.progress = 0;
+    const file: File | null = this.selectedFiles.item(0);
+    this.currentFile = file;
   }
 
   upload(): void {
@@ -234,13 +238,19 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
       if (file) {
         this.currentFile = file;
 
-        this.uploadService.upload(this.currentFile).subscribe(
+        this.uploadService.upload(this.currentFile, this.jsonData.vdName).subscribe(
           (event: any) => {
             if (event.type === HttpEventType.UploadProgress) {
               this.progress = Math.round(100 * event.loaded / event.total);
-
             } else if (event instanceof HttpResponse) {
-              this.message = event.body.responseMessage;
+
+              if(event.body?.result.responseCode === HTTPResponseCode.Success) {
+                this.videoSourceId = event.body.body;
+              } else {
+                this.message = event.body?.result.responseMessage;
+              }
+
+              console.log('message', event.body);
             }
           },
           (err: any) => {

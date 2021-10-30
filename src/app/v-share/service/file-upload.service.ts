@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { LOCAL_STORAGE } from './../constants/common.const';
 import { Utils } from 'src/app/v-share/util/utils.static';
 import { environment } from 'src/environments/environment';
@@ -16,26 +17,28 @@ export class FileUploadService {
     this.baseUrl = environment.bizServer.server;
   }
 
-  upload(file: File): Observable<HttpEvent<any>> {
+  upload(file: File, title: string): Observable<HttpEvent<any>> {
     const formData: FormData = new FormData();
 
+    const userInfo = Utils.getSecureStorage(LOCAL_STORAGE.USER_INFO);
+
     formData.append('file', file);
+    formData.append('title', title);
+    formData.append('userId', userInfo.id);
+
     let authorization = Utils.getSecureStorage(LOCAL_STORAGE.Authorization);
-    console.log(authorization);
-
     const access_token = authorization.access_token;
+    const uri = this.baseUrl + "/api/files/video/upload";
 
-    const headers= new HttpHeaders()
-      .set('Authorization', 'Bearer ' + access_token);
+    const headers= new HttpHeaders().set('Authorization', 'Bearer ' + access_token);
 
-    const req = new HttpRequest('POST', 'http://localhost:8080/api/files/video/upload', formData, {
+    const req = new HttpRequest('POST', uri, formData, {
       reportProgress: true,
       headers: headers,
       responseType: 'json'
     });
 
     return this.http.request(req);
-
 
   }
 }

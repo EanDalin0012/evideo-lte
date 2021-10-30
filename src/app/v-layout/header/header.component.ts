@@ -199,4 +199,8 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(["/acc/profile"]);
   }
 
+  routor(router: string) {
+    this.router.navigate([router]);
+  }
+
 }

@@ -1,4 +1,5 @@
-import {  Component, OnInit, ElementRef } from '@angular/core';
+import { PhoneNumberComponent } from './../../v-share/component/phone-number/phone-number.component';
+import {  Component, OnInit } from '@angular/core';
 import { ViewChild } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
@@ -16,6 +17,7 @@ import { EncryptionUtil } from '../../v-share/util/encryption-util';
 import { Utils } from '../../v-share/util/utils.static';
 import { Title } from '@angular/platform-browser';
 import { StatusComponent } from '../../v-share/component/status/status.component';
+
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -113,7 +115,8 @@ export class UserComponent implements OnInit {
       },
       {
         headerName: this.translate.instant('users.label.phoneNumber'),
-        field: 'phoneNumber'
+        field: 'phoneNumber',
+        cellRenderer: 'phoneNumber',
       },
       {
         headerName: this.translate.instant('common.label.remark'),
@@ -124,7 +127,8 @@ export class UserComponent implements OnInit {
     this.frameworkComponents = {
       statusYN: StatusYNComponent,
       srcImg: SrcImgComponent,
-      status: StatusComponent
+      status: StatusComponent,
+      phoneNumber: PhoneNumberComponent
     };
 
     this.defaultColDef = {
@@ -212,8 +216,6 @@ export class UserComponent implements OnInit {
               timeOut: 5000,
             });
           }
-
-
         } else {
           this.showErrMsg(response.result.responseMessage);
         }
@@ -293,11 +295,9 @@ export class UserComponent implements OnInit {
   }
 
   edit1() {
-    console.log(this.selectedJson);
 
     const jsonString = JSON.stringify(this.selectedJson);
     const encryptString = EncryptionUtil.encrypt(jsonString.toString()).toString();
-    console.log('encryptString',encryptString);
 
     Utils.setSecureStorage(LOCAL_STORAGE.UserEdit, encryptString);
     this.router.navigate(['account/user-edit']);
@@ -364,8 +364,6 @@ export class UserComponent implements OnInit {
         this.showErrMsg(response.result.responseMessage);
      }else {
         this.lstUser = response.body;
-        console.log(response.body);
-
         this.rowData =this.lstUser;
       }
     });

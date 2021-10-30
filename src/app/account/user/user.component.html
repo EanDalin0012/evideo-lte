@@ -32,12 +32,12 @@
       </button>
 
       <button (click)="resetPW()" [disabled] = "disabled" class="btn btn-sm btn-primary float-left left-12" type="button">
-        <i class="fa fa-trash-o" aria-hidden="true"></i>
+        <i class="fa fa-unlock" aria-hidden="true"></i>
        {{'users.label.resetPassword' | translate}}
       </button>
 
       <button (click)="disableUser()" [disabled] = "disabled" class="btn btn-sm btn-primary float-left left-12" type="button">
-        <i class="fa fa-trash-o" aria-hidden="true"></i>
+        <i class="fa fa-expeditedssl" aria-hidden="true"></i>
         {{btnEnableTxt}}
       </button>
 
@@ -108,7 +108,6 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
           <div class="modal-header">
-            <span>{{enable}}</span>
               <h5 class="modal-title" *ngIf = "enable === true">{{'users.label.enableUser' | translate}}</h5>
               <h5 class="modal-title" *ngIf = "enable === false">{{'users.label.disableUser' | translate}}</h5>
 

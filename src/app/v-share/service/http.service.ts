@@ -116,7 +116,7 @@ export class HTTPService {
    public Get(api: string, obj?: any): Promise<any> {
     return new Promise((resolve, reject) => {
 
-      $('div.loading').removeClass('none');
+      $('div.j83agx80').removeClass('none');
       $('body').removeClass('loaded');
       const userInfo = Utils.getSecureStorage(LOCAL_STORAGE.USER_INFO);
       const lang = Utils.getSecureStorage(LOCAL_STORAGE.I18N);

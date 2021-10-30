@@ -36,6 +36,15 @@ const routes: Routes = [
       }
     ]
   },
+  {
+    path: '', component: VLayoutComponent,
+    children: [
+      {
+        path: 'error',
+        loadChildren: () => import('./errorpages/errorpages.module').then(m => m.ErrorpagesModule)
+      }
+    ]
+  },
   // { path: 'announce/4error', component: Error4Component },
   { path: 'error500', component: Error500Component },
   { path: 'error403', component: Error403Component },

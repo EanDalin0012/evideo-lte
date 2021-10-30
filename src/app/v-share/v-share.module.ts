@@ -17,6 +17,8 @@ import { SrcImgComponent } from './component/src-img/src-img.component';
 import { ArgBtnComponent } from './component/arg-btn/arg-btn.component';
 import { AvatarModule } from 'ngx-avatar';
 import { StatusComponent } from './component/status/status.component';
+import { PhoneNumberFormatPipe } from './pipe/phone-number-format.pipe';
+import { PhoneNumberComponent } from './component/phone-number/phone-number.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,8 @@ import { StatusComponent } from './component/status/status.component';
     SrcImgComponent,
     ArgBtnComponent,
     StatusComponent,
+    PhoneNumberFormatPipe,
+    PhoneNumberComponent,
   ],
   imports: [
     CommonModule,
@@ -53,6 +57,7 @@ import { StatusComponent } from './component/status/status.component';
     AccountTypeCodePipe,
     DateFormatPipe,
     GenderPipe,
+    PhoneNumberFormatPipe
   ],
   entryComponents: [
     ModalComponent,

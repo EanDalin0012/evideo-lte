@@ -148,7 +148,7 @@
               <span style="margin-left: 5px;">{{userInfo.fullName}}</span>
           </a>
           <div class="dropdown-menu">
-              <a href="javascript:" class="dropdown-item" routerLink="/employees/employeeprofile">My Profile</a>
+              <a href="javascript:" (click) = "routor('/account/user-profile')" class="dropdown-item">My Profile</a>
               <a href="javascript:" class="dropdown-item" routerLink="/settings/company-settings">Settings</a>
               <a href="javascript:" class="dropdown-item" (click)="logOut()" class="dropdown-item">Logout</a>
           </div>
@@ -161,7 +161,7 @@
       <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
               class="fa fa-ellipsis-v"></i></a>
       <div class="dropdown-menu dropdown-menu-right">
-          <a class="dropdown-item" routerLink="/employees/employeeprofile">My Profile</a>
+          <a class="dropdown-item" routerLink="/account/user-profile">My Profile</a>
           <a class="dropdown-item" href="javascript:">Settings</a>
           <a href="javascript:" class="dropdown-item" (click)="logOut()">Logout</a>
       </div>

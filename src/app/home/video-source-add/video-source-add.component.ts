@@ -1,3 +1,5 @@
+import { FileUploadService } from './../../v-share/service/file-upload.service';
+import { Router } from '@angular/router';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -9,6 +11,9 @@ import * as moment from 'moment';
 import { HTTPService } from '../../v-share/service/http.service';
 import { TranslateService } from '@ngx-translate/core';
 import { GeneratePasswordUtils } from '../../v-share/util/generate-password-util';
+import { Observable } from 'rxjs';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
+
 @Component({
   selector: 'app-video-source-add',
   templateUrl: './video-source-add.component.html',
@@ -22,11 +27,18 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
   @ViewChild("state") inputState: any;
   @ViewChild("fileSource") inputFileSource: any;
 
-  submitted = false;
-  selectedFiles?: FileList;
-  currentFile?: File;
+  fileInfos: any  ;
+  selectedFiles: any  ;
+  currentFile: any ;
   progress = 0;
   message = '';
+  errorMsg = '';
+
+  submitted = false;
+  // selectedFiles?: FileList;
+  // currentFile?: File;
+  // progress = 0;
+  // message = '';
   imageSrc: string = '';
   fileName: string = '';
 
@@ -42,8 +54,13 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
     private dataService: DataService,
     private hTTPService: HTTPService,
     private translate: TranslateService,
+    private router: Router,
+    private uploadService: FileUploadService
   ) {
     this.form as FormGroup;
+    this.fileInfos as Observable<any> ;
+    this.selectedFiles as FileList  ;
+    this.currentFile as File ;
     const url = (window.location.href).split('/');
     this.dataService.visitParamRouterChange(url[3]);
   }
@@ -53,6 +70,7 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
 
     this.form = this.formBuilder.group({
       title: [{value: '', disabled: true}, Validators.required],
@@ -77,21 +95,20 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
     return this.form.controls;
   }
 
-  selectFile(event: any): void {
+
+  onSelectFile(event:any) {
     const file = event.target.files && event.target.files[0];
-    this.currentFile = event.target.files[0];
-    this.fileName = this.currentFile?.name ? this.currentFile?.name : '';
     if (file) {
       var reader = new FileReader();
       reader.readAsDataURL(file);
-      if(file.type.indexOf('image')> -1){
+      if (file.type.indexOf('image') > -1) {
         this.format = 'image';
-      } else if(file.type.indexOf('video')> -1){
+      } else if (file.type.indexOf('video') > -1) {
         this.format = 'video';
       }
       reader.onload = (event) => {
         this.url = (<FileReader>event.target).result;
-      }
+      };
     }
   }
 
@@ -156,19 +173,20 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
       const api = '/api/videoSource/v0/create';
       this.hTTPService.Post(api, jsonData).then(response => {
         if(response.result.responseCode === HTTPResponseCode.Success) {
-          this.url = '';
-          this.submitted = false;
-          this.form.patchValue({
-            part: '',
-            remark: '',
-            onSchedule: '',
-            isEnd: false,
-            fileSource: '',
-          });
-          this.inquiryPart(this.jsonData.id);
-          this.toastr.info(this.translate.instant('videoSource.message.added'), this.translate.instant('common.label.success'),{
-            timeOut: 5000,
-          });
+          // this.url = '';
+          // this.submitted = false;
+          // this.form.patchValue({
+          //   part: '',
+          //   remark: '',
+          //   onSchedule: '',
+          //   isEnd: false,
+          //   fileSource: '',
+          // });
+          // this.inquiryPart(this.jsonData.id);
+          // this.toastr.info(this.translate.instant('videoSource.message.added'), this.translate.instant('common.label.success'),{
+          //   timeOut: 5000,
+          // });
+          this.router.navigate(['/home']);
         } else {
           this.showErrMsg(response.result.responseMessage);
         }
@@ -201,6 +219,45 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
     this.toastr.error(message, this.translate.instant('common.label.error'),{
       timeOut: 5000,
     });
+  }
+
+  selectFile(event: any): void {
+    this.selectedFiles = event.target.files;
+  }
+
+  upload(): void {
+    this.errorMsg = '';
+
+    if (this.selectedFiles) {
+      const file: File | null = this.selectedFiles.item(0);
+
+      if (file) {
+        this.currentFile = file;
+
+        this.uploadService.upload(this.currentFile).subscribe(
+          (event: any) => {
+            if (event.type === HttpEventType.UploadProgress) {
+              this.progress = Math.round(100 * event.loaded / event.total);
+
+            } else if (event instanceof HttpResponse) {
+              this.message = event.body.responseMessage;
+            }
+          },
+          (err: any) => {
+            console.log(err);
+
+            if (err.error && err.error.responseMessage) {
+              this.errorMsg = err.error.responseMessage;
+            } else {
+              this.errorMsg = 'Error occurred while uploading a file!';
+            }
+
+            this.currentFile = undefined;
+          });
+      }
+
+      this.selectedFiles = undefined;
+    }
   }
 
 }

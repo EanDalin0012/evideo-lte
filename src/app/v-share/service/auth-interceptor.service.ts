@@ -95,7 +95,6 @@ export class AuthInterceptor implements HttpInterceptor {
       // }
 
       if (event instanceof HttpResponse){
-        MyLogUtil.log(" Response Code : " + apiname);
       }
       //"CBK_SES_001"
 
@@ -103,7 +102,6 @@ export class AuthInterceptor implements HttpInterceptor {
     })
     .pipe(
       finalize(() => {
-        MyLogUtil.log("Communicate finish.");
         $("div.loading").addClass("none") ;
       })
     )
@@ -130,6 +128,7 @@ export class AuthInterceptor implements HttpInterceptor {
         httpErrorCode = '999999';
       }
 
+      console.log(error.status);
 
       if(error.status === 0) {
         this.showErrMsg('ERR_CONNECTION_REFUSED');

@@ -9,12 +9,10 @@ import { VLayoutModule } from './v-layout/v-layout.module';
 import { VShareModule } from './v-share/v-share.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
-
+import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {};
 import { ToastrModule } from 'ngx-toastr';
-import { AllModulesService } from '../assets/all-modules-data/all-modules.service';
 import { AuthInterceptor } from './v-share/service/auth-interceptor.service';
 import { AuthGuard } from './v-share/guard/guard.guard';
 import { DataTablesModule } from 'angular-datatables';

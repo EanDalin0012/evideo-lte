@@ -19,8 +19,6 @@ export class StatusComponent implements OnInit , AgRendererComponent{
     return false;
   }
   agInit(params: ICellRendererParams): void {
-    console.log(params.data);
-
     this.params = params;
   }
 

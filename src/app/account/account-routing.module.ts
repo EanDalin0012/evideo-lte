@@ -1,3 +1,4 @@
+import { UserProfileComponent } from './user-profile/user-profile.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UserComponent } from './user/user.component';
@@ -13,6 +14,7 @@ const routes: Routes = [
       {path: '', component: UserComponent},
       {path: 'user-add', component: UserAddComponent},
       {path: 'user-edit', component: UserEditComponent},
+      {path: 'user-profile', component: UserProfileComponent}
     ]
   },
   // { path: '',   component : UserComponent }

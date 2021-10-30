@@ -8312,7 +8312,7 @@ body>.loading {
 }
 
 .loading {
-  position: fixed;
+  /* position: fixed;
   left: 0;
   top: 0;
   width: 100%;
@@ -8320,13 +8320,13 @@ body>.loading {
   font-size: .75rem;
   color: #fff;
   text-align: center;
-  background: rgba(0, 0, 0, .7);
+  background: rgba(0, 0, 0, .7); */
   z-index: 999999;
 }
 
 .loading>*:first-child {
   position: absolute;
-  left: 10%;
+  /* left: 10%;
   top: 50%;
   width: 80%;
   padding-top: 56px;
@@ -8335,7 +8335,7 @@ body>.loading {
   -moz-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
-  background-size: 5%;
+  background-size: 5%; */
 }
 
 .loading strong {
@@ -8378,6 +8378,9 @@ body>.loading {
   display:block;height:48px !important;
 }
 
+.ag-overlay-wrapper {
+  background-color: #f7f7f7 !important;
+}
 
 .form-control-sm.form-control {
   border-radius: 5px;

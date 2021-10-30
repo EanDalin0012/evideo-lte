@@ -10,14 +10,16 @@ import { DataTablesModule } from 'angular-datatables';
 import { AgGridModule } from 'ag-grid-angular';
 import { MyImgComponent } from './my-img/my-img.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import {NgxMaskModule} from 'ngx-mask'
+import {NgxMaskModule} from 'ngx-mask';
+import { UserProfileComponent } from './user-profile/user-profile.component'
 @NgModule({
   declarations: [
     VAccountComponent,
     UserComponent,
     UserAddComponent,
     UserEditComponent,
-    MyImgComponent
+    MyImgComponent,
+    UserProfileComponent
   ],
   imports: [
     CommonModule,

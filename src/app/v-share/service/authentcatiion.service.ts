@@ -160,8 +160,7 @@ export class AuthentcatiionService {
 
       this.httpClient.post(uri, formData, {
           headers: new HttpHeaders(httpOptionsObj),
-        })
-        .subscribe((auth) => {
+        }).subscribe((auth) => {
           resovle(auth);
         });
     });

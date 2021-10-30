@@ -1,7 +1,8 @@
+import { environment } from './../../../environments/environment';
 import { FileUploadService } from './../../v-share/service/file-upload.service';
 import { Router } from '@angular/router';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Utils } from '../../v-share/util/utils.static';
 import { LOCAL_STORAGE, HTTPResponseCode } from '../../v-share/constants/common.const';
@@ -10,8 +11,6 @@ import { DataService } from '../../v-share/service/data.service';
 import * as moment from 'moment';
 import { HTTPService } from '../../v-share/service/http.service';
 import { TranslateService } from '@ngx-translate/core';
-import { GeneratePasswordUtils } from '../../v-share/util/generate-password-util';
-import { Observable } from 'rxjs';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 
 @Component({
@@ -27,25 +26,20 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
   @ViewChild("state") inputState: any;
   @ViewChild("fileSource") inputFileSource: any;
 
-  fileInfos: any  ;
+
   selectedFiles: any  ;
   currentFile: any ;
   progress = 0;
-  message = '';
   errorMsg = '';
   videoSourceId: number = 0;
+  videoSrc: string = '';
+  baseUrl: string = '';
 
   submitted = false;
-  // selectedFiles?: FileList;
-  // currentFile?: File;
-  // progress = 0;
-  // message = '';
   imageSrc: string = '';
-  fileName: string = '';
 
   jsonData: any;
   public form: any;
-  url: any;
   format: string = '';
   part: number = 0;
 
@@ -58,8 +52,9 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
     private router: Router,
     private uploadService: FileUploadService
   ) {
+    this.baseUrl = environment.bizServer.server;
+
     this.form as FormGroup;
-    this.fileInfos as Observable<any> ;
     this.selectedFiles as FileList  ;
     this.currentFile as File ;
     const url = (window.location.href).split('/');
@@ -72,14 +67,12 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-
     this.form = this.formBuilder.group({
       title: [{value: '', disabled: true}, Validators.required],
       part: ['', [Validators.required]],
       remark: ['', [Validators.required]],
       onSchedule: ['', [Validators.required]],
-      isEnd:[false, [Validators.required]],
-      fileSource: new FormControl('', [Validators.required]),
+      isEnd:[false, [Validators.required]]
     });
 
     const data = Utils.getSecureStorage(LOCAL_STORAGE.videoSourceAdd);
@@ -94,23 +87,6 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
 
   get f(): { [key: string]: AbstractControl } {
     return this.form.controls;
-  }
-
-
-  onSelectFile(event:any) {
-    const file = event.target.files && event.target.files[0];
-    if (file) {
-      var reader = new FileReader();
-      reader.readAsDataURL(file);
-      if (file.type.indexOf('image') > -1) {
-        this.format = 'image';
-      } else if (file.type.indexOf('video') > -1) {
-        this.format = 'video';
-      }
-      reader.onload = (event) => {
-        this.url = (<FileReader>event.target).result;
-      };
-    }
   }
 
   inquiryPart(vdId: number) {
@@ -138,7 +114,7 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
       this.inputTitle.nativeElement.focus();
     } else if(this.f.part.errors) {
       this.inputPart.nativeElement.focus();
-    } else if(this.f.fileSource.errors) {
+    } else if (this.videoSourceId === 0) {
       this.inputFileSource.nativeElement.focus();
     } else {
       const data = this.form.getRawValue();
@@ -154,10 +130,6 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
         onSchedule = moment(data.onSchedule).format(format).toString();
       }
 
-      let fileName = this.fileName.split('.')[0].replace(/[^a-zA-Z ]/g, "");
-      if(fileName === '') {
-        fileName = GeneratePasswordUtils.generate(8);
-      }
       const jsonData = {
         isEnd: endYn,
         vdId: this.jsonData.id,
@@ -165,28 +137,12 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
         videoSourcePart: data.part,
         videoSourceOnSchedule: onSchedule,
         remark: data.remark,
-        fileInfo: {
-          fileBits: this.url,
-          fileName: fileName,
-          fileExtension: this.fileName.split('.')[1],
-        }
+        videoSourceId: this.videoSourceId
       };
+
       const api = '/api/videoSource/v0/create';
       this.hTTPService.Post(api, jsonData).then(response => {
         if(response.result.responseCode === HTTPResponseCode.Success) {
-          // this.url = '';
-          // this.submitted = false;
-          // this.form.patchValue({
-          //   part: '',
-          //   remark: '',
-          //   onSchedule: '',
-          //   isEnd: false,
-          //   fileSource: '',
-          // });
-          // this.inquiryPart(this.jsonData.id);
-          // this.toastr.info(this.translate.instant('videoSource.message.added'), this.translate.instant('common.label.success'),{
-          //   timeOut: 5000,
-          // });
           this.router.navigate(['/home']);
         } else {
           this.showErrMsg(response.result.responseMessage);
@@ -227,6 +183,7 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
     this.progress = 0;
     const file: File | null = this.selectedFiles.item(0);
     this.currentFile = file;
+    this.errorMsg = '';
   }
 
   upload(): void {
@@ -238,24 +195,26 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
       if (file) {
         this.currentFile = file;
 
-        this.uploadService.upload(this.currentFile, this.jsonData.vdName).subscribe(
+        this.uploadService.upload(this.currentFile, this.jsonData.vdName, 'LstVideoSource').subscribe(
           (event: any) => {
             if (event.type === HttpEventType.UploadProgress) {
               this.progress = Math.round(100 * event.loaded / event.total);
             } else if (event instanceof HttpResponse) {
 
               if(event.body?.result.responseCode === HTTPResponseCode.Success) {
-                this.videoSourceId = event.body.body;
+                this.videoSourceId = event.body.body.sourceId;
+                this.videoSrc = this.baseUrl+"/unsecur/api/resource/vd/v0/vdSource/"+this.videoSourceId;
               } else {
-                this.message = event.body?.result.responseMessage;
-              }
+                if(event.body?.result.responseMessage === 'videoSourceNameReadyHave') {
+                  this.errorMsg = this.translate.instant('videoSource.message.videoSourceNameReadyHave');
+                } else {
+                  this.errorMsg = event.body?.result.responseMessage;
+                }
 
-              console.log('message', event.body);
+              }
             }
           },
           (err: any) => {
-            console.log(err);
-
             if (err.error && err.error.responseMessage) {
               this.errorMsg = err.error.responseMessage;
             } else {

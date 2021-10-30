@@ -1,5 +1,5 @@
 import { Title } from '@angular/platform-browser';
-import { LOCAL_STORAGE } from './../constants/common.const';
+import { LOCAL_STORAGE, FileUploadModule } from './../constants/common.const';
 import { Utils } from 'src/app/v-share/util/utils.static';
 import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
@@ -17,7 +17,7 @@ export class FileUploadService {
     this.baseUrl = environment.bizServer.server;
   }
 
-  upload(file: File, title: string): Observable<HttpEvent<any>> {
+  upload(file: File, title: string, fileUpload: 'Profile' | 'LstVideoSource' | 'Image' | 'LstVideo'): Observable<HttpEvent<any>> {
     const formData: FormData = new FormData();
 
     const userInfo = Utils.getSecureStorage(LOCAL_STORAGE.USER_INFO);
@@ -25,6 +25,7 @@ export class FileUploadService {
     formData.append('file', file);
     formData.append('title', title);
     formData.append('userId', userInfo.id);
+    formData.append('fileUpload', fileUpload);
 
     let authorization = Utils.getSecureStorage(LOCAL_STORAGE.Authorization);
     const access_token = authorization.access_token;

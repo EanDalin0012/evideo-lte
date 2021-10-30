@@ -178,7 +178,9 @@
       "videoSourceRequired":"*Video Source is required",
       "added":"Video Source is added.",
       "udpated":"Video Source is updated.",
-      "qDelete":"Do you want delete part {{part}} ?"
+      "qDelete":"Do you want delete part {{part}} ?",
+      "uploadVideoSuccess":"Upload Video Success",
+      "videoSourceNameReadyHave":"Video source name ready have in server."
     },
     "holder": {
       "enterPart":"Enter part",

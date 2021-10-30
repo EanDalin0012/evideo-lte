@@ -13,6 +13,12 @@ export enum AES_INFO {
   STORE = "AES_INFO"
 }
 
+export enum FileUploadModule {
+  ProfileModule  = 'Profile',
+  LstVideoSource = 'VideoSource',
+  LstVideo       = 'LstVideo'
+};
+
 export enum AuthorizationModule {
   // 1
   User_Read     = 1,

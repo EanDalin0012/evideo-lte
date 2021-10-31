@@ -37,7 +37,7 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
 
   submitted = false;
   imageSrc: string = '';
-
+  changeFile = false;
   jsonData: any;
   public form: any;
   format: string = '';
@@ -143,7 +143,7 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
       const api = '/api/videoSource/v0/create';
       this.hTTPService.Post(api, jsonData).then(response => {
         if(response.result.responseCode === HTTPResponseCode.Success) {
-          this.router.navigate(['/home']);
+          this.router.navigate(['/home/vd-source']);
         } else {
           this.showErrMsg(response.result.responseMessage);
         }
@@ -184,6 +184,7 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
     const file: File | null = this.selectedFiles.item(0);
     this.currentFile = file;
     this.errorMsg = '';
+    this.changeFile = false;
   }
 
   upload(): void {
@@ -200,7 +201,7 @@ export class VideoSourceAddComponent implements OnInit, OnDestroy {
             if (event.type === HttpEventType.UploadProgress) {
               this.progress = Math.round(100 * event.loaded / event.total);
             } else if (event instanceof HttpResponse) {
-
+              this.changeFile = true;
               if(event.body?.result.responseCode === HTTPResponseCode.Success) {
                 this.videoSourceId = event.body.body.sourceId;
                 this.videoSrc = this.baseUrl+"/unsecur/api/resource/vd/v0/vdSource/"+this.videoSourceId;

@@ -2,14 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
-import { HTTPService } from './http.service';
 import { environment } from 'src/environments/environment';
 import { LOCAL_STORAGE, HTTPResponseCode } from '../constants/common.const';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Utils } from '../util/utils.static';
 import * as moment from 'moment';
 import { EncryptionUtil } from '../util/encryption-util';
-import { MyLogUtil } from '../util/my-log-util';
 import { AuthService } from './auth.service';
 import { ToastrService } from 'ngx-toastr';
 

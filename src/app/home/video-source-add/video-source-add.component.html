@@ -69,59 +69,22 @@
                     <label>{{'common.label.remark' | translate}}</label>
                     <input class="form-control form-control-sm" type="text" formControlName="remark" placeholder="{{'common.holder.enterRemark' | translate}}">
                 </div>
+              </div>
             </div>
-          </div>
 
-
-            <!-- <div class="row">
-              <div class="col-sm-12">
-                  <div class="form-group">
-                      <label>{{'videoSource.label.video' | translate}}</label>
-
-                      <input type="file"  formControlName="fileSource" accept="video/*" (change)="onSelectFile($event)" class="form-control"/>
-
-                      <ng-container *ngIf="format==='video' && url">
-                        <video [src]="url"  height="200" controls></video>
-                      </ng-container>
-
-                        <br/>
-
-                      <div *ngIf="currentFile" class="progress my-3">
-                        <div
-                          class="progress-bar progress-bar-info progress-bar-striped"
-                          role="progressbar"
-                          attr.aria-valuenow="{{ progress }}"
-                          aria-valuemin="0"
-                          aria-valuemax="100"
-                          [ngStyle]="{ width: progress + '%' }"
-                        >
-                          {{ progress }}%
-                        </div>
-                      </div>
-
-                      <div *ngIf="submitted && f.fileSource.errors">
-                      <small class="text-danger">{{'videoSource.message.videoSourceRequired' | translate}}</small>
-                  </div>
-
-                  </div>
+            <div class="row">
+              <div class="col-8">
+                  <label class="btn btn-default p-0">
+                      <input #fileSource type="file"  accept="video/mp4,video/x-m4v,video/*" (change)="selectFile($event)"/>
+                  </label>
               </div>
-            </div> -->
 
-
-
-              <div class="row">
-                <div class="col-8">
-                    <label class="btn btn-default p-0">
-                        <input #fileSource type="file" (change)="selectFile($event)"/>
-                    </label>
-                </div>
-
-                <div class="col-4">
-                    <button class="btn btn-success btn-sm" [disabled]="!selectedFiles" (click)="upload()">
-                        Upload Vedio
-                    </button>
-                </div>
+              <div class="col-4">
+                  <button class="btn btn-success btn-sm" [disabled]="!selectedFiles" (click)="upload()">
+                    {{'common.label.uploadVedio' | translate}}
+                  </button>
               </div>
+            </div>
 
               <div *ngIf="currentFile" class="progress">
                 <div
@@ -140,7 +103,7 @@
                 <small class="text-danger">{{'videoSource.message.videoSourceRequired' | translate}}</small>
               </div>
 
-              <div *ngIf=" !errorMsg && videoSourceId > 0" class="alert alert-success" role="alert">
+              <div *ngIf=" changeFile && !errorMsg && videoSourceId > 0" class="alert alert-success" role="alert">
                 {{'videoSource.message.uploadVideoSuccess' | translate}}
               </div>
 
@@ -153,7 +116,7 @@
                 </button>
               </div>
 
-              <ng-container *ngIf = "!errorMsg && videoSrc && videoSourceId > 0">
+              <ng-container *ngIf = "!errorMsg && videoSrc && videoSourceId > 0 && changeFile">
                 <video type="video/mp4" [src]="videoSrc" controls controlsList="nodownload" style="width: 100%;"></video>
               </ng-container>
 

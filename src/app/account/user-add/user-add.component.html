@@ -265,32 +265,41 @@
               </div>
 
               <div class="row">
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label>{{'users.label.profile' | translate}}</label>
-
-                        <input #fileSource type="file" formControlName="fileSource"  accept="image/png, image/jpeg" (change)="selectFile($event)" class="form-control form-control-sm" placeholder="select file"/>
-
-                        <div class="back" [ngStyle]="{'background-image': 'url(' + imageSrc + ')'}" *ngIf="imageSrc">
-
-                        </div>
-
-                        <div *ngIf="currentFile" class="progress my-3">
-                          <div
-                            class="progress-bar progress-bar-info progress-bar-striped"
-                            role="progressbar"
-                            attr.aria-valuenow="{{ progress }}"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                            [ngStyle]="{ width: progress + '%' }"
-                          >
-                            {{ progress }}%
-                          </div>
-                        </div>
-
-                    </div>
+                <div class="col-8">
+                    <label class="btn btn-default p-0">
+                        <input #fileSource type="file" accept="image/png, image/jpeg" (change)="selectFile($event)"/>
+                    </label>
                 </div>
-            </div>
+
+                <div class="col-4">
+                    <button class="btn btn-success btn-sm" [disabled]="!selectedFiles" (click)="upload()">
+                      {{'common.label.uploadImage' | translate}}
+                    </button>
+                </div>
+              </div>
+
+              <div *ngIf="currentFile" class="progress">
+                <div
+                  class="progress-bar progress-bar-info progress-bar-striped"
+                  role="progressbar"
+                  attr.aria-valuenow="{{ progress }}"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  [ngStyle]="{ width: progress + '%' }"
+                >
+                  {{ progress }}%
+                </div>
+              </div>
+              <div *ngIf="submitted && sourceId === 0">
+                <small class="text-danger">{{'video.message.imageRequired' | translate}}</small>
+              </div>
+
+              <div *ngIf=" !errorMsg && sourceId > 0" class="alert alert-success" role="alert">
+                {{'videoSource.message.uploadVideoSuccess' | translate}}
+              </div>
+
+              <div *ngIf="errorMsg" class="alert alert-danger" role="alert">{{ errorMsg }}</div>
+
 
               <div class="submit-section">
                 <button (click)="save()" class="btn btn-sm btn-primary float-right" type="button">
@@ -298,6 +307,11 @@
                   {{'common.button.save' | translate}}
                 </button>
               </div>
+
+              <div *ngIf=" sourceId > 0">
+                <div class="back" [ngStyle]="{'background-image': 'url(' + imageSrc + ')'}" *ngIf="imageSrc"></div>
+              </div>
+
           </form>
       </div>
   </div>

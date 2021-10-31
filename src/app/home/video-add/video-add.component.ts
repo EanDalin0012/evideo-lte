@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { environment } from './../../../environments/environment';
 import { FileUploadService } from './../../v-share/service/file-upload.service';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
@@ -49,7 +50,8 @@ export class VideoAddComponent implements OnInit, OnDestroy {
     private dataService: DataService,
     private hTTPService: HTTPService,
     private translate: TranslateService,
-    private uploadService: FileUploadService
+    private uploadService: FileUploadService,
+    private router: Router,
   ) {
     this.form as FormGroup;
     this.baseUrl = environment.bizServer.server;
@@ -103,14 +105,15 @@ export class VideoAddComponent implements OnInit, OnDestroy {
           this.toastr.info(this.translate.instant('video.message.added'), this.translate.instant('common.label.success'),{
             timeOut: 5000,
           });
-          this.form = this.formBuilder.group({
-            title: '',
-            stateMovie: '',
-            state: '',
-            remark: '',
-            fileSource: '',
-          });
-          this.imageSrc = '';
+          // this.form = this.formBuilder.group({
+          //   title: '',
+          //   stateMovie: '',
+          //   state: '',
+          //   remark: '',
+          //   fileSource: '',
+          // });
+          // this.imageSrc = '';
+          this.router.navigate(['/home']);
         } else {
           this.showErrMsg(response.result.responseMessage);
         }
@@ -139,7 +142,6 @@ export class VideoAddComponent implements OnInit, OnDestroy {
         this.showErrMsg(response.result.responseMessage);
       } else {
         this.lstSubMovieType = response.body;
-
       }
     });
   }
@@ -188,7 +190,7 @@ export class VideoAddComponent implements OnInit, OnDestroy {
         if (file) {
           this.currentFile = file;
 
-          this.uploadService.upload(this.currentFile, '', 'LstVideo').subscribe(
+          this.uploadService.upload(this.currentFile,  '', 'LstVideo').subscribe(
             (event: any) => {
               if (event.type === HttpEventType.UploadProgress) {
                 this.progress = Math.round(100 * event.loaded / event.total);

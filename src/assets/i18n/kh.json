@@ -22,7 +22,9 @@
       "settingClientVideoMenu":"ការកំណត់ម៉ឺនុយវីដេអូអតិថិជន",
       "loading":"កំពុងផ្ទុក",
       "pleaseWait":"សូមរង់ចាំ",
-      "id":"លេខសម្គាល់"
+      "id":"លេខសម្គាល់",
+      "uploadImage":"បង្ហោះរូបភាព",
+      "uploadVedio":"បង្ហោះវីដេអូ"
     },
     "button": {
       "back": "ត្រឡប់មកវិញ",

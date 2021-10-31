@@ -1,3 +1,5 @@
+import { environment } from 'src/environments/environment';
+import { FileUploadService } from './../../v-share/service/file-upload.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { FormBuilder, FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
@@ -8,6 +10,7 @@ import { HTTPResponseCode } from '../../v-share/constants/common.const';
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-user-add',
@@ -25,11 +28,14 @@ export class UserAddComponent implements OnInit {
   @ViewChild("fullName") inputFullName: any;
   @ViewChild("gender") inputGender: any;
 
+  selectedFiles: any  ;
+  currentFile: any ;
+  progress = 0;
+  errorMsg = '';
+  sourceId: number = 0;
+  baseUrl: string = '';
 
   submitted = false;
-  selectedFiles?: FileList;
-  currentFile?: File;
-  progress = 0;
   message = '';
   imageSrc: string = '';
   fileInfos?: Observable<any>;
@@ -53,8 +59,10 @@ export class UserAddComponent implements OnInit {
     private hTTPService: HTTPService,
     private translate: TranslateService,
     private router: Router,
+    private uploadService: FileUploadService,
   ) {
     this.form as FormGroup;
+    this.baseUrl = environment.bizServer.server;
     const url = (window.location.href).split('/');
     this.dataService.visitParamRouterChange(url[4]);
   }
@@ -96,23 +104,6 @@ export class UserAddComponent implements OnInit {
 
   get f(): { [key: string]: AbstractControl } {
     return this.form.controls;
-  }
-
-
-  selectFile(event: any): void {
-    const reader = new FileReader();
-    if(event.target.files && event.target.files.length) {
-      this.currentFile = event.target.files[0];
-      this.fileName = this.currentFile?.name ? this.currentFile?.name : '';
-      const [file] = event.target.files;
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.imageSrc = reader.result as string;
-        this.selectedFile = true;
-      }
-    }
-
-
   }
 
   checkEvent(event: any, id: number) {
@@ -174,8 +165,7 @@ export class UserAddComponent implements OnInit {
           onSchedule = moment(data.dateBirth).format(format).toString();
         }
 
-        let jsonData = {};
-        jsonData = {
+        let jsonData = {
           fullName: data.fullName.trim(),
           gender: data.gender.name.trim(),
           userName: data.userName.trim(),
@@ -185,50 +175,18 @@ export class UserAddComponent implements OnInit {
           roleId: data.roleState.id,
           authorizationModule: this.authorizationModule,
           remark: data.remark,
-          address: data.address
+          address: data.address,
+          sourceId: this.sourceId
         };
-        if(this.selectedFile === true ) {
-          jsonData = {
-            fullName: data.fullName.trim(),
-            gender: data.gender.name.trim(),
-            userName: data.userName.trim(),
-            password: data.password.trim(),
-            dateBirth: onSchedule,
-            phoneNumber: data.phoneNumber.trim(),
-            roleId: data.roleState.id,
-            authorizationModule: this.authorizationModule,
-            remark: data.remark,
-            address: data.address,
-            fileInfo: {
-              fileBits: this.imageSrc,
-              fileName: this.fileName.split('.')[0],
-              fileExtension: this.fileName.split('.')[1],
-            }
-          };
-        }
-        // console.log('jsonData',jsonData);
+
+        console.log('jsonData',jsonData);
+        // return;
         const api = '/api/user/v0/create';
         this.hTTPService.Post(api, jsonData).then(response => {
           if(response.result.responseCode === HTTPResponseCode.Success) {
             this.toastr.info(this.translate.instant('users.message.added'), this.translate.instant('common.label.success'),{
               timeOut: 5000,
             });
-            // this.submitted = false;
-            // this.form = this.formBuilder.group({
-            //   fullName: '',
-            //   gender: '',
-            //   userName: '',
-            //   password: '',
-            //   confirmPassword: '',
-            //   dateBirth: '',
-            //   phoneNumber: '',
-            //   roleState: '',
-            //   address:'',
-            //   remark: '',
-            //   fileSource: new FormControl('', [Validators.required])
-            // });
-
-            // this.imageSrc = '';
             this.router.navigate(['/account']);
           } else {
             this.showErrMsg(response.result.responseMessage);
@@ -314,6 +272,60 @@ export class UserAddComponent implements OnInit {
       this.toastr.error(message, this.translate.instant('common.label.error'),{
         timeOut: 5000,
       });
+    }
+
+
+    selectFile(event: any): void {
+      this.selectedFiles = event.target.files;
+      this.progress = 0;
+      const file: File | null = this.selectedFiles.item(0);
+      this.currentFile = file;
+      this.errorMsg = '';
+    }
+
+    upload(): void {
+      this.errorMsg = '';
+
+      if (this.selectedFiles) {
+        const file: File | null = this.selectedFiles.item(0);
+
+        if (file) {
+          this.currentFile = file;
+
+          this.uploadService.upload(this.currentFile,  '', 'Profile').subscribe(
+            (event: any) => {
+              if (event.type === HttpEventType.UploadProgress) {
+                this.progress = Math.round(100 * event.loaded / event.total);
+              } else if (event instanceof HttpResponse) {
+
+                if(event.body?.result.responseCode === HTTPResponseCode.Success) {
+                  this.sourceId = event.body.body.sourceId;
+                  this.imageSrc = this.baseUrl+"/unsecur/api/image/reader/v0/read/"+this.sourceId;
+                } else {
+                  if(event.body?.result.responseMessage === 'videoSourceNameReadyHave') {
+                    this.errorMsg = this.translate.instant('videoSource.message.videoSourceNameReadyHave');
+                  } else {
+                    this.errorMsg = event.body?.result.responseMessage;
+                  }
+
+                }
+              }
+              console.log('sourceId', this.sourceId);
+
+            },
+            (err: any) => {
+              if (err.error && err.error.responseMessage) {
+                this.errorMsg = err.error.responseMessage;
+              } else {
+                this.errorMsg = 'Error occurred while uploading a file!';
+              }
+
+              this.currentFile = undefined;
+            });
+        }
+
+        this.selectedFiles = undefined;
+      }
     }
 
 }

@@ -123,14 +123,11 @@ export class VideoSourceComponent implements OnInit, OnDestroy {
       vdId: this.jsonData.id
     };
     this.hTTPService.Post(api, data).then(response => {
-
       if(response.result.responseCode !== HTTPResponseCode.Success) {
         this.showErrMsg(response.result.responseMessage);
       }else {
         this.lstVideoSource = response.body;
         this.rowData =this.lstVideoSource;
-        console.log(this.lstVideoSource);
-
       }
     });
   }

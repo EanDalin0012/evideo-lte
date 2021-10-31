@@ -1,3 +1,4 @@
+import { FileUploadService } from './../../v-share/service/file-upload.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { FormBuilder, FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
@@ -11,6 +12,7 @@ import { Utils } from '../../v-share/util/utils.static';
 import { EncryptionUtil } from '../../v-share/util/encryption-util';
 import { environment } from '../../../environments/environment.prod';
 import { Router } from '@angular/router';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
 @Component({
   selector: 'app-user-edit',
   templateUrl: './user-edit.component.html',
@@ -27,11 +29,15 @@ export class UserEditComponent implements OnInit {
   @ViewChild("fullName") inputFullName: any;
   @ViewChild("gender") inputGender: any;
 
+  selectedFiles: any  ;
+  currentFile: any ;
+  progress = 0;
+  errorMsg = '';
+  sourceId: number = 0;
+  baseUrl: string = '';
+
 
   submitted = false;
-  selectedFiles?: FileList;
-  currentFile?: File;
-  progress = 0;
   message = '';
   imageSrc: string = 'http://localhost:8080/unsecur/api/image/reader/v0/read/1';
   fileInfos?: Observable<any>;
@@ -84,7 +90,6 @@ export class UserEditComponent implements OnInit {
   Setting_Client_Setting_Delete_Check = false;
 
   id =0 ;
-  baseUrl: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -93,8 +98,10 @@ export class UserEditComponent implements OnInit {
     private hTTPService: HTTPService,
     private translate: TranslateService,
     private router: Router,
+    private uploadService: FileUploadService,
   ) {
     this.form as FormGroup;
+    this.baseUrl = environment.bizServer.server;
     const url = (window.location.href).split('/');
     this.dataService.visitParamRouterChange(url[4]);
   }
@@ -135,6 +142,10 @@ export class UserEditComponent implements OnInit {
     const decryptString = EncryptionUtil.decrypt(data);
     console.log('jsonData',decryptString);
     this.jsonData = JSON.parse(decryptString);
+    this.sourceId = this.jsonData.resourceId;
+    if(this.sourceId > 0) {
+      this.imageSrc = this.baseUrl+"/unsecur/api/image/reader/v0/read/"+this.sourceId;
+    }
     if(this.jsonData) {
       this.inquiry(this.jsonData.id);
     }
@@ -144,20 +155,6 @@ export class UserEditComponent implements OnInit {
     return this.form.controls;
   }
 
-
-  selectFile(event: any): void {
-    const reader = new FileReader();
-    if(event.target.files && event.target.files.length) {
-      this.currentFile = event.target.files[0];
-      this.fileName = this.currentFile?.name ? this.currentFile?.name : '';
-      const [file] = event.target.files;
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.imageSrc = reader.result as string;
-        this.selectedFile = true;
-      }
-    }
-  }
 
   checkEvent(event: any, id: number) {
     if(event.target.checked) {
@@ -450,6 +447,60 @@ export class UserEditComponent implements OnInit {
       this.toastr.error(message, this.translate.instant('common.label.error'),{
         timeOut: 5000,
       });
+    }
+
+
+    selectFile(event: any): void {
+      this.selectedFiles = event.target.files;
+      this.progress = 0;
+      const file: File | null = this.selectedFiles.item(0);
+      this.currentFile = file;
+      this.errorMsg = '';
+    }
+
+    upload(): void {
+      this.errorMsg = '';
+
+      if (this.selectedFiles) {
+        const file: File | null = this.selectedFiles.item(0);
+
+        if (file) {
+          this.currentFile = file;
+
+          this.uploadService.upload(this.currentFile,  '', 'Profile').subscribe(
+            (event: any) => {
+              if (event.type === HttpEventType.UploadProgress) {
+                this.progress = Math.round(100 * event.loaded / event.total);
+              } else if (event instanceof HttpResponse) {
+
+                if(event.body?.result.responseCode === HTTPResponseCode.Success) {
+                  this.sourceId = event.body.body.sourceId;
+                  this.imageSrc = this.baseUrl+"/unsecur/api/image/reader/v0/read/"+this.sourceId;
+                } else {
+                  if(event.body?.result.responseMessage === 'videoSourceNameReadyHave') {
+                    this.errorMsg = this.translate.instant('videoSource.message.videoSourceNameReadyHave');
+                  } else {
+                    this.errorMsg = event.body?.result.responseMessage;
+                  }
+
+                }
+              }
+              console.log('sourceId', this.sourceId);
+
+            },
+            (err: any) => {
+              if (err.error && err.error.responseMessage) {
+                this.errorMsg = err.error.responseMessage;
+              } else {
+                this.errorMsg = 'Error occurred while uploading a file!';
+              }
+
+              this.currentFile = undefined;
+            });
+        }
+
+        this.selectedFiles = undefined;
+      }
     }
 
 }

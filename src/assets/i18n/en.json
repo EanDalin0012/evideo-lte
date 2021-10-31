@@ -29,7 +29,9 @@
       "settingClientVideoMenu":"Setting Client Video Menu",
       "loading":"Loading",
       "pleaseWait":"Please wait",
-      "id":"ID"
+      "id":"ID",
+      "uploadImage":"Upload Image",
+      "uploadVedio":"Upload Vedio"
     },
     "button": {
       "back": "Back",

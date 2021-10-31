@@ -131,14 +131,11 @@ export class VideoComponent implements OnInit {
   inquiry() {
     const api = '/api/video/v0/read';
     this.hTTPService.Get(api).then(response => {
-      console.log(response);
-
       if(response.result.responseCode !== HTTPResponseCode.Success && response.result.responseCode !== HTTPResponseCode.Forbidden) {
         this.showErrMsg(response.result.responseMessage);
      }else {
         this.lstMovies = response.body;
         this.rowData =this.lstMovies;
-        console.log(this.lstMovies);
 
       }
     });
@@ -189,7 +186,6 @@ onCellDoubleClicked(event:any) {
 
   expression() {
     console.log('expression');
-
   }
 
   onFocusOutEvent(value: string){
@@ -291,8 +287,6 @@ onCellDoubleClicked(event:any) {
     console.log('value', item, JSON.stringify(item));
     const jsonString = JSON.stringify(item);
     const encryptString = EncryptionUtil.encrypt(jsonString.toString()).toString();
-    console.log('item', encryptString);
-
     Utils.setSecureStorage(LOCAL_STORAGE.VdSource, encryptString);
     this.router.navigate(['/home/vd-source']);
   }

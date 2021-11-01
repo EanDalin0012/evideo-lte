@@ -25,7 +25,8 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   canActivate( next: ActivatedRouteSnapshot, state: RouterStateSnapshot):
   Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
  {
-    console.log('AuthGuard canActivate');
+      console.log('AuthGuard canActivate');
+
 
       if( !this.authService.hasSession() ){
         // alert('ddd');

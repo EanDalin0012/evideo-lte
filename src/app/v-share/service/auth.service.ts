@@ -1,3 +1,4 @@
+import { AuthorizationModule } from './../constants/common.const';
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
@@ -12,6 +13,7 @@ export class AuthService {
 
   // util = new Util();
   curUrl: string = '';
+  authorities:any[] = [];
 
   constructor(
     // private modalService: ModalService,
@@ -27,10 +29,28 @@ export class AuthService {
     environment.production ? (() => '')() : console.log("Permission check Start " + currentUrl);
 
 
-    // const userMenus = Utils.getSecureStorage("MENU_RIGHT");
+    const userMenus = Utils.getSecureStorage("MENU_RIGHT");
     const authorization = Utils.getSecureStorage(LOCAL_STORAGE.Authorization);
     const userInfo = Utils.getSecureStorage(LOCAL_STORAGE.USER_INFO);
-    // console.log("this.isTargetPath " + this.isTargetPath(currentUrl));
+    console.log("this.isTargetPath " + this.isTargetPath(currentUrl));
+
+    const data = Utils.getSecureStorage(LOCAL_STORAGE.USER_INFO);
+
+    this.authorities = data.authorities;
+
+    if(this.authorities && this.authorities.length > 0) {
+      this.authorities.forEach(element => {
+        switch (element.id) {
+          case AuthorizationModule.User_Read:
+            break;
+          case AuthorizationModule.Movie_Read:
+            break;
+          case AuthorizationModule.Setting_Movie_Type_Read:
+          break;
+        }
+      });
+    }
+
     if(this.isTargetPath(currentUrl)){
       if ( userInfo && authorization) {
         checkResult = true;
@@ -68,10 +88,10 @@ export class AuthService {
     environment.production ? (() => '')() : console.log("isTargetPath" + currentUrl);
 
     let checkResult = true;
-    const nonPermissionMenu = ["main/home", "announce","/main/setting/detail"];
+    const permissionMenu = ["home", "account","home/seting-movie"];
 
     // nonPermissionMenu.every(function( item, index ) {
-    nonPermissionMenu.every(function( item, index ) {
+      permissionMenu.every(function( item, index ) {
       if( currentUrl.indexOf(item) !== -1 ){
         // console.log("current url " + currentUrl);
         // console.log("menu url " + item);

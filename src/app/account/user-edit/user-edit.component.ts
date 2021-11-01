@@ -34,6 +34,7 @@ export class UserEditComponent implements OnInit {
   progress = 0;
   errorMsg = '';
   sourceId: number = 0;
+  oldSourceId: number = 0;
   baseUrl: string = '';
 
 
@@ -140,9 +141,10 @@ export class UserEditComponent implements OnInit {
 
     const data = Utils.getSecureStorage(LOCAL_STORAGE.UserEdit);
     const decryptString = EncryptionUtil.decrypt(data);
-    console.log('jsonData',decryptString);
     this.jsonData = JSON.parse(decryptString);
     this.sourceId = this.jsonData.resourceId;
+    this.oldSourceId = this.sourceId;
+
     if(this.sourceId > 0) {
       this.imageSrc = this.baseUrl+"/unsecur/api/image/reader/v0/read/"+this.sourceId;
     }
@@ -208,43 +210,22 @@ export class UserEditComponent implements OnInit {
           onSchedule = moment(data.dateBirth).format(format).toString();
         }
 
-        let jsonData = {};
-        jsonData = {
+        let jsonData = {
           id: this.jsonData.id,
           fullName: data.fullName.trim(),
           gender: data.gender.name.trim(),
           userName: data.userName.trim(),
+          password: data.password.trim(),
           dateBirth: onSchedule,
           phoneNumber: data.phoneNumber.trim(),
           roleId: data.roleState.id,
           authorizationModule: this.authorizationModule,
           remark: data.remark,
           address: data.address,
-          resourceId: this.jsonData.resourceId ? this.jsonData.resourceId : 0,
-          selectedFile: this.selectedFile
+          sourceId: this.sourceId,
+          oldSourceId: this.oldSourceId
         };
-        if(this.selectedFile === true ) {
-          jsonData = {
-            id: this.jsonData.id,
-            fullName: data.fullName.trim(),
-            gender: data.gender.name.trim(),
-            userName: data.userName.trim(),
-            password: data.password.trim(),
-            dateBirth: onSchedule,
-            phoneNumber: data.phoneNumber,
-            roleId: data.roleState.id,
-            authorizationModule: this.authorizationModule,
-            remark: data.remark,
-            address: data.address,
-            selectedFile: this.selectedFile,
-            resourceId: this.jsonData.resourceId ? this.jsonData.resourceId : 0,
-            fileInfo: {
-              fileBits: this.imageSrc,
-              fileName: this.fileName.split('.')[0],
-              fileExtension: this.fileName.split('.')[1],
-            }
-          };
-        }
+
         console.log(jsonData);
 
         const api = '/api/user/v0/update';
@@ -401,7 +382,6 @@ export class UserEditComponent implements OnInit {
 
 
   onFocusOut(event: any) {
-    console.log(event.target.value);
     if(event.target.value.trim() !== '' && event.target.value.trim() !== this.jsonData.userName.trim()) {
       let jsonData = {
         userName: event.target.value

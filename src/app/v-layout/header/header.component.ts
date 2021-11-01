@@ -34,18 +34,9 @@ export class HeaderComponent implements OnInit {
   notifications: any;
   messagesData: MessagesData[] = [];
   flags = 'assets/img/flags/us.png';
-  // userInfo = {
-  //   id: 0,
-  //   dateBirth: '',
-  //   firstName: '',
-  //   gender: '',
-  //   lastName: '',
-  //   phoneNumber: '',
-  //   userName: '',
-  //   resourceID: 0
-  // };
 
   userInfo:any;
+
   constructor(
     private translate: TranslateService,
     private router: Router,

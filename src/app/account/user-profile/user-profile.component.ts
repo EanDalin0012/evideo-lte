@@ -20,6 +20,10 @@ export class UserProfileComponent implements OnInit {
   src: string = '';
   roleName: string = '';
   createAt: string = '';
+  jsonInfo:any;
+
+  lstRole: any[] = [];
+  role:any;
 
   constructor(
     private hTTPService: HTTPService,
@@ -32,29 +36,40 @@ export class UserProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.inquiryRoles();
+
     this.userInfo = Utils.getSecureStorage(LOCAL_STORAGE.USER_INFO);
-    console.log(this.userInfo);
     this.src = this.baseUrl + '/unsecur/api/image/reader/v0/read/'+this.userInfo?.resourceId;
     if(this.userInfo) {
       this.loadUserById();
     }
+
   }
 
   loadUserById() {
-    const api = '/api/user/v0/loadUserById';
+    const api = '/api/user/v0/inquiryUserById/'+this.userInfo.id;
     const jsonData = {
       userId: this.userInfo.id
     };
 
-    this.hTTPService.Post(api, jsonData).then(response => {
-      console.log(response);
+    this.hTTPService.Get(api, jsonData).then(response => {
 
       if(response.result.responseCode === HTTPResponseCode.Success) {
         this.roleName = response.body.roleName;
         this.createAt = response.body.createAt;
+        this.jsonInfo = response.body;
+        if(this.lstRole.length > 0) {
+          this.lstRole.forEach(element => {
+            if(element.id === this.jsonInfo.roleId) {
+              this.role = element;
+            }
+          });
+        }
+
       } else {
         this.showErrMsg(response.result.responseMessage);
       }
+
     });
   }
 
@@ -82,5 +97,17 @@ export class UserProfileComponent implements OnInit {
       timeOut: 5000,
     });
   }
+
+    // Get Role  Api Call
+    inquiryRoles() {
+      const api = '/api/role/v0/read';
+      this.hTTPService.Get(api).then(response => {
+        if(response.result.responseCode !== HTTPResponseCode.Success) {
+          this.showErrMsg(response.result.responseMessage);
+        } else {
+          this.lstRole = response.body;
+        }
+      });
+    }
 
 }

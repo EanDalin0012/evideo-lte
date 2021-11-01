@@ -25,7 +25,6 @@ import { Utils } from '../util/utils.static';
 export class AuthInterceptor implements HttpInterceptor {
  // private util = new Util();
   private timeoutmillsec = 120000;
-  private longtimeApis = ["MAN1006"];
 
  constructor(
     private authService: AuthentcatiionService,

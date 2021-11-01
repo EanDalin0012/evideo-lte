@@ -52,6 +52,7 @@ export class UserAddComponent implements OnInit {
   checkUserAvailable = false;
   phoneNumberCheck = true;
   checkPw          = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
@@ -121,12 +122,10 @@ export class UserAddComponent implements OnInit {
         }
       });
     }
-    console.log(this.authorizationModule);
 
   }
 
   phoneNumberChange(event:any) {
-    console.log(event.target.value);
     this.phoneNumberCheck = event.target.value != '' ? false : true;
   }
 
@@ -179,7 +178,6 @@ export class UserAddComponent implements OnInit {
           sourceId: this.sourceId
         };
 
-        console.log('jsonData',jsonData);
         // return;
         const api = '/api/user/v0/create';
         this.hTTPService.Post(api, jsonData).then(response => {
@@ -194,9 +192,6 @@ export class UserAddComponent implements OnInit {
         });
 
       }
-
-
-      // console.log(this.imageSrc);
     }
   }
 

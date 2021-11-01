@@ -1,3 +1,6 @@
+import { AuthorizationModule } from './../../v-share/constants/common.const';
+import { LOCAL_STORAGE } from 'src/app/v-share/constants/common.const';
+import { Utils } from 'src/app/v-share/util/utils.static';
 import { Component, OnInit } from '@angular/core';
 import { AccountTypeCode } from '../../v-share/constants/common.const';
 import { AccountType } from '../../v-share/model/account-type';
@@ -45,6 +48,16 @@ export class SlidebarComponent implements OnInit {
   };
   groups: Group;
   accountType ='';
+
+  menueAccessLstMovie = false;
+  menueAccessMovie = false;
+  menueAccessType = false;
+  menueAccessClientSetting = false;
+  menueAccessMovieTypeSetting = false;
+  menueAccessSubMovieTypeSetting = false;
+  menueAccessUser = false;
+
+  authorities:any[] = [];
 
   constructor(
     private router: Router,
@@ -128,6 +141,31 @@ export class SlidebarComponent implements OnInit {
     });
 
     // this.accountInfo = Utils.getSecureStorage(LOCAL_STORAGE.Account_Info);
+
+    const data = Utils.getSecureStorage(LOCAL_STORAGE.USER_INFO);
+    this.authorities = data.authorities;
+
+    console.log('USER_INFO', data.authorities);
+    if(this.authorities.length > 0) {
+
+      this.authorities.forEach(element => {
+        if(element.id === AuthorizationModule.User_Read) {
+          this.menueAccessUser = true;
+        }
+        switch (element.id) {
+          case AuthorizationModule.User_Read:
+            this.menueAccessUser = true;
+            break;
+          case AuthorizationModule.Movie_Read:
+            this.menueAccessMovie = true;
+            break;
+          case AuthorizationModule.Setting_Movie_Type_Read:
+            this.menueAccessMovieTypeSetting = true;
+          break;
+        }
+      });
+    }
+
 
   }
 

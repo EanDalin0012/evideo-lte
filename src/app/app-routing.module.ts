@@ -28,7 +28,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: '', component: VLayoutComponent,
+    path: '', component: VLayoutComponent,  canActivate: [AuthGuard],
     children: [
       {
         path: 'account',

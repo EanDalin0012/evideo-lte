@@ -1,3 +1,4 @@
+import { AuthGuard } from './../v-share/guard/guard.guard';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { VideoComponent } from './video/video.component';
@@ -19,26 +20,27 @@ import { VideoPreViewComponent } from './video-pre-view/video-pre-view.component
 
 const routes: Routes = [
   {
-    path: '',
-    component : VHomeComponent,
+    path: '', component : VHomeComponent,
     children: [
       {path: '', component: VideoComponent},
       {path: 'vd-add', component: VideoAddComponent},
       {path: 'vd-edit', component: VideoEditComponent},
+
       {path: 'vd-source', component: VideoSourceComponent},
       {path: 'vd-source-play', component: VideoSourcePlayComponent},
       {path: 'vd-source-add', component: VideoSourceAddComponent},
       {path: 'vd-source-edit', component: VideoSourceEditComponent},
       {path: 'vd-source-pre-view', component: VideoPreViewComponent},
-      {path: 'seting-movie-type', component: MovieTypeComponent},
-      {path: 'seting-movie-type-add', component: MovieTypeAddComponent},
-      {path: 'seting-movie-type-edit', component: MovieTypeEditComponent},
+
+      {path: 'seting-sub-movie-type', component: MovieTypeComponent},
+      {path: 'seting-sub-movie-type-add', component: MovieTypeAddComponent},
+      {path: 'seting-sub-movie-type-edit', component: MovieTypeEditComponent},
 
       {path: 'seting-client-vd', component: ClientVdSettingComponent},
 
-      {path: 'seting-movie', component: MovieComponent},
-      {path: 'seting-movie-add', component: MovieAddComponent},
-      {path: 'seting-movie-edit', component: MovieEditComponent}
+      {path: 'seting-movie-type', component: MovieComponent},
+      {path: 'seting-movie-type-add', component: MovieAddComponent},
+      {path: 'seting-movie-type-edit', component: MovieEditComponent}
 
     ]
   }

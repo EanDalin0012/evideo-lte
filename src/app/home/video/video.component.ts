@@ -1,3 +1,4 @@
+import { AuthService } from './../../v-share/service/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from "ngx-toastr";
 import { DataService } from '../../v-share/service/data.service';
@@ -39,12 +40,17 @@ export class VideoComponent implements OnInit {
   search: string  = '';
   searchTr = false;
 
+  menueAccessAdd = false;
+  menueAccessEdit = false;
+  menueAccessDelete = false;
+
   constructor(
     private toastr: ToastrService,
     private dataService: DataService,
     private router: Router,
     private hTTPService: HTTPService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private authService: AuthService
   ) {
 
     const url = (window.location.href).split('/');
@@ -63,6 +69,10 @@ export class VideoComponent implements OnInit {
     //   }
     //   this.onFocusInt = false;
     // });
+
+    this.menueAccessAdd = this.authService.isTargetPath('home/vd-add');
+    this.menueAccessEdit = this.authService.isTargetPath('home/vd-edit');
+    this.menueAccessDelete = this.authService.isTargetPath('home/vd-delete');
 
     this.columnDefs = [
       {
@@ -115,6 +125,7 @@ export class VideoComponent implements OnInit {
     };
 
     Utils.removeSecureStorage(LOCAL_STORAGE.VdSource);
+
   }
 
   onGridReady(params:any) {

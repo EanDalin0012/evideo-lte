@@ -8,14 +8,14 @@
                       <span>Main</span>
                   </li>
 
-                  <li [ngClass]="{ 'active' : urlComplete.mainUrl === 'home' }">
+                  <li *ngIf = "menueAccessLstMovie === true" [ngClass]="{ 'active' : urlComplete.mainUrl === 'home' }">
                     <a href="javascript:" (click)="onNavigateRoutor('/home')" [ngClass]="{ 'active' : urlComplete.subUrl === 'home' ||  urlComplete.subUrl === 'vd-add' || urlComplete.subUrl === 'vd-edit'}">
                       <i class="la la-files-o"></i>
                       <span>{{'video.label.lstMovie' | translate}}</span>
                     </a>
                   </li>
 
-                  <li [ngClass]="{ 'active' : urlComplete.mainUrl === 'account' }" *ngIf = "menueAccessUser === true">
+                  <li *ngIf = "menueAccessUser === true" [ngClass]="{ 'active' : urlComplete.mainUrl === 'account' }">
                     <a href="javascript:" (click)="onNavigateRoutor('/account')" [ngClass]="{ 'active' : urlComplete.subUrl === 'account' ||  urlComplete.subUrl === 'user-add' || urlComplete.subUrl === 'user-edit'}">
                       <i class="la la-user-plus"></i>
                       <span>{{'slidebar.label.user' | translate}}</span>
@@ -46,19 +46,19 @@
                     </a>
                     <ul [ngStyle]="{'display': urlComplete.mainUrl === 'setting' ? 'block' : 'none' }" >
 
-                      <li [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-movie' || urlComplete.subUrl === 'seting-movie-add'}" *ngIf = "menueAccessMovieTypeSetting === true">
-                        <a href="javascript:" (click)="onNavigateRoutor('/home/seting-movie')" [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-movie' || urlComplete.subUrl === 'seting-movie-add' || urlComplete.subUrl === 'seting-movie-edit'}">
-                          <span>Movie</span>
-                        </a>
-                      </li>
-
-                      <li *ngIf = "menueAccessSubMovieTypeSetting === true" [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-movie-type' || urlComplete.subUrl === 'seting-movie-type-add' || urlComplete.subUrl === 'seting-movie-type-edit'}">
+                      <li *ngIf = "menueAccessMovieTypeSetting === true" [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-movie-type' || urlComplete.subUrl === 'seting-movie-type-add'}">
                         <a href="javascript:" (click)="onNavigateRoutor('/home/seting-movie-type')" [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-movie-type' || urlComplete.subUrl === 'seting-movie-type-add' || urlComplete.subUrl === 'seting-movie-type-edit'}">
-                           <span>Movie-Type</span>
+                          <span>Movie-Type</span>
                         </a>
                       </li>
 
-                      <li *ngIf = "menueAccessClientSetting === true" [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-client-vd' }">
+                      <li *ngIf = "menueAccessSubMovieTypeSetting === true" [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-sub-movie-type' || urlComplete.subUrl === 'seting-sub-movie-type-add' || urlComplete.subUrl === 'seting-sub-movie-type-edit'}">
+                        <a href="javascript:" (click)="onNavigateRoutor('/home/seting-sub-movie-type')" [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-sub-movie-type' || urlComplete.subUrl === 'seting-sub-movie-type-add' || urlComplete.subUrl === 'seting-sub-movie-type-edit'}">
+                           <span>Sub-Movie-Type</span>
+                        </a>
+                      </li>
+
+                      <li *ngIf = "menueAccessMovieTypeSetting === true" [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-client-vd' }">
                         <a href="javascript:" (click)="onNavigateRoutor('/home/seting-client-vd')" [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-client-vd' }">
                           <span>Client-Setting</span>
                         </a>

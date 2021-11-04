@@ -1,3 +1,4 @@
+import { AuthService } from './../../v-share/service/auth.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ToastrService } from "ngx-toastr";
 import { Utils } from '../../v-share/util/utils.static';
@@ -41,12 +42,17 @@ export class VideoSourceComponent implements OnInit, OnDestroy {
   jsonData:any;
   selectedJson: any;
 
+  menueAccessAdd = false;
+  menueAccessEdit = false;
+  menueAccessDelete = false;
+
   constructor(
     private toastr: ToastrService,
     private dataService: DataService,
     private router: Router,
     private translate: TranslateService,
     private hTTPService: HTTPService,
+    private authService: AuthService
   ) {
 
     this.baseUrl = environment.bizServer.server;
@@ -102,6 +108,10 @@ export class VideoSourceComponent implements OnInit, OnDestroy {
     this.isRowSelectable = function (rowNode: any) {
       return rowNode.data;
     };
+
+    this.menueAccessAdd = this.authService.isTargetPath('home/vd-source-add');
+    this.menueAccessEdit = this.authService.isTargetPath('home/vd-source-edit');
+    this.menueAccessDelete = this.authService.isTargetPath('home/vd-source-delete');
 
   }
 

@@ -18,15 +18,15 @@
 <div class="row">
   <div class="row col-md-12">
     <div style="margin: 10px 5px;">
-      <button (click)="newMovie()" class="btn btn-sm btn-primary float-left" type="button">
+      <button *ngIf = "menueAccessAdd === true" (click)="newMovie()" class="btn btn-sm btn-primary float-left" type="button">
         <i class="fa fa-plus-circle"></i>
         {{'video.label.addMovie' | translate}}
       </button>
-      <button  (click)="edit1()" [disabled] = "disabled" class="btn btn-sm btn-primary float-left left-12" type="button">
+      <button *ngIf = "menueAccessEdit === true"  (click)="edit1()" [disabled] = "disabled" class="btn btn-sm btn-primary float-left left-12" type="button">
         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
         {{'common.button.edit' | translate}}
       </button>
-      <button (click)="deleteShow()" [disabled] = "disabled" class="btn btn-sm btn-primary float-left left-12" type="button">
+      <button *ngIf = "menueAccessDelete === true" (click)="deleteShow()" [disabled] = "disabled" class="btn btn-sm btn-primary float-left left-12" type="button">
         <i class="fa fa-trash-o" aria-hidden="true"></i>
         {{'common.button.delete' | translate}}
       </button>

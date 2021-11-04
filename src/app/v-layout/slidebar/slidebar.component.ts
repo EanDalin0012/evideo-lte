@@ -50,8 +50,6 @@ export class SlidebarComponent implements OnInit {
   accountType ='';
 
   menueAccessLstMovie = false;
-  menueAccessMovie = false;
-  menueAccessType = false;
   menueAccessClientSetting = false;
   menueAccessMovieTypeSetting = false;
   menueAccessSubMovieTypeSetting = false;
@@ -149,20 +147,20 @@ export class SlidebarComponent implements OnInit {
     if(this.authorities.length > 0) {
 
       this.authorities.forEach(element => {
+
         if(element.id === AuthorizationModule.User_Read) {
           this.menueAccessUser = true;
         }
-        switch (element.id) {
-          case AuthorizationModule.User_Read:
-            this.menueAccessUser = true;
-            break;
-          case AuthorizationModule.Movie_Read:
-            this.menueAccessMovie = true;
-            break;
-          case AuthorizationModule.Setting_Movie_Type_Read:
-            this.menueAccessMovieTypeSetting = true;
-          break;
+        if(element.id === AuthorizationModule.Movie_Read) {
+          this.menueAccessLstMovie = true;
         }
+        if(element.id === AuthorizationModule.Setting_Movie_Type_Read) {
+          this.menueAccessMovieTypeSetting = true;
+        }
+        if(element.id === AuthorizationModule.Setting_Sub_Movie_Type_Read) {
+          this.menueAccessSubMovieTypeSetting = true;
+        }
+
       });
     }
 
@@ -186,16 +184,26 @@ export class SlidebarComponent implements OnInit {
   }
 
   activeSidebar(msg: string) {
+    console.log('msg', msg);
 
     switch (msg) {
       case 'profile':
         this.urlComplete.mainUrl = 'acc'+msg;
         this.urlComplete.subUrl = msg;
         break;
-      case 'seting-movie':
+      case 'seting-sub-movie-type':
         this.urlComplete.mainUrl = 'setting';
-        this.urlComplete.subUrl = 'seting-movie';
+        this.urlComplete.subUrl = 'seting-sub-movie-type';
         break;
+      case 'seting-sub-movie-type-add':
+        this.urlComplete.mainUrl = 'setting';
+        this.urlComplete.subUrl = 'seting-sub-movie-type-add';
+        break;
+      case 'seting-sub-movie-type-edit':
+        this.urlComplete.mainUrl = 'setting';
+        this.urlComplete.subUrl = 'seting-sub-movie-type-edit';
+        break;
+
       case 'seting-movie-type':
         this.urlComplete.mainUrl = 'setting';
         this.urlComplete.subUrl = 'seting-movie-type';
@@ -208,6 +216,7 @@ export class SlidebarComponent implements OnInit {
         this.urlComplete.mainUrl = 'setting';
         this.urlComplete.subUrl = 'seting-movie-type-edit';
         break;
+
       case 'seting-client-vd':
         this.urlComplete.mainUrl = 'setting';
         this.urlComplete.subUrl = 'seting-client-vd';
@@ -250,6 +259,8 @@ export class SlidebarComponent implements OnInit {
         this.urlComplete.subUrl = msg;
         break;
     }
+    console.log('urlComplete',this.urlComplete);
+
   }
 
 

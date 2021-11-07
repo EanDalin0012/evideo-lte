@@ -11,7 +11,8 @@ import { AgGridModule } from 'ag-grid-angular';
 import { MyImgComponent } from './my-img/my-img.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import {NgxMaskModule} from 'ngx-mask';
-import { UserProfileComponent } from './user-profile/user-profile.component'
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { UserDetailComponent } from './user-detail/user-detail.component'
 @NgModule({
   declarations: [
     VAccountComponent,
@@ -19,7 +20,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component'
     UserAddComponent,
     UserEditComponent,
     MyImgComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    UserDetailComponent
   ],
   imports: [
     CommonModule,

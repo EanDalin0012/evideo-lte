@@ -67,6 +67,7 @@ export enum LOCAL_STORAGE {
   VdSourcePreview        = 'VdSourcePreview',
   VdSourceEdit    = 'vd-source-edit',
   UserEdit    = 'user-edit',
+  UserDetail    = 'user-detail',
   videoSourceAdd  = 'videoSourceAdd',
   videoSourceEdit  = 'videoSourceEdit',
 

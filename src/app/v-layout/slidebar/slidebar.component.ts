@@ -1,9 +1,9 @@
+import { AuthService } from './../../v-share/service/auth.service';
 import { AuthorizationModule } from './../../v-share/constants/common.const';
 import { LOCAL_STORAGE } from 'src/app/v-share/constants/common.const';
 import { Utils } from 'src/app/v-share/util/utils.static';
 import { Component, OnInit } from '@angular/core';
 import { AccountTypeCode } from '../../v-share/constants/common.const';
-import { AccountType } from '../../v-share/model/account-type';
 import { Account } from '../../v-share/model/account';
 import { UrlComplete } from '../../v-share/model/url-complete';
 import { Member } from '../../v-share/model/member';
@@ -19,7 +19,6 @@ import * as $ from 'jquery';
 })
 export class SlidebarComponent implements OnInit {
 
-  accountTypes: AccountType[] = accountTypes;
   accountInfo: Account = {
     id: 0,
     accountID: '',
@@ -59,7 +58,8 @@ export class SlidebarComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private dataService: DataService
+    private dataService: DataService,
+    private authService: AuthService
   ) {
     // this.router.events.subscribe((event: Event) => {
     //   if (event instanceof NavigationEnd) {
@@ -143,7 +143,6 @@ export class SlidebarComponent implements OnInit {
     const data = Utils.getSecureStorage(LOCAL_STORAGE.USER_INFO);
     this.authorities = data.authorities;
 
-    console.log('USER_INFO', data.authorities);
     if(this.authorities.length > 0) {
 
       this.authorities.forEach(element => {
@@ -159,6 +158,9 @@ export class SlidebarComponent implements OnInit {
         }
         if(element.id === AuthorizationModule.Setting_Sub_Movie_Type_Read) {
           this.menueAccessSubMovieTypeSetting = true;
+        }
+        if(element.id === AuthorizationModule.Setting_Client_Setting_Read) {
+          this.menueAccessClientSetting = true;
         }
 
       });
@@ -184,8 +186,6 @@ export class SlidebarComponent implements OnInit {
   }
 
   activeSidebar(msg: string) {
-    console.log('msg', msg);
-
     switch (msg) {
       case 'profile':
         this.urlComplete.mainUrl = 'acc'+msg;
@@ -262,57 +262,5 @@ export class SlidebarComponent implements OnInit {
     console.log('urlComplete',this.urlComplete);
 
   }
-
-
-
 }
 
-export const accountTypes: AccountType[] = [
-  {
-    id: 2,
-    code: AccountTypeCode.Seniar,
-    name: 'Senair',
-    remark: 'A'
-  },
-];
-
-export const accountSenairTypes: AccountType[] = [
-  {
-    id: 3,
-    code: AccountTypeCode.Seniar,
-    name: 'Master',
-    remark: 'A'
-  },
-  {
-    id: 4,
-    code: AccountTypeCode.Seniar,
-    name: 'Agent',
-    remark: 'Agent'
-  },
-];
-
-
-export const accountMasterTypes: AccountType[] = [
-  {
-    id: 3,
-    code: AccountTypeCode.Seniar,
-    name: 'Agent',
-    remark: 'Agent'
-  },
-  {
-    id: 4,
-    code: AccountTypeCode.Seniar,
-    name: 'Member',
-    remark: 'Member'
-  },
-];
-
-
-export const accountAgentTypes: AccountType[] = [
-  {
-    id: 4,
-    code: AccountTypeCode.Seniar,
-    name: 'Member',
-    remark: 'Member'
-  },
-];

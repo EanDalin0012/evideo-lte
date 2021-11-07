@@ -114,7 +114,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
       // ------------------------------------------------------------------
       Utils.clearSecureStorage();
-
+      console.log('HttpErrorResponse', error);
       $("div.loading").addClass("none");
       // environment.production ? (() => '')() : console.log(req.url + " reqeusting failed. " );
       // console.log("Http Response Error");

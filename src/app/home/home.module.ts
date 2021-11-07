@@ -22,6 +22,7 @@ import { VideoSourcePlayComponent } from './video-source-play/video-source-play.
 import { DataTablesModule } from 'angular-datatables';
 import { AgGridModule } from 'ag-grid-angular';
 import { VideoPreViewComponent } from './video-pre-view/video-pre-view.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { VideoPreViewComponent } from './video-pre-view/video-pre-view.component
     MovieTypeSettingComponent,
     ClientVdSettingComponent,
     VideoSourcePlayComponent,
-    VideoPreViewComponent
+    VideoPreViewComponent,
+    HomeComponent
   ],
   imports: [
     CommonModule,

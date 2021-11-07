@@ -12,7 +12,6 @@ import { ColDef } from 'ag-grid-community';
 import { HTTPService } from '../../v-share/service/http.service';
 import { TranslateService } from '@ngx-translate/core';
 import { SrcImgComponent } from '../../v-share/component/src-img/src-img.component';
-import { ThrowStmt } from '@angular/compiler';
 @Component({
   selector: 'app-video',
   templateUrl: './video.component.html',
@@ -59,6 +58,11 @@ export class VideoComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(this.authService.isTargetPath('home') === true) {
+      this.router.navigate(['/home/blank']);
+    }
+
+
     // this.dataService.currentMessageBody.subscribe(message => {
     //   console.log('message', message);
 

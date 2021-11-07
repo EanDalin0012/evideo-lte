@@ -379,6 +379,16 @@ export class UserComponent implements OnInit {
     }
   }
 
+  onCellDoubleClicked(event:any) {
+    if(event) {
+      const jsonString = JSON.stringify(this.lstUser[event.rowIndex]);
+      const encryptString = EncryptionUtil.encrypt(jsonString.toString()).toString();
+      Utils.setSecureStorage(LOCAL_STORAGE.UserDetail, encryptString);
+      this.router.navigate(['account/user-detail']);
+    }
+  }
+
+
   showErrMsg(msgKey: string, value?: any){
     let message = '';
     switch(msgKey) {

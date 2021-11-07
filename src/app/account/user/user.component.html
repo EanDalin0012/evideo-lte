@@ -64,6 +64,7 @@
     [rowData]="rowData"
     [rowSelection]="rowSelection"
     (selectionChanged)="onSelectionChanged($event)"
+    (cellDoubleClicked)="onCellDoubleClicked($event)"
     (gridReady)="onGridReady($event)"
     [isRowSelectable]="isRowSelectable"
     [pagination]="pagination"

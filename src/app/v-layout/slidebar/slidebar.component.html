@@ -58,7 +58,7 @@
                         </a>
                       </li>
 
-                      <li *ngIf = "menueAccessMovieTypeSetting === true" [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-client-vd' }">
+                      <li *ngIf = "menueAccessClientSetting === true" [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-client-vd' }">
                         <a href="javascript:" (click)="onNavigateRoutor('/home/seting-client-vd')" [ngClass]="{ 'active' : urlComplete.subUrl === 'seting-client-vd' }">
                           <span>Client-Setting</span>
                         </a>

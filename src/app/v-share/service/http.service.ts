@@ -93,6 +93,11 @@ export class HTTPService {
             const result = res as any;
             if (result) {
               const responseData = result; //JSON.parse(result);
+              if(responseData.result.responseCode === HTTPResponseCode.Forbidden) {
+                this.dataService.sendMessagePermissionModule(api);
+                this.router.navigate(['/error403']);
+              }
+
               // const decryptData = JSON.parse(this.cryptoService.decrypt(String(rawData)));
               if (!responseData) {
                 reject();

@@ -1,3 +1,5 @@
+import { LOCAL_STORAGE } from './../../v-share/constants/common.const';
+import { Utils } from 'src/app/v-share/util/utils.static';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { DataService } from '../../v-share/service/data.service';
 import { Router } from '@angular/router';
@@ -24,6 +26,8 @@ export class Error403Component implements OnInit {
           break;
       }
     });
+    Utils.removeSecureStorage(LOCAL_STORAGE.Authorization);
+    Utils.removeSecureStorage(LOCAL_STORAGE.USER_INFO);
   }
 
   toLogin() {

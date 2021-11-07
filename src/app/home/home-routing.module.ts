@@ -1,3 +1,4 @@
+import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './../v-share/guard/guard.guard';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -22,6 +23,8 @@ const routes: Routes = [
   {
     path: '', component : VHomeComponent,
     children: [
+      {path: 'blank', component: HomeComponent},
+
       {path: '', component: VideoComponent},
       {path: 'vd-add', component: VideoAddComponent},
       {path: 'vd-edit', component: VideoEditComponent},

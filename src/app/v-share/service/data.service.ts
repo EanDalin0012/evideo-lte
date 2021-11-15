@@ -15,10 +15,8 @@ export class DataService {
   private messageSourceBodyEvent = new BehaviorSubject('default message event');
   currentMessageBody = this.messageSourceBodyEvent.asObservable();
 
-
   private messageSourceNotification = new BehaviorSubject('default message');
   currentMessageNotification = this.messageSourceNotification.asObservable();
-
 
   private visitSource =  new BehaviorSubject<any>('');
   visitData = this.visitSource.asObservable();

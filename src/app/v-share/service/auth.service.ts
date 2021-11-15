@@ -1,3 +1,4 @@
+import { id } from 'src/assets/all-modules-data/id';
 import { AuthorizationModule } from './../constants/common.const';
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
@@ -84,10 +85,11 @@ export class AuthService {
   }
 
   public isTargetPath(currentUrl: string) {
+    console.log('currentUrl', currentUrl);
+
     let checkResult = false;
 
     const permissionMenu = [
-
       'home', // 0
       'home/vd-add', // 1
       'home/vd-edit', // 2
@@ -116,115 +118,175 @@ export class AuthService {
       'account/user-add', // 19
       'account/user-edit', // 20
       'account/user-profile', // 21
+      'account/user-delete', 22
 
   ];
 
+  console.log('permissionMenu', permissionMenu[1], currentUrl);
+
     const data = Utils.getSecureStorage(LOCAL_STORAGE.USER_INFO);
     this.authorities = data.authorities;
+    console.log(this.authorities);
+
     if(this.authorities.length > 0) {
       this.authorities.forEach(element => {
-          switch(element.id) {
+        //video
+         if(element.id === AuthorizationModule.Movie_Read && permissionMenu[0] === currentUrl) {
+          checkResult = true;
+         }
+         if(element.id === AuthorizationModule.Movie_Create && permissionMenu[1] === currentUrl) {
+          checkResult = true;
+         }
+         if(element.id === AuthorizationModule.Movie_Update && permissionMenu[2] === currentUrl) {
+          checkResult = true;
+         }
+         if(element.id === AuthorizationModule.Movie_Delete && permissionMenu[3] === currentUrl) {
+          checkResult = true;
+         }
 
-            //video
-            case AuthorizationModule.Movie_Read && permissionMenu[0] === currentUrl:
-              alert();
-              checkResult = true;
-              break;
-            case AuthorizationModule.Movie_Create && permissionMenu[1] === currentUrl:
-              checkResult = true;
-              break;
-            case AuthorizationModule.Movie_Update && permissionMenu[2] === currentUrl:
-              checkResult = true;
-              break;
-            case AuthorizationModule.Movie_Delete && permissionMenu[3] === currentUrl:
-              checkResult = true;
-              break;
+         //video-source
+         if(element.id === AuthorizationModule.Movie_Source_Read && permissionMenu[4] === currentUrl) {
+          checkResult = true;
+         }
+         if(element.id === AuthorizationModule.Movie_Source_Create && permissionMenu[5] === currentUrl) {
+          checkResult = true;
+         }
+         if(element.id === AuthorizationModule.Movie_Source_Update && permissionMenu[6] === currentUrl) {
+          checkResult = true;
+         }
+         if(element.id === AuthorizationModule.Movie_Source_Delete && permissionMenu[7] === currentUrl) {
+          checkResult = true;
+         }
 
-            //video-source
-            case AuthorizationModule.Movie_Source_Read && permissionMenu[4] === currentUrl:
-              checkResult = true;
-              break;
-            case AuthorizationModule.Movie_Source_Create && permissionMenu[5] === currentUrl:
-              checkResult = true;
-              break;
-            case AuthorizationModule.Movie_Source_Update && permissionMenu[6] === currentUrl:
-              checkResult = true;
-              break;
-            case AuthorizationModule.Movie_Source_Delete && permissionMenu[7] === currentUrl:
-              checkResult = true;
-              break;
+        // seting-movie movie type
+         if(element.id === AuthorizationModule.Setting_Movie_Type_Read && permissionMenu[9] === currentUrl) {
+          checkResult = true;
+         }
+         if(element.id === AuthorizationModule.Setting_Movie_Type_Create && permissionMenu[10] === currentUrl) {
+          checkResult = true;
+         }
+         if(element.id === AuthorizationModule.Setting_Movie_Type_Update && permissionMenu[11] === currentUrl) {
+          checkResult = true;
+         }
+         if(element.id === AuthorizationModule.Setting_Movie_Type_Delete && permissionMenu[12] === currentUrl) {
+          checkResult = true;
+         }
 
-            // seting-movie movie type
-            case AuthorizationModule.Setting_Movie_Type_Read && permissionMenu[9] === currentUrl:
-              checkResult = true;
-              break;
-            case AuthorizationModule.Setting_Movie_Type_Create && permissionMenu[10] === currentUrl:
-              checkResult = true;
-              break;
-            case AuthorizationModule.Setting_Movie_Type_Update && permissionMenu[11] === currentUrl:
-              checkResult = true;
-              break;
-            case AuthorizationModule.Setting_Movie_Type_Delete && permissionMenu[12] === currentUrl:
-              checkResult = true;
-              break;
+// seting-client-vd
+         if(element.id === AuthorizationModule.Setting_Client_Setting_Read && permissionMenu[13] === currentUrl) {
+          checkResult = true;
+         }
+         if(element.id === AuthorizationModule.Setting_Sub_Movie_Type_Read && permissionMenu[14] === currentUrl) {
+          checkResult = true;
+         }
+         if(element.id === AuthorizationModule.Setting_Sub_Movie_Type_Create && permissionMenu[15] === currentUrl) {
+          checkResult = true;
+         }
+         if(element.id === AuthorizationModule.Setting_Sub_Movie_Type_Update && permissionMenu[16] === currentUrl) {
+          checkResult = true;
+         }
+         if(element.id === AuthorizationModule.Setting_Sub_Movie_Type_Delete && permissionMenu[17] === currentUrl) {
+          checkResult = true;
+         }
+//user
+         if(element.id === AuthorizationModule.User_Read && permissionMenu[18] === currentUrl) {
+          checkResult = true;
+         }
+         if(element.id === AuthorizationModule.User_Create && permissionMenu[19] === currentUrl) {
+          checkResult = true;
+         }
+         if(element.id === AuthorizationModule.User_Update && permissionMenu[20] === currentUrl) {
+          checkResult = true;
+         }
 
-            // seting-client-vd
-            case AuthorizationModule.Setting_Client_Setting_Read && permissionMenu[13] === currentUrl:
-              checkResult = true;
-              break;
+         if(element.id === AuthorizationModule.User_Delete && permissionMenu[22] === currentUrl) {
+          checkResult = true;
+         }
 
-            // seting-sub-movie-type
-            case AuthorizationModule.Setting_Sub_Movie_Type_Read && permissionMenu[14] === currentUrl:
-              checkResult = true;
-              break;
-            case AuthorizationModule.Setting_Sub_Movie_Type_Create && permissionMenu[15] === currentUrl:
-              checkResult = true;
-              break;
-            case AuthorizationModule.Setting_Sub_Movie_Type_Update && permissionMenu[16] === currentUrl:
-              checkResult = true;
-              break;
-            case AuthorizationModule.Setting_Sub_Movie_Type_Delete && permissionMenu[17] === currentUrl:
-              checkResult = true;
-              break;
 
-            // user
-            case AuthorizationModule.User_Read && permissionMenu[18] === currentUrl:
-              checkResult = true;
-              break;
-            case AuthorizationModule.User_Create && permissionMenu[19] === currentUrl:
-              checkResult = true;
-              break;
-            case AuthorizationModule.User_Update && permissionMenu[20] === currentUrl:
-              checkResult = true;
-              break;
-          }
+          // switch(element.id) {
+
+          //   //video
+          //   case AuthorizationModule.Movie_Read && permissionMenu[0] === currentUrl:
+          //     alert();
+          //     checkResult = true;
+          //     break;
+          //   case AuthorizationModule.Movie_Create && permissionMenu[1] === currentUrl:
+          //     alert();
+          //     checkResult = true;
+          //     break;
+          //   case AuthorizationModule.Movie_Update && permissionMenu[2] === currentUrl:
+          //     checkResult = true;
+          //     break;
+          //   case AuthorizationModule.Movie_Delete && permissionMenu[3] === currentUrl:
+          //     checkResult = true;
+          //     break;
+
+          //   //video-source
+          //   case AuthorizationModule.Movie_Source_Read && permissionMenu[4] === currentUrl:
+          //     checkResult = true;
+          //     break;
+          //   case AuthorizationModule.Movie_Source_Create && permissionMenu[5] === currentUrl:
+          //     checkResult = true;
+          //     break;
+          //   case AuthorizationModule.Movie_Source_Update && permissionMenu[6] === currentUrl:
+          //     checkResult = true;
+          //     break;
+          //   case AuthorizationModule.Movie_Source_Delete && permissionMenu[7] === currentUrl:
+          //     checkResult = true;
+          //     break;
+
+          //   // seting-movie movie type
+          //   case AuthorizationModule.Setting_Movie_Type_Read && permissionMenu[9] === currentUrl:
+          //     checkResult = true;
+          //     break;
+          //   case AuthorizationModule.Setting_Movie_Type_Create && permissionMenu[10] === currentUrl:
+          //     checkResult = true;
+          //     break;
+          //   case AuthorizationModule.Setting_Movie_Type_Update && permissionMenu[11] === currentUrl:
+          //     checkResult = true;
+          //     break;
+          //   case AuthorizationModule.Setting_Movie_Type_Delete && permissionMenu[12] === currentUrl:
+          //     checkResult = true;
+          //     break;
+
+          //   // seting-client-vd
+          //   case AuthorizationModule.Setting_Client_Setting_Read && permissionMenu[13] === currentUrl:
+          //     checkResult = true;
+          //     break;
+
+          //   // seting-sub-movie-type
+          //   case AuthorizationModule.Setting_Sub_Movie_Type_Read && permissionMenu[14] === currentUrl:
+          //     checkResult = true;
+          //     break;
+          //   case AuthorizationModule.Setting_Sub_Movie_Type_Create && permissionMenu[15] === currentUrl:
+          //     checkResult = true;
+          //     break;
+          //   case AuthorizationModule.Setting_Sub_Movie_Type_Update && permissionMenu[16] === currentUrl:
+          //     checkResult = true;
+          //     break;
+          //   case AuthorizationModule.Setting_Sub_Movie_Type_Delete && permissionMenu[17] === currentUrl:
+          //     checkResult = true;
+          //     break;
+
+          //   // user
+          //   case AuthorizationModule.User_Read && permissionMenu[18] === currentUrl:
+          //     checkResult = true;
+          //     break;
+          //   case AuthorizationModule.User_Create && permissionMenu[19] === currentUrl:
+          //     checkResult = true;
+          //     break;
+          //   case AuthorizationModule.User_Update && permissionMenu[20] === currentUrl:
+          //     checkResult = true;
+          //     break;
+          // }
 
       });
     }
 
 
     environment.production ? (() => '')() : console.log("isTargetPath" + currentUrl);
-
-
-
-
-
-    // nonPermissionMenu.every(function( item, index ) {
-    //   permissionMenu.every(function( item, index ) {
-    //   if( currentUrl.indexOf(item) !== -1 ){
-    //     console.log("current url " + currentUrl);
-    //     console.log("menu url " + item);
-    //     checkResult = false;
-    //     return false;
-    //   } else {
-    //     // console.log("current url " + currentUrl);
-    //     // console.log("menu url " + item);
-    //     return true;
-    //   }
-    // });
-
-    environment.production ? (() => '')() : console.log("isTargetPath check finish. " + checkResult);
-
+    environment.production ? (() => '')() : console.log("checkResult" + checkResult);
     return checkResult;
 
   }

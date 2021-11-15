@@ -176,7 +176,6 @@ export class SlidebarComponent implements OnInit {
   routerAccount() {
     this.urlComplete.mainUrl = 'acc';
     this.urlComplete.subUrl = this.accountInfo.accountType;
-    // Utils.setSecureStorage(LOCAL_STORAGE.AccountTypeCode, this.accountInfo.accountType);
     this.dataService.visitParamRouterChange('acc');
     this.onNavigateRoutor('/acc/');
   }
@@ -259,7 +258,6 @@ export class SlidebarComponent implements OnInit {
         this.urlComplete.subUrl = msg;
         break;
     }
-    console.log('urlComplete',this.urlComplete);
 
   }
 }

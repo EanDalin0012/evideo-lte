@@ -1,5 +1,5 @@
 import { AuthService } from './../../v-share/service/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ToastrService } from "ngx-toastr";
 import { DataService } from '../../v-share/service/data.service';
 import { Router } from '@angular/router';
@@ -17,7 +17,7 @@ import { SrcImgComponent } from '../../v-share/component/src-img/src-img.compone
   templateUrl: './video.component.html',
   styleUrls: ['./video.component.css']
 })
-export class VideoComponent implements OnInit {
+export class VideoComponent implements OnInit, AfterViewInit {
 
   lstMovies: any[] = [];
   pagination = true;
@@ -39,9 +39,9 @@ export class VideoComponent implements OnInit {
   search: string  = '';
   searchTr = false;
 
-  menueAccessAdd = false;
-  menueAccessEdit = false;
-  menueAccessDelete = false;
+  menueAccessAdd:boolean = false;
+  menueAccessEdit:boolean = false;
+  menueAccessDelete:boolean = false;
 
   constructor(
     private toastr: ToastrService,
@@ -55,12 +55,18 @@ export class VideoComponent implements OnInit {
     const url = (window.location.href).split('/');
     this.dataService.visitParamRouterChange(url[3]);
 
+
+
+  }
+  ngAfterViewInit(): void {
+
+
   }
 
   ngOnInit() {
-    if(this.authService.isTargetPath('home') === true) {
-      this.router.navigate(['/home/blank']);
-    }
+    // if(this.authService.isTargetPath('home') === true) {
+    //   this.router.navigate(['/home/blank']);
+    // }
 
 
     // this.dataService.currentMessageBody.subscribe(message => {
@@ -74,9 +80,6 @@ export class VideoComponent implements OnInit {
     //   this.onFocusInt = false;
     // });
 
-    this.menueAccessAdd = this.authService.isTargetPath('home/vd-add');
-    this.menueAccessEdit = this.authService.isTargetPath('home/vd-edit');
-    this.menueAccessDelete = this.authService.isTargetPath('home/vd-delete');
 
     this.columnDefs = [
       {
@@ -129,7 +132,13 @@ export class VideoComponent implements OnInit {
     };
 
     Utils.removeSecureStorage(LOCAL_STORAGE.VdSource);
+    this.menueAccessAdd = this.authService.isTargetPath('home/vd-add');
+    this.menueAccessEdit = this.authService.isTargetPath('home/vd-edit');
+    this.menueAccessDelete = this.authService.isTargetPath('home/vd-delete');
 
+    if(this.authService.isTargetPath('home') === false) {
+      this.router.navigate(['/home/blank']);
+    }
   }
 
   onGridReady(params:any) {
@@ -151,6 +160,7 @@ export class VideoComponent implements OnInit {
      }else {
         this.lstMovies = response.body;
         this.rowData =this.lstMovies;
+        console.log(this.rowData);
 
       }
     });

@@ -85,7 +85,7 @@ export class AuthService {
   }
 
   public isTargetPath(currentUrl: string) {
-    console.log('currentUrl', currentUrl);
+    // console.log('currentUrl', currentUrl);
 
     let checkResult = false;
 
@@ -122,11 +122,11 @@ export class AuthService {
 
   ];
 
-  console.log('permissionMenu', permissionMenu[1], currentUrl);
+  // console.log('permissionMenu', permissionMenu[1], currentUrl);
 
     const data = Utils.getSecureStorage(LOCAL_STORAGE.USER_INFO);
     this.authorities = data.authorities;
-    console.log(this.authorities);
+    // console.log(this.authorities);
 
     if(this.authorities.length > 0) {
       this.authorities.forEach(element => {

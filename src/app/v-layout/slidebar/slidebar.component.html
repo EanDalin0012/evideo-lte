@@ -23,8 +23,11 @@
                   </li>
 
                   <li class="submenu" [ngClass]="{ 'active' : urlComplete.mainUrl === 'reports' }">
-                      <a href="javascript:" [ngClass]="{ 'subdrop' : urlComplete.mainUrl === 'reports' }"><i class="la la-pie-chart"></i> <span> Reports </span> <span
-                              class="menu-arrow"></span></a>
+                      <a href="javascript:" [ngClass]="{ 'subdrop' : urlComplete.mainUrl === 'reports' }">
+                        <i class="la la-pie-chart"></i>
+                        <span> Reports </span>
+                        <span class="menu-arrow"></span>
+                      </a>
                       <ul style="display: none;"
                       [ngStyle]="{ 'display' : urlComplete.mainUrl === 'reports' ? 'block' : 'none' }">
                           <li routerLink="/reports/expense-report">

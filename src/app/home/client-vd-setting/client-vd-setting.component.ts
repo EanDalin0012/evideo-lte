@@ -1,10 +1,10 @@
+import { id } from './../../../assets/all-modules-data/id';
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../v-share/service/data.service';
 import { HTTPService } from '../../v-share/service/http.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { HTTPResponseCode } from '../../v-share/constants/common.const';
-import { id } from '../../../assets/all-modules-data/id';
 
 @Component({
   selector: 'app-client-vd-setting',
@@ -13,15 +13,12 @@ import { id } from '../../../assets/all-modules-data/id';
 })
 export class ClientVdSettingComponent implements OnInit {
 
-  lstMovies: any[] = [];
-  moviesIdCheked = 1;
-  activeTabMovieId = 0;
+  videoTypes: any[] = [];
+  videoSubTypes: any[] = [];
+  videoTypeDts: any[] = [];
 
-  lstSubMovieType: any[] = [];
-  lstMovieDetail: any[] = [];
-
-  vdParts: any[] = [];
-  vdPartId = 0;
+  videoType:any;
+  video_sub_type_elements:any[] = [];
 
   constructor(
     private dataService: DataService,
@@ -34,13 +31,12 @@ export class ClientVdSettingComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.inquiry();
-    this.inquirySubMovieType();
+    this.inquiryVideoTypes();
   }
 
   onChecke(item: any, status: string) {
     console.log('item', item, status);
-    console.log('activeTabMovieId', this.activeTabMovieId);
+    console.log('activeTabMovieId', this.videoType.id);
     let yN = "";
     if(status === 'Y') {
       yN = 'N';
@@ -49,7 +45,7 @@ export class ClientVdSettingComponent implements OnInit {
       yN = 'Y';
     }
     const jsonData = {
-      vdId: this.activeTabMovieId,
+      vdId: this.videoType.id,
       subVdTypeId: item.id,
       status: yN
     };
@@ -68,7 +64,6 @@ export class ClientVdSettingComponent implements OnInit {
   }
 
   updateStatusYN(item: any) {
-    console.log(item);
     let status = "";
     if(item.status === 'Y') {
       status = 'N';
@@ -85,7 +80,7 @@ export class ClientVdSettingComponent implements OnInit {
 
       this.hTTPService.Post(api, jsonData).then(response => {
         if(response.result.responseCode === HTTPResponseCode.Success) {
-          this.inquiry();
+          this.inquiryVideoTypes();
           this.toastr.info(this.translate.instant('clientVdSetting.message.settingClientVideoMenuUpdate', {value: status}), this.translate.instant('common.label.success'),{
             timeOut: 5000,
           });
@@ -96,57 +91,91 @@ export class ClientVdSettingComponent implements OnInit {
     }
   }
 
-  // Get Movie Type  Api Call
-  inquiry() {
-    const api = '/api/movie-type/v0/read';
+
+  inquiryVideoTypes() {
+    const api = '/api/client-setting/v0/read';
     this.hTTPService.Get(api).then(response => {
+      console.log('response abc', response);
+
       if(response.result.responseCode !== HTTPResponseCode.Success) {
         this.showErrMsg(response.result.responseMessage);
      }else {
-        this.lstMovies = response.body;
-        this.activeTabMovieId = this.lstMovies[0].id;
-        this.inquirySubMovieDt(this.activeTabMovieId);
+
+        this.videoTypes = response.body.video_types;
+        this.videoTypeDts = response.body.video_type_dts;
+        this.videoSubTypes = response.body.video_sub_types;
+        console.log(this.videoType);
+        if(!this.videoType) {
+          this.videoType = this.videoTypes[0];
+        }
+        // this.videoType = this.videoTypes[0];
+        // this.activeTabVideoId = this.videoType.id;
+        this.reset();
       }
     });
   }
 
-  // Get Employee  Api Call
-  inquirySubMovieType() {
-    const api = '/api/sub-movie-type/v0/read';
-    this.hTTPService.Get(api).then(response => {
-      if(response.result.responseCode !== HTTPResponseCode.Success) {
-        this.showErrMsg(response.result.responseMessage);
-      } else {
-        this.lstSubMovieType = response.body;
-        console.log('lstSubMovieType',this.lstSubMovieType);
-
-      }
+  reset() {
+    this.video_sub_type_elements = [];
+    this.videoSubTypes.forEach(element => {
+      const checked = this.tReturn(element.id);
+      this.video_sub_type_elements.push({
+        checked: checked,
+        name: element.name,
+        video_sub_type_id: element.id
+      });
     });
   }
 
-  // Get Employee  Api Call
-  inquirySubMovieDt(activeTabMovieId: number) {
-    const jsonData = {
-      vdId: activeTabMovieId
+  tReturn(id: number) {
+    let check = false;
+    this.videoTypeDts.forEach(element => {
+      if(this.videoType.id === element.id) {
+        let video_sub_types:any[] = [];
+        video_sub_types = element.video_sub_types;
+        if(video_sub_types.length > 0) {
+          video_sub_types.forEach(item => {
+            if(item.sub_video_id === id) {
+              check = true;
+            }
+          });
+        }
+      }
+    });
+    return check;
+  }
+
+  checkValue(event: any, item:any) {
+    console.log(event.target.checked, item, this.videoType);
+    if(event.target.checked === true) {
+
+    }
+
+    const json = {
+      checked: event.target.checked,
+      videoTypeId: this.videoType.id,
+      videoSubTypeId: item.video_sub_type_id
     };
-
-    const api = '/api/movie-detail/v0/read';
-    this.hTTPService.Post(api, jsonData).then(response => {
-      console.log('inquirySubMovieDt', response);
-
-      if(response.result.responseCode !== HTTPResponseCode.Success) {
-        this.showErrMsg(response.result.responseMessage);
+    console.log(json);
+    const api = '/api/client-setting/v0/updateVideoTypeDt';
+    this.hTTPService.Post(api, json).then(response => {
+      if(response.result.responseCode === HTTPResponseCode.Success) {
+        this.inquiryVideoTypes();
+        // this.toastr.info(this.translate.instant('clientVdSetting.message.settingClientVideoMenuUpdate', {value: status}), this.translate.instant('common.label.success'),{
+        //   timeOut: 5000,
+        // });
       } else {
-        this.lstMovieDetail = response.body;
-        console.log('this.lstMovieDetail', this.lstMovieDetail);
-
+        this.showErrMsg(response.result.responseMessage);
       }
     });
   }
+
+
+
 
   tabChange(item: any) {
-    this.activeTabMovieId = item.id;
-    this.inquirySubMovieDt(this.activeTabMovieId);
+    this.videoType = item;
+    this.reset();
   }
 
   showErrMsg(msgKey: string, value?: any){
@@ -165,23 +194,3 @@ export class ClientVdSettingComponent implements OnInit {
   }
 
 }
-
-export const movieTypes = [
-  {
-    id: 1,
-    name: 'Drama',
-    check: 'Y',
-    remark: ''
-  },
-  {
-    id: 2,
-    name: 'Movie',
-    check: 'Y',
-    remark: ''
-  },
-  {
-    id: 3,
-    name: 'Histories',
-    remark: ''
-  }
-]

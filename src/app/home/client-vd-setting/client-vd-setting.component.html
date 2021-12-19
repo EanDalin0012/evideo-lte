@@ -25,7 +25,7 @@
                   <div class="task-list-container">
                       <div class="task-list-body">
                           <ul id="task-list">
-                            <ng-container *ngFor="let item of lstMovies">
+                            <ng-container *ngFor="let item of videoTypes">
                               <li class="task">
                                 <a href="javascript:" (click)="updateStatusYN(item)">
                                   <div class="task-container">
@@ -80,8 +80,8 @@
                           <div class="file-scroll">
                             <div class="roles-menu">
                               <ul>
-                                <ng-container *ngFor="let item of lstMovies">
-                                  <li [ngClass] = "{'active': item.id === activeTabMovieId}">
+                                <ng-container *ngFor="let item of videoTypes">
+                                  <li [ngClass] = "{'active': item.id === videoType.id}">
                                     <a href="javascript:void(0);" (click)="tabChange(item)">{{item.name}}</a>
                                   </li>
                                 </ng-container>
@@ -102,25 +102,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of lstSubMovieType">
+                        <tr *ngFor="let item of video_sub_type_elements">
                             <td>{{item.name}}</td>
-                            <td class="text-center">
-                                <ng-container *ngIf="lstMovieDetail.length >= 1;">
-                                  <ng-container *ngFor="let ite of lstMovieDetail">
-                                    <span>{{item.id}} {{ite.vdId}}</span>
-                                    <ng-container *ngIf="item.id === ite.vdId && ite.status === 'Y'">
-                                      <input [checked]="activeTabMovieId === ite.vdId && ite.status === 'Y'" (change)="onChecke(ite, item.id === ite.vdId &&  ite.status === 'Y' ? 'Y': 'N')" type="checkbox" [value]="item.id === ite.vdId && ite.status === 'Y' ? 'Y': 'N'" >
-                                      </ng-container>
-
-                                  </ng-container>
-                                </ng-container>
-
-                                <ng-container *ngIf="lstMovieDetail.length <= 0">
-                                  <input [checked]="item.status === 'Y'" (change)="onChecke(item, 'N')" type="checkbox" value="N" >
-                                </ng-container>
-
-
-                            </td>
+                            <td class="text-center"></td>
+                            <input [checked]="item.checked" type="checkbox" (change)="checkValue($event, item)">
                         </tr>
 
                     </tbody>
